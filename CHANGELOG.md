@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/skyra-project/klasa/compare/v1.0.0...v1.1.0) (2020-08-15)
+
+
+### Features
+
+* remove babel experiment ([4c3494a](https://github.com/skyra-project/klasa/commit/4c3494a4df1594f71e66b87b7616e9858f2962e4))
+
 ## 1.0.0 (2020-08-15)
 
 
