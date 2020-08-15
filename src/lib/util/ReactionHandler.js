@@ -5,7 +5,6 @@ const { ReactionCollector } = require('discord.js');
  * @extends ReactionCollector
  */
 class ReactionHandler extends ReactionCollector {
-
 	/**
 	 * A single unicode character
 	 * @typedef {string} Emoji
@@ -82,23 +81,25 @@ class ReactionHandler extends ReactionCollector {
 		 * @since 0.4.0
 		 * @type {Promise<number?>}
 		 */
-		this.selection = this.display.emojis.zero ? new Promise((resolve, reject) => {
-			/**
-			 * Causes this.selection to resolve
-			 * @since 0.4.0
-			 * @type {Function}
-			 * @private
-			 */
-			this.reject = reject;
+		this.selection = this.display.emojis.zero
+			? new Promise((resolve, reject) => {
+					/**
+					 * Causes this.selection to resolve
+					 * @since 0.4.0
+					 * @type {Function}
+					 * @private
+					 */
+					this.reject = reject;
 
-			/**
-			 * Causes this.selection to reject
-			 * @since 0.4.0
-			 * @type {Function}
-			 * @private
-			 */
-			this.resolve = resolve;
-		}) : Promise.resolve(null);
+					/**
+					 * Causes this.selection to reject
+					 * @since 0.4.0
+					 * @type {Function}
+					 * @private
+					 */
+					this.resolve = resolve;
+			  })
+			: Promise.resolve(null);
 
 		/**
 		 * Whether reactions have finished queuing (used to handle clearing reactions on early menu selections)
@@ -171,7 +172,7 @@ class ReactionHandler extends ReactionCollector {
 		if (this.awaiting) return;
 		this.awaiting = true;
 		const message = await this.message.channel.send(this.prompt);
-		const collected = await this.message.channel.awaitMessages(mess => mess.author === user, { max: 1, time: this.time });
+		const collected = await this.message.channel.awaitMessages((mess) => mess.author === user, { max: 1, time: this.time });
 		this.awaiting = false;
 		await message.delete();
 		if (!collected.size) return;
@@ -219,8 +220,8 @@ class ReactionHandler extends ReactionCollector {
 	 * @returns {void}
 	 */
 	one() {
-		if (this.display.options.length - 1 < 1 + (this.currentPage * 10)) return;
-		this.resolve(1 + (this.currentPage * 10));
+		if (this.display.options.length - 1 < 1 + this.currentPage * 10) return;
+		this.resolve(1 + this.currentPage * 10);
 		this.stop();
 	}
 
@@ -230,8 +231,8 @@ class ReactionHandler extends ReactionCollector {
 	 * @returns {void}
 	 */
 	two() {
-		if (this.display.options.length - 1 < 2 + (this.currentPage * 10)) return;
-		this.resolve(2 + (this.currentPage * 10));
+		if (this.display.options.length - 1 < 2 + this.currentPage * 10) return;
+		this.resolve(2 + this.currentPage * 10);
 		this.stop();
 	}
 
@@ -241,8 +242,8 @@ class ReactionHandler extends ReactionCollector {
 	 * @returns {void}
 	 */
 	three() {
-		if (this.display.options.length - 1 < 3 + (this.currentPage * 10)) return;
-		this.resolve(3 + (this.currentPage * 10));
+		if (this.display.options.length - 1 < 3 + this.currentPage * 10) return;
+		this.resolve(3 + this.currentPage * 10);
 		this.stop();
 	}
 
@@ -252,8 +253,8 @@ class ReactionHandler extends ReactionCollector {
 	 * @returns {void}
 	 */
 	four() {
-		if (this.display.options.length - 1 < 4 + (this.currentPage * 10)) return;
-		this.resolve(4 + (this.currentPage * 10));
+		if (this.display.options.length - 1 < 4 + this.currentPage * 10) return;
+		this.resolve(4 + this.currentPage * 10);
 		this.stop();
 	}
 
@@ -263,8 +264,8 @@ class ReactionHandler extends ReactionCollector {
 	 * @returns {void}
 	 */
 	five() {
-		if (this.display.options.length - 1 < 5 + (this.currentPage * 10)) return;
-		this.resolve(5 + (this.currentPage * 10));
+		if (this.display.options.length - 1 < 5 + this.currentPage * 10) return;
+		this.resolve(5 + this.currentPage * 10);
 		this.stop();
 	}
 
@@ -274,8 +275,8 @@ class ReactionHandler extends ReactionCollector {
 	 * @returns {void}
 	 */
 	six() {
-		if (this.display.options.length - 1 < 6 + (this.currentPage * 10)) return;
-		this.resolve(6 + (this.currentPage * 10));
+		if (this.display.options.length - 1 < 6 + this.currentPage * 10) return;
+		this.resolve(6 + this.currentPage * 10);
 		this.stop();
 	}
 
@@ -285,8 +286,8 @@ class ReactionHandler extends ReactionCollector {
 	 * @returns {void}
 	 */
 	seven() {
-		if (this.display.options.length - 1 < 7 + (this.currentPage * 10)) return;
-		this.resolve(7 + (this.currentPage * 10));
+		if (this.display.options.length - 1 < 7 + this.currentPage * 10) return;
+		this.resolve(7 + this.currentPage * 10);
 		this.stop();
 	}
 
@@ -296,8 +297,8 @@ class ReactionHandler extends ReactionCollector {
 	 * @returns {void}
 	 */
 	eight() {
-		if (this.display.options.length - 1 < 8 + (this.currentPage * 10)) return;
-		this.resolve(8 + (this.currentPage * 10));
+		if (this.display.options.length - 1 < 8 + this.currentPage * 10) return;
+		this.resolve(8 + this.currentPage * 10);
 		this.stop();
 	}
 
@@ -307,8 +308,8 @@ class ReactionHandler extends ReactionCollector {
 	 * @returns {void}
 	 */
 	nine() {
-		if (this.display.options.length - 1 < 9 + (this.currentPage * 10)) return;
-		this.resolve(9 + (this.currentPage * 10));
+		if (this.display.options.length - 1 < 9 + this.currentPage * 10) return;
+		this.resolve(9 + this.currentPage * 10);
 		this.stop();
 	}
 
@@ -336,7 +337,6 @@ class ReactionHandler extends ReactionCollector {
 		this.reactionsDone = true;
 		return null;
 	}
-
 }
 
 module.exports = ReactionHandler;

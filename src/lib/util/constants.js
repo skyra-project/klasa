@@ -7,7 +7,6 @@ const colorBase = {
 };
 
 exports.DEFAULTS = {
-
 	CLIENT: {
 		commandEditing: false,
 		commandLogging: false,
@@ -51,7 +50,7 @@ exports.DEFAULTS = {
 				cooldown: 0,
 				cooldownLevel: 'author',
 				description: '',
-				extendedHelp: language => language.get('COMMAND_HELP_NO_EXTENDED'),
+				extendedHelp: (language) => language.get('COMMAND_HELP_NO_EXTENDED'),
 				enabled: true,
 				flagSupport: true,
 				guarded: false,
@@ -133,16 +132,27 @@ exports.DEFAULTS = {
 			error: mergeDefault(colorBase, { time: { background: 'red' } }),
 			log: mergeDefault(colorBase, { time: { background: 'blue' } }),
 			verbose: mergeDefault(colorBase, { time: { text: 'gray' } }),
-			warn: mergeDefault(colorBase, { time: { background: 'lightyellow', text: 'black' } }),
-			wtf: mergeDefault(colorBase, { message: { text: 'red' }, time: { background: 'red' } })
+			warn: mergeDefault(colorBase, {
+				time: { background: 'lightyellow', text: 'black' }
+			}),
+			wtf: mergeDefault(colorBase, {
+				message: { text: 'red' },
+				time: { background: 'red' }
+			})
 		}
 	},
 
 	QUERYBUILDER: {
 		datatypes: [
 			['any', { type: 'TEXT' }],
-			['json', { type: 'JSON', serializer: (value) => `'${JSON.stringify(value).replace(/'/g, "''")}'` }],
-			['boolean', { type: 'BOOLEAN', serializer: value => value }],
+			[
+				'json',
+				{
+					type: 'JSON',
+					serializer: (value) => `'${JSON.stringify(value).replace(/'/g, "''")}'`
+				}
+			],
+			['boolean', { type: 'BOOLEAN', serializer: (value) => value }],
 			['bool', { extends: 'boolean' }],
 			['snowflake', { type: 'VARCHAR(19)' }],
 			['channel', { extends: 'snowflake' }],
@@ -150,13 +160,13 @@ exports.DEFAULTS = {
 			['voicechannel', { extends: 'channel' }],
 			['categorychannel', { extends: 'channel' }],
 			['guild', { extends: 'snowflake' }],
-			['number', { type: 'FLOAT', serializer: value => value }],
+			['number', { type: 'FLOAT', serializer: (value) => value }],
 			['float', { extends: 'number' }],
 			['integer', { extends: 'number', type: 'INTEGER' }],
 			['command', { type: 'TEXT' }],
 			['language', { type: 'VARCHAR(5)' }],
 			['role', { extends: 'snowflake' }],
-			['string', { type: ({ max }) => max ? `VARCHAR(${max})` : 'TEXT' }],
+			['string', { type: ({ max }) => (max ? `VARCHAR(${max})` : 'TEXT') }],
 			['url', { type: 'TEXT' }],
 			['user', { extends: 'snowflake' }]
 		],
@@ -167,7 +177,6 @@ exports.DEFAULTS = {
 			serializer: (value) => `'${(isObject(value) ? JSON.stringify(value) : String(value)).replace(/'/g, "''")}'`
 		}
 	}
-
 };
 
 exports.TIME = {
@@ -206,7 +215,13 @@ exports.TIME = {
 	CRON: {
 		partRegex: /^(?:(\*)|(\d+)(?:-(\d+))?)(?:\/(\d+))?$/,
 		wildcardRegex: /\bh\b|\B\?\B/g,
-		allowedNum: [[0, 59], [0, 23], [1, 31], [1, 12], [0, 6]],
+		allowedNum: [
+			[0, 59],
+			[0, 23],
+			[1, 31],
+			[1, 12],
+			[0, 6]
+		],
 		predefined: {
 			'@annually': '0 0 1 1 *',
 			'@yearly': '0 0 1 1 *',
@@ -237,7 +252,6 @@ exports.TIME = {
 			sat: 6
 		}
 	}
-
 };
 
 exports.TIME.CRON.tokensRegex = new RegExp(Object.keys(exports.TIME.CRON.tokens).join('|'), 'g');

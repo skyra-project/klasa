@@ -7,7 +7,6 @@ const Piece = require('./base/Piece');
  * @extends Piece
  */
 class Monitor extends Piece {
-
 	/**
 	 * @typedef {PieceOptions} MonitorOptions
 	 * @property {boolean} [ignoreBots=true] Whether the monitor ignores bots or not
@@ -121,7 +120,8 @@ class Monitor extends Piece {
 	 * @returns {boolean}
 	 */
 	shouldRun(message) {
-		return this.enabled &&
+		return (
+			this.enabled &&
 			this.allowedTypes.includes(message.type) &&
 			!(this.ignoreBots && message.author.bot) &&
 			!(this.ignoreSelf && this.client.user === message.author) &&
@@ -129,7 +129,8 @@ class Monitor extends Piece {
 			!(this.ignoreWebhooks && message.webhookID) &&
 			!(this.ignoreEdits && message._edits.length) &&
 			!(this.ignoreBlacklistedUsers && this.client.settings.get('userBlacklist').includes(message.author.id)) &&
-			!(this.ignoreBlacklistedGuilds && message.guild && this.client.settings.get('guildBlacklist').includes(message.guild.id));
+			!(this.ignoreBlacklistedGuilds && message.guild && this.client.settings.get('guildBlacklist').includes(message.guild.id))
+		);
 	}
 
 	/**
@@ -148,7 +149,6 @@ class Monitor extends Piece {
 			ignoreBlacklistedGuilds: this.ignoreBlacklistedGuilds
 		};
 	}
-
 }
 
 module.exports = Monitor;

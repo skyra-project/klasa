@@ -1,13 +1,17 @@
-const { Structures, Collection, APIMessage, Permissions: { FLAGS } } = require('discord.js');
+const {
+	Structures,
+	Collection,
+	APIMessage,
+	Permissions: { FLAGS }
+} = require('discord.js');
 const { regExpEsc } = require('../util/util');
 
-module.exports = Structures.extend('Message', Message => {
+module.exports = Structures.extend('Message', (Message) => {
 	/**
 	 * Klasa's Extended Message
 	 * @extends external:Message
 	 */
 	class KlasaMessage extends Message {
-
 		/**
 		 * @typedef {object} CachedPrefix
 		 * @property {number} length The length of the prefix
@@ -72,7 +76,7 @@ module.exports = Structures.extend('Message', Message => {
 		 * @readonly
 		 */
 		get responses() {
-			return this._responses.filter(msg => !msg.deleted);
+			return this._responses.filter((msg) => !msg.deleted);
 		}
 
 		/**
@@ -133,13 +137,18 @@ module.exports = Structures.extend('Message', Message => {
 		 */
 		async usableCommands() {
 			const col = new Collection();
-			await Promise.all(this.client.commands.map((command) =>
-				this.client.inhibitors.run(this, command, true)
-					.then(() => { col.set(command.name, command); })
-					.catch(() => {
-						// noop
-					})
-			));
+			await Promise.all(
+				this.client.commands.map((command) =>
+					this.client.inhibitors
+						.run(this, command, true)
+						.then(() => {
+							col.set(command.name, command);
+						})
+						.catch(() => {
+							// noop
+						})
+				)
+			);
 			return col;
 		}
 
@@ -166,8 +175,10 @@ module.exports = Structures.extend('Message', Message => {
 
 			if ('files' in combinedOptions) return this.channel.send(combinedOptions);
 
-			const newMessages = new APIMessage(this.channel, combinedOptions).resolveData().split()
-				.map(mes => {
+			const newMessages = new APIMessage(this.channel, combinedOptions)
+				.resolveData()
+				.split()
+				.map((mes) => {
 					// Command editing should always remove embeds and content if none is provided
 					mes.data.embed = mes.data.embed || null;
 					mes.data.content = mes.data.content || null;
@@ -309,9 +320,7 @@ module.exports = Structures.extend('Message', Message => {
 					time: this.command.promptTime,
 					limit: this.command.promptLimit
 				});
-			} catch (error) {
-				return;
-			}
+			} catch (error) {}
 		}
 
 		/**
@@ -324,7 +333,9 @@ module.exports = Structures.extend('Message', Message => {
 			const prefix = this.guildSettings.get('prefix');
 			if (!prefix || !prefix.length) return null;
 			for (const prf of Array.isArray(prefix) ? prefix : [prefix]) {
-				const testingPrefix = this.constructor.prefixes.get(prf) || this.constructor.generateNewPrefix(prf, this.client.options.prefixCaseInsensitive ? 'i' : '');
+				const testingPrefix =
+					this.constructor.prefixes.get(prf) ||
+					this.constructor.generateNewPrefix(prf, this.client.options.prefixCaseInsensitive ? 'i' : '');
 				if (testingPrefix.regex.test(this.content)) return testingPrefix;
 			}
 			return null;
@@ -372,11 +383,13 @@ module.exports = Structures.extend('Message', Message => {
 		 * @private
 		 */
 		static generateNewPrefix(prefix, flags) {
-			const prefixObject = { length: prefix.length, regex: new RegExp(`^${regExpEsc(prefix)}`, flags) };
+			const prefixObject = {
+				length: prefix.length,
+				regex: new RegExp(`^${regExpEsc(prefix)}`, flags)
+			};
 			this.prefixes.set(prefix, prefixObject);
 			return prefixObject;
 		}
-
 	}
 
 	/**

@@ -2,11 +2,12 @@ const { Serializer } = require('klasa');
 const { Role } = require('discord.js');
 
 module.exports = class extends Serializer {
-
 	async validate(data, { entry, language, guild }) {
 		if (!guild) throw this.client.languages.default.get('RESOLVER_INVALID_GUILD', entry.key);
 		if (data instanceof Role) return data;
-		const role = this.constructor.regex.role.test(data) ? guild.roles.get(this.constructor.regex.role.exec(data)[1]) : guild.roles.find(rol => rol.name === data) || null;
+		const role = this.constructor.regex.role.test(data)
+			? guild.roles.get(this.constructor.regex.role.exec(data)[1])
+			: guild.roles.find((rol) => rol.name === data) || null;
 		if (role) return role;
 		throw language.get('RESOLVER_INVALID_ROLE', entry.key);
 	}
@@ -16,7 +17,10 @@ module.exports = class extends Serializer {
 	}
 
 	stringify(value, guild) {
-		return ((guild && guild.roles.get(value)) || { name: (value && value.name) || value }).name;
+		return (
+			(guild && guild.roles.get(value)) || {
+				name: (value && value.name) || value
+			}
+		).name;
 	}
-
 };

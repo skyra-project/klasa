@@ -5,7 +5,6 @@ const TextPrompt = require('./TextPrompt');
  * @extends TextPrompt
  */
 class CommandPrompt extends TextPrompt {
-
 	/**
 	 * @since 0.5.0
 	 * @param {KlasaMessage} message The message for the command
@@ -34,7 +33,6 @@ class CommandPrompt extends TextPrompt {
 	run() {
 		return this.validateArgs();
 	}
-
 }
 
 module.exports = CommandPrompt;

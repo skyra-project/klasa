@@ -1,7 +1,6 @@
 const { Event } = require('klasa');
 
 module.exports = class extends Event {
-
 	constructor(...args) {
 		super(...args, { event: 'guildCreate' });
 	}
@@ -13,5 +12,4 @@ module.exports = class extends Event {
 			this.client.emit('warn', `Blacklisted guild detected: ${guild.name} [${guild.id}]`);
 		}
 	}
-
 };

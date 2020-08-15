@@ -5,7 +5,6 @@ const { UserStore } = require('discord.js');
  * @extends external:UserStore
  */
 class KlasaUserStore extends UserStore {
-
 	/**
 	 * Fetches a user and syncs their settings
 	 * @param  {...any} args d.js UserStore#fetch arguments
@@ -15,7 +14,6 @@ class KlasaUserStore extends UserStore {
 		await user.settings.sync();
 		return user;
 	}
-
 }
 
 module.exports = KlasaUserStore;

@@ -4,7 +4,6 @@ const { getPromiseDetails } = process.binding('util');
  * The class for deep checking Types
  */
 class Type {
-
 	/**
 	 * @param {*} value The value to generate a deep Type of
 	 * @param {Type} [parent=null] The parent value used in recursion
@@ -104,7 +103,7 @@ class Type {
 		// eslint-disable-next-line consistent-this
 		let current = this;
 		// eslint-disable-next-line no-cond-assign
-		while (current = current.parent) yield current;
+		while ((current = current.parent)) yield current;
 	}
 
 	/**
@@ -143,10 +142,14 @@ class Type {
 	static resolve(value) {
 		const type = typeof value;
 		switch (type) {
-			case 'object': return value === null ? 'null' : (value.constructor && value.constructor.name) || 'any';
-			case 'function': return `${value.constructor.name}(${value.length}-arity)`;
-			case 'undefined': return 'void';
-			default: return type;
+			case 'object':
+				return value === null ? 'null' : (value.constructor && value.constructor.name) || 'any';
+			case 'function':
+				return `${value.constructor.name}(${value.length}-arity)`;
+			case 'undefined':
+				return 'void';
+			default:
+				return type;
 		}
 	}
 
@@ -160,7 +163,6 @@ class Type {
 	static list(values) {
 		return values.has('any') ? 'any' : [...values.values()].sort().join(' | ');
 	}
-
 }
 
 module.exports = Type;

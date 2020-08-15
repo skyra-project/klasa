@@ -17,7 +17,6 @@ const { join } = require('path');
  * @see Task
  */
 class Piece {
-
 	/**
 	 * @typedef {Object} PieceOptions
 	 * @property {string} [name=theFileName] The name of the event
@@ -144,7 +143,6 @@ class Piece {
 		return this;
 	}
 
-
 	/**
 	 * The init method to be optionally overwritten in actual commands
 	 * @since 0.0.1
@@ -178,7 +176,6 @@ class Piece {
 			enabled: this.enabled
 		};
 	}
-
 }
 
 module.exports = Piece;

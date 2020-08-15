@@ -1,7 +1,6 @@
 const { Argument } = require('klasa');
 
 module.exports = class extends Argument {
-
 	constructor(...args) {
 		super(...args, { aliases: ['num', 'number'] });
 	}
@@ -12,5 +11,4 @@ module.exports = class extends Argument {
 		if (isNaN(number)) throw message.language.get('RESOLVER_INVALID_FLOAT', possible.name);
 		return this.constructor.minOrMax(this.client, number, min, max, possible, message) ? number : null;
 	}
-
 };

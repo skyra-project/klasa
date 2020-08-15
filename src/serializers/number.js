@@ -1,7 +1,6 @@
 const { Serializer } = require('klasa');
 
 module.exports = class extends Serializer {
-
 	constructor(...args) {
 		super(...args, { aliases: ['integer', 'float'] });
 	}
@@ -22,5 +21,4 @@ module.exports = class extends Serializer {
 		// noop
 		return null;
 	}
-
 };

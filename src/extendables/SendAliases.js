@@ -2,7 +2,6 @@ const { Extendable } = require('klasa');
 const { TextChannel, DMChannel, User, APIMessage } = require('discord.js');
 
 module.exports = class extends Extendable {
-
 	constructor(...args) {
 		super(...args, { appliesTo: [TextChannel, DMChannel, User] });
 	}
@@ -16,7 +15,11 @@ module.exports = class extends Extendable {
 	}
 
 	sendFile(attachment, name, content, options = {}) {
-		return this.send(APIMessage.transformOptions(content, options, { files: [{ attachment, name }] }));
+		return this.send(
+			APIMessage.transformOptions(content, options, {
+				files: [{ attachment, name }]
+			})
+		);
 	}
 
 	sendFiles(files, content, options = {}) {
@@ -32,5 +35,4 @@ module.exports = class extends Extendable {
 	sendMessage(content, options) {
 		return this.send(content, options);
 	}
-
 };

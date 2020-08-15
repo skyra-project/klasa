@@ -9,7 +9,6 @@ const empty = Symbol('empty');
  * @tutorial UnderstandingPermissionLevels
  */
 class PermissionLevels extends Collection {
-
 	/**
 	 * @typedef {Object} PermissionLevelsData
 	 * @property {boolean} broke Whether the loop broke execution of higher levels
@@ -42,7 +41,11 @@ class PermissionLevels extends Collection {
 	 * @returns {this}
 	 */
 	add(level, check, options = {}) {
-		return this.set(level, { check, break: Boolean(options.break), fetch: Boolean(options.fetch) });
+		return this.set(level, {
+			check,
+			break: Boolean(options.break),
+			fetch: Boolean(options.fetch)
+		});
 	}
 
 	/**
@@ -65,7 +68,7 @@ class PermissionLevels extends Collection {
 	 */
 	set(level, obj) {
 		if (level < 0) throw new Error(`Cannot set permission level ${level}. Permission levels start at 0.`);
-		if (level > (this.size - 1)) throw new Error(`Cannot set permission level ${level}. Permission levels stop at ${this.size - 1}.`);
+		if (level > this.size - 1) throw new Error(`Cannot set permission level ${level}. Permission levels stop at ${this.size - 1}.`);
 		return super.set(level, obj);
 	}
 
@@ -75,7 +78,14 @@ class PermissionLevels extends Collection {
 	 * @returns {boolean}
 	 */
 	isValid() {
-		return this.every(level => level === empty || (typeof level === 'object' && typeof level.break === 'boolean' && typeof level.fetch === 'boolean' && typeof level.check === 'function'));
+		return this.every(
+			(level) =>
+				level === empty ||
+				(typeof level === 'object' &&
+					typeof level.break === 'boolean' &&
+					typeof level.fetch === 'boolean' &&
+					typeof level.check === 'function')
+		);
 	}
 
 	/**
@@ -117,7 +127,6 @@ class PermissionLevels extends Collection {
 	static get [Symbol.species]() {
 		return Collection;
 	}
-
 }
 
 module.exports = PermissionLevels;

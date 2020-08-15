@@ -3,13 +3,12 @@ const { pathExists } = require('fs-nextra');
 const { join } = require('path');
 
 module.exports = class extends Command {
-
 	constructor(...args) {
 		super(...args, {
 			aliases: ['l'],
 			permissionLevel: 10,
 			guarded: true,
-			description: language => language.get('COMMAND_LOAD_DESCRIPTION'),
+			description: (language) => language.get('COMMAND_LOAD_DESCRIPTION'),
 			usage: '[core] <Store:store> <path:...string>',
 			usageDelim: ' '
 		});
@@ -43,5 +42,4 @@ module.exports = class extends Command {
 		for (const dir of store.coreDirectories) if (await pathExists(join(dir, ...path))) return store.load(dir, path);
 		return undefined;
 	}
-
 };

@@ -11,7 +11,6 @@ const REGEXPESC = /[-/\\^$*+?.()|[\]{}]/g;
  * Contains static methods to be used throughout klasa
  */
 class Util {
-
 	/**
 	 * @typedef {(KlasaGuild|KlasaMessage|external:GuildChannel)} GuildResolvable
 	 */
@@ -105,7 +104,8 @@ class Util {
 	 * @returns {*}
 	 */
 	static mergeObjects(objTarget = {}, objSource) {
-		for (const key in objSource) objTarget[key] = Util.isObject(objSource[key]) ? Util.mergeObjects(objTarget[key], objSource[key]) : objSource[key];
+		for (const key in objSource)
+			objTarget[key] = Util.isObject(objSource[key]) ? Util.mergeObjects(objTarget[key], objSource[key]) : objSource[key];
 		return objTarget;
 	}
 
@@ -158,9 +158,7 @@ class Util {
 	 * @returns {boolean}
 	 */
 	static isClass(input) {
-		return typeof input === 'function' &&
-			typeof input.prototype === 'object' &&
-			input.toString().substring(0, 5) === 'class';
+		return typeof input === 'function' && typeof input.prototype === 'object' && input.toString().substring(0, 5) === 'class';
 	}
 
 	/**
@@ -201,8 +199,7 @@ class Util {
 	 */
 	static isThenable(input) {
 		if (!input) return false;
-		return (input instanceof Promise) ||
-			(input !== Promise.prototype && Util.isFunction(input.then) && Util.isFunction(input.catch));
+		return input instanceof Promise || (input !== Promise.prototype && Util.isFunction(input.then) && Util.isFunction(input.catch));
 	}
 
 	/**
@@ -228,7 +225,7 @@ class Util {
 	 * @returns {*}
 	 */
 	static makeObject(path, value, obj = {}) {
-		if (path.indexOf('.') === -1) {
+		if (!path.includes('.')) {
 			obj[path] = value;
 		} else {
 			const route = path.split('.');
@@ -310,15 +307,12 @@ class Util {
 		const type = typeof guild;
 		if (type === 'object' && guild !== null) {
 			if (guild instanceof Guild) return guild;
-			if ((guild instanceof GuildChannel) ||
-				(guild instanceof GuildMember) ||
-				(guild instanceof Message)) return guild.guild;
+			if (guild instanceof GuildChannel || guild instanceof GuildMember || guild instanceof Message) return guild.guild;
 		} else if (type === 'string' && /^\d{17,19}$/.test(guild)) {
 			return client.guilds.get(guild) || null;
 		}
 		return null;
 	}
-
 }
 
 /**

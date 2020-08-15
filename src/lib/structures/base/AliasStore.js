@@ -9,7 +9,6 @@ const Store = require('./Store');
  * @extends Store
  */
 class AliasStore extends Store {
-
 	constructor(...args) {
 		super(...args);
 
@@ -76,7 +75,6 @@ class AliasStore extends Store {
 		super.clear();
 		this.aliases.clear();
 	}
-
 }
 
 module.exports = AliasStore;

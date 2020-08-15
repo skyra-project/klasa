@@ -5,7 +5,6 @@ const RichDisplay = require('./RichDisplay');
  * @extends RichDisplay
  */
 class RichMenu extends RichDisplay {
-
 	/**
 	 * @typedef {RichDisplayEmojisObject} RichMenuEmojisObject
 	 * @property {Emoji} zero The emoji for the 'zero' button
@@ -127,7 +126,18 @@ class RichMenu extends RichDisplay {
 	 * @private
 	 */
 	_determineEmojis(emojis, stop, jump, firstLast) {
-		emojis.push(this.emojis.zero, this.emojis.one, this.emojis.two, this.emojis.three, this.emojis.four, this.emojis.five, this.emojis.six, this.emojis.seven, this.emojis.eight, this.emojis.nine);
+		emojis.push(
+			this.emojis.zero,
+			this.emojis.one,
+			this.emojis.two,
+			this.emojis.three,
+			this.emojis.four,
+			this.emojis.five,
+			this.emojis.six,
+			this.emojis.seven,
+			this.emojis.eight,
+			this.emojis.nine
+		);
 		if (this.options.length < 10) emojis = emojis.slice(0, this.options.length);
 		return super._determineEmojis(emojis, stop, jump, firstLast);
 	}
@@ -141,8 +151,12 @@ class RichMenu extends RichDisplay {
 	_paginate() {
 		const page = this.pages.length;
 		if (this.paginated) return null;
-		super.addPage(embed => {
-			for (let i = 0, option = this.options[i + (page * 10)]; i + (page * 10) < this.options.length && i < 10; i++, option = this.options[i + (page * 10)]) {
+		super.addPage((embed) => {
+			for (
+				let i = 0, option = this.options[i + page * 10];
+				i + page * 10 < this.options.length && i < 10;
+				i++, option = this.options[i + page * 10]
+			) {
 				embed.addField(`(${i}) ${option.name}`, option.body, option.inline);
 			}
 			return embed;
@@ -151,7 +165,6 @@ class RichMenu extends RichDisplay {
 		this.paginated = true;
 		return null;
 	}
-
 }
 
 module.exports = RichMenu;

@@ -1,7 +1,6 @@
 const { Inhibitor, RateLimitManager } = require('klasa');
 
 module.exports = class extends Inhibitor {
-
 	constructor(...args) {
 		super(...args, { spamProtection: true });
 		this.slowmode = new RateLimitManager(1, this.client.options.slowmode);
@@ -22,5 +21,4 @@ module.exports = class extends Inhibitor {
 			throw true;
 		}
 	}
-
 };

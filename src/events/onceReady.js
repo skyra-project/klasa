@@ -3,7 +3,6 @@ const { Team } = require('discord.js');
 let retries = 0;
 
 module.exports = class extends Event {
-
 	constructor(...args) {
 		super(...args, {
 			once: true,
@@ -32,21 +31,23 @@ module.exports = class extends Event {
 		// Added for consistency with other datastores, Client#clients does not exist
 		clientStorage.cache.set(this.client.user.id, this.client);
 		this.client.settings = clientStorage.create(this.client, this.client.user.id);
-		await Promise.all(this.client.gateways.map(gateway => gateway.sync()));
+		await Promise.all(this.client.gateways.map((gateway) => gateway.sync()));
 
 		// Init the schedule
 		await this.client.schedule.init();
 
 		// Init all the pieces
-		await Promise.all(this.client.pieceStores.filter(store => !['providers', 'extendables'].includes(store.name)).map(store => store.init()));
+		await Promise.all(this.client.pieceStores.filter((store) => !['providers', 'extendables'].includes(store.name)).map((store) => store.init()));
 		util.initClean(this.client);
 		this.client.ready = true;
 
 		if (this.client.options.readyMessage !== null) {
-			this.client.emit('log', util.isFunction(this.client.options.readyMessage) ? this.client.options.readyMessage(this.client) : this.client.options.readyMessage);
+			this.client.emit(
+				'log',
+				util.isFunction(this.client.options.readyMessage) ? this.client.options.readyMessage(this.client) : this.client.options.readyMessage
+			);
 		}
 
 		return this.client.emit('klasaReady');
 	}
-
 };

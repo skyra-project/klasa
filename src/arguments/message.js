@@ -1,7 +1,6 @@
 const { Argument } = require('klasa');
 
 module.exports = class extends Argument {
-
 	constructor(...args) {
 		super(...args, { aliases: ['msg'] });
 	}
@@ -11,5 +10,4 @@ module.exports = class extends Argument {
 		if (msg) return msg;
 		throw message.language.get('RESOLVER_INVALID_MESSAGE', possible.name);
 	}
-
 };

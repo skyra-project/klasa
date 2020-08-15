@@ -2,7 +2,6 @@
  * Handles generic RateLimits such as for {@link Command#cooldown}s
  */
 class RateLimit {
-
 	/**
 	 * @since 0.5.0
 	 * @param {number} bucket The number of requests before this is limited
@@ -111,7 +110,6 @@ class RateLimit {
 
 		return this;
 	}
-
 }
 
 module.exports = RateLimit;

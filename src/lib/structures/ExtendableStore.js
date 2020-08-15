@@ -6,7 +6,6 @@ const Store = require('./base/Store');
  * @extends Store
  */
 class ExtendableStore extends Store {
-
 	/**
 	 * Constructs our ExtendableStore for use in Klasa
 	 * @since 0.0.1
@@ -49,7 +48,6 @@ class ExtendableStore extends Store {
 		extendable.init();
 		return extendable;
 	}
-
 }
 
 module.exports = ExtendableStore;

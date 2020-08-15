@@ -1,7 +1,6 @@
 const { Event } = require('klasa');
 
 module.exports = class extends Event {
-
 	constructor(...args) {
 		super(...args, { event: 'messageDeleteBulk' });
 	}
@@ -15,5 +14,4 @@ module.exports = class extends Event {
 			}
 		}
 	}
-
 };

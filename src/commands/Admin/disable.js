@@ -1,12 +1,11 @@
 const { Command } = require('klasa');
 
 module.exports = class extends Command {
-
 	constructor(...args) {
 		super(...args, {
 			permissionLevel: 10,
 			guarded: true,
-			description: language => language.get('COMMAND_DISABLE_DESCRIPTION'),
+			description: (language) => language.get('COMMAND_DISABLE_DESCRIPTION'),
 			usage: '<Piece:piece>'
 		});
 	}
@@ -21,7 +20,8 @@ module.exports = class extends Command {
 				if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').disable();
 			`);
 		}
-		return message.sendLocale('COMMAND_DISABLE', [piece.type, piece.name], { code: 'diff' });
+		return message.sendLocale('COMMAND_DISABLE', [piece.type, piece.name], {
+			code: 'diff'
+		});
 	}
-
 };

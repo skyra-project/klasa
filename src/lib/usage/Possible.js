@@ -4,7 +4,6 @@ const regexTypes = ['reg', 'regex', 'regexp'];
  * Represents a possibility in a usage Tag
  */
 class Possible {
-
 	/**
 	 * @param {string[]} regexResults The regex results from parsing the tag member
 	 * @since 0.2.1
@@ -60,7 +59,6 @@ class Possible {
 		if (isNaN(limit)) throw `${limitType} must be a number`;
 		return parseFloat(limit);
 	}
-
 }
 
 module.exports = Possible;

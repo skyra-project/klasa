@@ -2,7 +2,6 @@
  * The Colors class that manages the colors displayed in the console.
  */
 class Colors {
-
 	/**
 	 * @typedef {Object} ColorsFormatOptions
 	 * @property {(string|string[])} [style] The style or styles to apply
@@ -23,7 +22,10 @@ class Colors {
 	 * @since 0.4.0
 	 */
 	constructor(options = {}) {
-		const { opening, closing } = this.constructor.text(options.text, this.constructor.background(options.background, this.constructor.style(options.style)));
+		const { opening, closing } = this.constructor.text(
+			options.text,
+			this.constructor.background(options.background, this.constructor.style(options.style))
+		);
 
 		/**
 		 * The opening tags
@@ -102,7 +104,6 @@ class Colors {
 		}
 		return { opening, closing };
 	}
-
 }
 
 /**

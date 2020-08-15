@@ -9,7 +9,6 @@ const { mergeDefault } = require('./util');
  * Klasa's console class, extends NodeJS Console class.
  */
 class KlasaConsole extends Console {
-
 	/**
 	 * @typedef {Object} ConsoleOptions
 	 * @property {ConsoleColorStyles} [colors] The console color styles
@@ -163,7 +162,12 @@ class KlasaConsole extends Console {
 		data = data.map(this.constructor._flatten).join('\n');
 		const { time, message } = this.colors[type];
 		const timestamp = this.template ? time.format(`[${this.timestamp}]`) : '';
-		super[constants.DEFAULTS.CONSOLE.types[type] || 'log'](data.split('\n').map(str => `${timestamp} ${message.format(str)}`).join('\n'));
+		super[constants.DEFAULTS.CONSOLE.types[type] || 'log'](
+			data
+				.split('\n')
+				.map((str) => `${timestamp} ${message.format(str)}`)
+				.join('\n')
+		);
 	}
 
 	/**
@@ -238,12 +242,11 @@ class KlasaConsole extends Console {
 		if (typeof data === 'string') return data;
 		if (typeof data === 'object') {
 			const isArray = Array.isArray(data);
-			if (isArray && data.every(datum => typeof datum === 'string')) return data.join('\n');
+			if (isArray && data.every((datum) => typeof datum === 'string')) return data.join('\n');
 			return data.stack || data.message || inspect(data, { depth: Number(isArray), colors: Colors.useColors });
 		}
 		return String(data);
 	}
-
 }
 
 module.exports = KlasaConsole;

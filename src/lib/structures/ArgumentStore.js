@@ -6,7 +6,6 @@ const AliasStore = require('./base/AliasStore');
  * @extends AliasStore
  */
 class ArgumentStore extends AliasStore {
-
 	/**
 	 * Constructs our ArgumentStore for use in Klasa
 	 * @since 0.5.0
@@ -15,7 +14,6 @@ class ArgumentStore extends AliasStore {
 	constructor(client) {
 		super(client, 'arguments', Argument);
 	}
-
 }
 
 module.exports = ArgumentStore;

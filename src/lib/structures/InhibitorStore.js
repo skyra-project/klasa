@@ -6,7 +6,6 @@ const Store = require('./base/Store');
  * @extends Store
  */
 class InhibitorStore extends Store {
-
 	/**
 	 * Constructs our InhibitorStore for use in Klasa
 	 * @since 0.0.1
@@ -26,13 +25,13 @@ class InhibitorStore extends Store {
 	 */
 	async run(message, command, selective = false) {
 		const mps = [];
-		for (const inhibitor of this.values()) if (inhibitor.enabled && (!selective || !inhibitor.spamProtection)) mps.push(inhibitor._run(message, command));
-		const results = (await Promise.all(mps)).filter(res => res);
+		for (const inhibitor of this.values())
+			if (inhibitor.enabled && (!selective || !inhibitor.spamProtection)) mps.push(inhibitor._run(message, command));
+		const results = (await Promise.all(mps)).filter((res) => res);
 		if (results.includes(true)) throw undefined;
 		if (results.length) throw results;
 		return undefined;
 	}
-
 }
 
 module.exports = InhibitorStore;

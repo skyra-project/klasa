@@ -6,7 +6,6 @@ const AliasStore = require('./base/AliasStore');
  * @extends AliasStore
  */
 class CommandStore extends AliasStore {
-
 	/**
 	 * Constructs our CommandStore for use in Klasa
 	 * @since 0.0.1
@@ -15,7 +14,6 @@ class CommandStore extends AliasStore {
 	constructor(client) {
 		super(client, 'commands', Command);
 	}
-
 }
 
 module.exports = CommandStore;

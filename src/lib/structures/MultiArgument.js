@@ -5,7 +5,6 @@ const Argument = require('./Argument');
  * @extends Argument
  */
 class MultiArgument extends Argument {
-
 	/**
 	 * A getter for the base argument
 	 * @since 0.5.0
@@ -27,7 +26,10 @@ class MultiArgument extends Argument {
 	async run(argument, possible, message) {
 		const structures = [];
 		const { min, max } = possible;
-		const { args, usage: { usageDelim } } = message.prompter;
+		const {
+			args,
+			usage: { usageDelim }
+		} = message.prompter;
 		const index = args.indexOf(argument);
 		const rest = args.splice(index, args.length - index);
 		const { base } = this;
@@ -48,7 +50,6 @@ class MultiArgument extends Argument {
 		if ((min && structures.length < min) || !structures.length) throw message.language.get(`RESOLVER_MULTI_TOO_FEW`, base.name, min);
 		return structures;
 	}
-
 }
 
 module.exports = MultiArgument;

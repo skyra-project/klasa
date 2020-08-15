@@ -1,7 +1,6 @@
 const { Event } = require('klasa');
 
 module.exports = class extends Event {
-
 	run(failure) {
 		this.client.console.wtf(failure);
 	}
@@ -9,5 +8,4 @@ module.exports = class extends Event {
 	init() {
 		if (!this.client.options.consoleEvents.wtf) this.disable();
 	}
-
 };

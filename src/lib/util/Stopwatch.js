@@ -4,7 +4,6 @@ const { performance } = require('perf_hooks');
  * Klasa's Stopwatch class, uses native node to replicate/extend previous performance now dependency.
  */
 class Stopwatch {
-
 	/**
 	 * Starts a new Stopwatch
 	 * @since 0.4.0
@@ -115,7 +114,6 @@ class Stopwatch {
 		if (time >= 1) return `${time.toFixed(this.digits)}ms`;
 		return `${(time * 1000).toFixed(this.digits)}μs`;
 	}
-
 }
 
 module.exports = Stopwatch;

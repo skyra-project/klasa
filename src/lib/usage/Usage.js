@@ -9,7 +9,6 @@ const space = [' ', '\n'];
  * Converts usage strings into objects to compare against later
  */
 class Usage {
-
 	/**
 	 * @since 0.0.1
 	 * @param {KlasaClient} client The klasa client
@@ -84,7 +83,7 @@ class Usage {
 	 * @since 0.5.0
 	 */
 	customizeResponse(name, response) {
-		this.parsedUsage.some(tag => tag.register(name, response));
+		this.parsedUsage.some((tag) => tag.register(name, response));
 		return this;
 	}
 
@@ -146,7 +145,7 @@ class Usage {
 
 			if (usage.last && char !== ' ') throw `${usage.at}: there can't be anything else after the repeat tag.`;
 
-			if (char === '/' && usage.current[usage.current.length - 1] !== '\\') usage.openRegex = !usage.openRegex;
+			if (char === '/' && !usage.current.endsWith('\\')) usage.openRegex = !usage.openRegex;
 
 			if (usage.openRegex) {
 				usage.current += char;
@@ -159,8 +158,12 @@ class Usage {
 			else usage.current += char;
 		}
 
-		if (usage.opened) throw `from char #${usageString.length - usage.current.length} '${usageString.substr(-usage.current.length - 1)}' to end: a tag was left open`;
-		if (usage.current) throw `from char #${(usageString.length + 1) - usage.current.length} to end '${usage.current}' a literal was found outside a tag.`;
+		if (usage.opened)
+			throw `from char #${usageString.length - usage.current.length} '${usageString.substr(
+				-usage.current.length - 1
+			)}' to end: a tag was left open`;
+		if (usage.current)
+			throw `from char #${usageString.length + 1 - usage.current.length} to end '${usage.current}' a literal was found outside a tag.`;
 
 		return usage.tags;
 	}
@@ -218,7 +221,6 @@ class Usage {
 		if (usage.opened) throw `${usage.at}: spaces aren't allowed inside a tag`;
 		if (usage.current) throw `${usage.fromTo}: there can't be a literal outside a tag.`;
 	}
-
 }
 
 module.exports = Usage;

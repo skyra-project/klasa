@@ -5,7 +5,6 @@ const { isObject } = require('../util/util');
  * The structure for future tasks to be run
  */
 class ScheduledTask {
-
 	/**
 	 * @typedef  {(Date|number|Cron|string)} TimeResolvable
 	 */
@@ -175,8 +174,11 @@ class ScheduledTask {
 
 		// Sync the database if some of the properties changed or the time changed manually
 		// (recurring tasks bump the time automatically)
-		const _index = this.store._tasks.findIndex(entry => entry.id === this.id);
-		if (_index !== -1) await this.client.settings.update('schedules', this.toJSON(), { arrayIndex: _index });
+		const _index = this.store._tasks.findIndex((entry) => entry.id === this.id);
+		if (_index !== -1)
+			await this.client.settings.update('schedules', this.toJSON(), {
+				arrayIndex: _index
+			});
 
 		return this;
 	}
@@ -250,7 +252,6 @@ class ScheduledTask {
 		if (!st.time) throw new Error('time or repeat option required');
 		if (Number.isNaN(st.time.getTime())) throw new Error('invalid time passed');
 	}
-
 }
 
 module.exports = ScheduledTask;

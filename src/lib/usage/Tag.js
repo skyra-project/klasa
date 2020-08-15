@@ -4,7 +4,6 @@ const Possible = require('./Possible');
  * Represents a usage Tag
  */
 class Tag {
-
 	/**
 	 * @since 0.2.1
 	 * @param {string} members The tag contents to parse
@@ -51,7 +50,7 @@ class Tag {
 	 */
 	register(name, response) {
 		if (this.response) return false;
-		if (this.possibles.some(val => val.name === name)) {
+		if (this.possibles.some((val) => val.name === name)) {
 			this.response = response;
 			return true;
 		}
@@ -83,7 +82,8 @@ class Tag {
 				if (literals.includes(possible.name)) throw `${current}: there can't be two literals with the same text.`;
 				literals.push(possible.name);
 			} else if (members.length > 1) {
-				if (['str', 'string'].includes(possible.type) && members.length - 1 !== i) throw `${current}: the String type is vague, you must specify it at the last bound`;
+				if (['str', 'string'].includes(possible.type) && members.length - 1 !== i)
+					throw `${current}: the String type is vague, you must specify it at the last bound`;
 				if (types.includes(possible.type)) throw `${current}: there can't be two bounds with the same type (${possible.type})`;
 				types.push(possible.type);
 			}
@@ -114,7 +114,6 @@ class Tag {
 		trueMembers.push(current);
 		return trueMembers;
 	}
-
 }
 
 /**

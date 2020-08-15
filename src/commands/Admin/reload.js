@@ -1,13 +1,12 @@
 const { Command, Store, Stopwatch } = require('klasa');
 
 module.exports = class extends Command {
-
 	constructor(...args) {
 		super(...args, {
 			aliases: ['r'],
 			permissionLevel: 10,
 			guarded: true,
-			description: language => language.get('COMMAND_RELOAD_DESCRIPTION'),
+			description: (language) => language.get('COMMAND_RELOAD_DESCRIPTION'),
 			usage: '<Store:store|Piece:piece|everything:default>'
 		});
 	}
@@ -43,10 +42,12 @@ module.exports = class extends Command {
 
 	async everything(message) {
 		const timer = new Stopwatch();
-		await Promise.all(this.client.pieceStores.map(async (store) => {
-			await store.loadAll();
-			await store.init();
-		}));
+		await Promise.all(
+			this.client.pieceStores.map(async (store) => {
+				await store.loadAll();
+				await store.init();
+			})
+		);
 		if (this.client.shard) {
 			await this.client.shard.broadcastEval(`
 				if (String(this.options.shards) !== '${this.client.options.shards}') this.pieceStores.map(async (store) => {
@@ -57,5 +58,4 @@ module.exports = class extends Command {
 		}
 		return message.sendLocale('COMMAND_RELOAD_EVERYTHING', [timer.stop()]);
 	}
-
 };

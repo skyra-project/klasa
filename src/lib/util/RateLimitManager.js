@@ -6,7 +6,6 @@ const RateLimit = require('./RateLimit');
  * @extends {external:Collection}
  */
 class RateLimitManager extends Collection {
-
 	/**
 	 * @since 0.5.0
 	 * @param {number} bucket The amount of times a RateLimit can drip before it's limited
@@ -22,9 +21,15 @@ class RateLimitManager extends Collection {
 		 * @type {?NodeJS.Timer}
 		 * @private
 		 */
-		Object.defineProperty(this, 'sweepInterval', { value: null, writable: true });
+		Object.defineProperty(this, 'sweepInterval', {
+			value: null,
+			writable: true
+		});
 		Object.defineProperty(this, '_bucket', { value: bucket, writable: true });
-		Object.defineProperty(this, '_cooldown', { value: cooldown, writable: true });
+		Object.defineProperty(this, '_cooldown', {
+			value: cooldown,
+			writable: true
+		});
 	}
 
 	/**
@@ -101,7 +106,7 @@ class RateLimitManager extends Collection {
 	 * @returns {number}
 	 * @private
 	 */
-	sweep(fn = rl => rl.expired, thisArg) {
+	sweep(fn = (rl) => rl.expired, thisArg) {
 		const amount = super.sweep(fn, thisArg);
 
 		if (this.size === 0) {
@@ -115,7 +120,6 @@ class RateLimitManager extends Collection {
 	static get [Symbol.species]() {
 		return Collection;
 	}
-
 }
 
 module.exports = RateLimitManager;

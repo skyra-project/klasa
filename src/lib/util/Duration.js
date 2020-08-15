@@ -50,7 +50,6 @@ const tokens = new Map([
  * Converts duration strings into ms and future dates
  */
 class Duration {
-
 	/**
 	 * Create a new Duration instance
 	 * @since 0.5.0
@@ -145,7 +144,6 @@ class Duration {
 
 		return `${returnString + Math.round(duration / 365)} years`;
 	}
-
 }
 
 module.exports = Duration;
@@ -157,7 +155,7 @@ module.exports = Duration;
  * @static
  * @private
  */
-Duration.regex = /(-?\d*\.?\d+(?:e[-+]?\d+)?)\s*([a-zμ]*)/ig;
+Duration.regex = /(-?\d*\.?\d+(?:e[-+]?\d+)?)\s*([a-zμ]*)/gi;
 
 /**
  * The RegExp used for removing commas
@@ -175,4 +173,4 @@ Duration.commas = /,/g;
  * @static
  * @private
  */
-Duration.aan = /\ban?\b/ig;
+Duration.aan = /\ban?\b/gi;

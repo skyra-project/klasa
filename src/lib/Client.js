@@ -1,5 +1,8 @@
 const Discord = require('discord.js');
-const { Permissions, Permissions: { FLAGS } } = Discord;
+const {
+	Permissions,
+	Permissions: { FLAGS }
+} = Discord;
 const path = require('path');
 
 // lib/permissions
@@ -37,7 +40,6 @@ const plugins = new Set();
  * @tutorial GettingStarted
  */
 class KlasaClient extends Discord.Client {
-
 	/**
 	 * Defaulted as `Successfully initialized. Ready to serve ${this.guilds.size} guilds.`
 	 * @typedef {(string|Function)} ReadyMessage
@@ -84,7 +86,7 @@ class KlasaClient extends Discord.Client {
 	/**
 	 * @typedef {Object} ScheduleOptions
 	 * @property {number} [interval=60000] The interval in milliseconds for the clock to check the tasks
- 	 */
+	 */
 
 	/**
 	 * @typedef {Object} SettingsOptions
@@ -331,7 +333,8 @@ class KlasaClient extends Discord.Client {
 	 * @readonly
 	 */
 	get invite() {
-		const permissions = new Permissions(this.constructor.basePermissions).add(...this.commands.map(command => command.requiredPermissions)).bitfield;
+		const permissions = new Permissions(this.constructor.basePermissions).add(...this.commands.map((command) => command.requiredPermissions))
+			.bitfield;
 		return `https://discordapp.com/oauth2/authorize?client_id=${this.application.id}&permissions=${permissions}&scope=bot`;
 	}
 
@@ -406,11 +409,10 @@ class KlasaClient extends Discord.Client {
 	 */
 	async login(token) {
 		const timer = new Stopwatch();
-		const loaded = await Promise.all(this.pieceStores.map(async store => `Loaded ${await store.loadAll()} ${store.name}.`))
-			.catch((err) => {
-				console.error(err);
-				process.exit();
-			});
+		const loaded = await Promise.all(this.pieceStores.map(async (store) => `Loaded ${await store.loadAll()} ${store.name}.`)).catch((err) => {
+			console.error(err);
+			process.exit();
+		});
 		this.emit('log', loaded.join('\n'));
 
 		// Providers must be init before settings, and those before all other stores.
@@ -435,7 +437,7 @@ class KlasaClient extends Discord.Client {
 	sweepMessages(lifetime = this.options.messageCacheLifetime, commandLifetime = this.options.commandMessageLifetime) {
 		if (typeof lifetime !== 'number' || isNaN(lifetime)) throw new TypeError('The lifetime must be a number.');
 		if (lifetime <= 0) {
-			this.emit('debug', 'Didn\'t sweep messages - lifetime is unlimited');
+			this.emit('debug', "Didn't sweep messages - lifetime is unlimited");
 			return -1;
 		}
 
@@ -450,14 +452,22 @@ class KlasaClient extends Discord.Client {
 			if (!channel.messages) continue;
 			channels++;
 
-			channel.messages.sweep(message => {
-				if ((message.command || message.author === this.user) && now - (message.editedTimestamp || message.createdTimestamp) > commandLifetimeMs) return commandMessages++;
-				if (!message.command && message.author !== this.user && now - (message.editedTimestamp || message.createdTimestamp) > lifetimeMs) return messages++;
+			channel.messages.sweep((message) => {
+				if (
+					(message.command || message.author === this.user) &&
+					now - (message.editedTimestamp || message.createdTimestamp) > commandLifetimeMs
+				)
+					return commandMessages++;
+				if (!message.command && message.author !== this.user && now - (message.editedTimestamp || message.createdTimestamp) > lifetimeMs)
+					return messages++;
 				return false;
 			});
 		}
 
-		this.emit('debug', `Swept ${messages} messages older than ${lifetime} seconds and ${commandMessages} command messages older than ${commandLifetime} seconds in ${channels} text-based channels`);
+		this.emit(
+			'debug',
+			`Swept ${messages} messages older than ${lifetime} seconds and ${commandMessages} command messages older than ${commandLifetime} seconds in ${channels} text-based channels`
+		);
 		return messages;
 	}
 
@@ -494,21 +504,27 @@ class KlasaClient extends Discord.Client {
 		const language = guilds.schema.get('language');
 
 		if (!prefix || prefix.default === null) {
-			guilds.schema.add('prefix', 'string', { array: Array.isArray(client.options.prefix), default: client.options.prefix });
+			guilds.schema.add('prefix', 'string', {
+				array: Array.isArray(client.options.prefix),
+				default: client.options.prefix
+			});
 		}
 
 		if (!language || language.default === null) {
-			guilds.schema.add('language', 'language', { default: client.options.language });
+			guilds.schema.add('language', 'language', {
+				default: client.options.language
+			});
 		}
 
-		guilds.schema.add('disableNaturalPrefix', 'boolean', { configurable: Boolean(client.options.regexPrefix) });
+		guilds.schema.add('disableNaturalPrefix', 'boolean', {
+			configurable: Boolean(client.options.regexPrefix)
+		});
 
 		client.gateways
 			.register(new Gateway(client, 'guilds', guilds))
 			.register(new Gateway(client, 'users', users))
 			.register(new Gateway(client, 'clientStorage', clientStorage));
 	}
-
 }
 
 module.exports = KlasaClient;
@@ -535,7 +551,9 @@ KlasaClient.basePermissions = new Permissions(3072);
 KlasaClient.defaultPermissionLevels = new PermissionLevels()
 	.add(0, () => true)
 	.add(6, ({ guild, member }) => guild && member.permissions.has(FLAGS.MANAGE_GUILD), { fetch: true })
-	.add(7, ({ guild, member }) => guild && member === guild.owner, { fetch: true })
+	.add(7, ({ guild, member }) => guild && member === guild.owner, {
+		fetch: true
+	})
 	.add(9, ({ author, client }) => client.owners.has(author), { break: true })
 	.add(10, ({ author, client }) => client.owners.has(author));
 
@@ -572,7 +590,10 @@ KlasaClient.defaultUserSchema = new Schema();
  */
 KlasaClient.defaultClientSchema = new Schema()
 	.add('userBlacklist', 'user', { array: true })
-	.add('guildBlacklist', 'string', { array: true, filter: (__, value) => !MENTION_REGEX.snowflake.test(value) })
+	.add('guildBlacklist', 'string', {
+		array: true,
+		filter: (__, value) => !MENTION_REGEX.snowflake.test(value)
+	})
 	.add('schedules', 'any', { array: true });
 
 /**

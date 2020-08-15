@@ -6,7 +6,6 @@ const Store = require('./base/Store');
  * @extends Store
  */
 class LanguageStore extends Store {
-
 	/**
 	 * Constructs our LanguageStore for use in Klasa
 	 * @since 0.2.1
@@ -25,7 +24,6 @@ class LanguageStore extends Store {
 	get default() {
 		return this.get(this.client.options.language) || null;
 	}
-
 }
 
 module.exports = LanguageStore;

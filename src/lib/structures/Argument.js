@@ -8,7 +8,6 @@ const { MENTION_REGEX } = require('../util/constants');
  * @extends AliasPiece
  */
 class Argument extends AliasPiece {
-
 	/**
 	 * The run method to be overwritten in actual Arguments
 	 * @since 0.5.0
@@ -50,7 +49,6 @@ class Argument extends AliasPiece {
 		}
 		return true;
 	}
-
 }
 
 /**

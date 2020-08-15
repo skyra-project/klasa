@@ -6,7 +6,6 @@ const CommandPrompt = require('./CommandPrompt');
  * @extends Usage
  */
 class CommandUsage extends Usage {
-
 	/**
 	 * @since 0.0.1
 	 * @param {KlasaClient} client The klasa client
@@ -71,7 +70,6 @@ class CommandUsage extends Usage {
 	toString() {
 		return this.nearlyFullUsage;
 	}
-
 }
 
 module.exports = CommandUsage;

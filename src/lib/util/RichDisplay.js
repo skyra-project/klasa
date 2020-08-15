@@ -5,7 +5,6 @@ const ReactionHandler = require('./ReactionHandler');
  * Klasa's RichDisplay, for helping paginated embeds with reaction buttons
  */
 class RichDisplay {
-
 	/**
 	 * @typedef {Object} RichDisplayEmojisObject
 	 * @property {Emoji} first The emoji for the 'first' button
@@ -203,7 +202,8 @@ class RichDisplay {
 		}
 		return new ReactionHandler(
 			msg,
-			(reaction, user) => emojis.includes(reaction.emoji.id || reaction.emoji.name) && user !== message.client.user && options.filter(reaction, user),
+			(reaction, user) =>
+				emojis.includes(reaction.emoji.id || reaction.emoji.name) && user !== message.client.user && options.filter(reaction, user),
 			options,
 			this,
 			emojis
@@ -259,7 +259,6 @@ class RichDisplay {
 		}
 		throw new Error('Expected a MessageEmbed or Function returning a MessageEmbed');
 	}
-
 }
 
 module.exports = RichDisplay;

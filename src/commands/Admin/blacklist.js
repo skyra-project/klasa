@@ -2,11 +2,10 @@ const { Command } = require('klasa');
 const { User } = require('discord.js');
 
 module.exports = class extends Command {
-
 	constructor(...args) {
 		super(...args, {
 			permissionLevel: 10,
-			description: language => language.get('COMMAND_BLACKLIST_DESCRIPTION'),
+			description: (language) => language.get('COMMAND_BLACKLIST_DESCRIPTION'),
 			usage: '<User:user|Guild:guild|guild:str> [...]',
 			usageDelim: ' ',
 			guarded: true
@@ -29,8 +28,10 @@ module.exports = class extends Command {
 			queries[Number(type === 'guild')].push(userOrGuild.id || userOrGuild);
 		}
 
-		await this.client.settings.update([['userBlacklist', queries[0]], ['guildBlacklist', queries[1]]]);
+		await this.client.settings.update([
+			['userBlacklist', queries[0]],
+			['guildBlacklist', queries[1]]
+		]);
 		return message.sendLocale('COMMAND_BLACKLIST_SUCCESS', changes);
 	}
-
 };

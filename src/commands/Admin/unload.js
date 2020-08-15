@@ -1,13 +1,12 @@
 const { Command } = require('klasa');
 
 module.exports = class extends Command {
-
 	constructor(...args) {
 		super(...args, {
 			aliases: ['u'],
 			permissionLevel: 10,
 			guarded: true,
-			description: language => language.get('COMMAND_UNLOAD_DESCRIPTION'),
+			description: (language) => language.get('COMMAND_UNLOAD_DESCRIPTION'),
 			usage: '<Piece:piece>'
 		});
 	}
@@ -24,5 +23,4 @@ module.exports = class extends Command {
 		}
 		return message.sendLocale('COMMAND_UNLOAD', [piece.type, piece.name]);
 	}
-
 };

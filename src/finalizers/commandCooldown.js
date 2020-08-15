@@ -1,7 +1,6 @@
 const { Finalizer, RateLimitManager } = require('klasa');
 
 module.exports = class extends Finalizer {
-
 	constructor(...args) {
 		super(...args);
 		this.cooldowns = new WeakMap();
@@ -25,5 +24,4 @@ module.exports = class extends Finalizer {
 		}
 		return cooldownManager.acquire(message.guild ? message[command.cooldownLevel].id : message.author.id);
 	}
-
 };

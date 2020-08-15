@@ -10,7 +10,6 @@ const { mergeDefault, isClass } = require('../util/util');
  * @extends Piece
  */
 class Language extends Piece {
-
 	/**
 	 * The method to get language strings
 	 * @since 0.2.1
@@ -23,11 +22,13 @@ class Language extends Piece {
 		const value = this.language[term];
 		/* eslint-disable new-cap */
 		switch (typeof value) {
-			case 'function': return value(...args);
+			case 'function':
+				return value(...args);
 			case 'undefined':
 				if (this === this.store.default) return this.language.DEFAULT(term);
 				return `${this.language.DEFAULT(term)}\n\n**${this.language.DEFAULT_LANGUAGE}:**\n${this.store.default.get(term, ...args)}`;
-			default: return value;
+			default:
+				return value;
 		}
 		/* eslint-enable new-cap */
 	}
@@ -41,7 +42,7 @@ class Language extends Piece {
 	async init() {
 		for (const core of this.store.coreDirectories) {
 			const loc = join(core, ...this.file);
-			if (this.dir !== core && await pathExists(loc)) {
+			if (this.dir !== core && (await pathExists(loc))) {
 				try {
 					const CorePiece = require(loc);
 					if (!isClass(CorePiece)) return;
@@ -52,9 +53,7 @@ class Language extends Piece {
 				}
 			}
 		}
-		return;
 	}
-
 }
 
 module.exports = Language;

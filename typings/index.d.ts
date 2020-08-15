@@ -1,7 +1,6 @@
 /// <reference types="node" />
 
 declare module 'klasa' {
-
 	import { ExecOptions } from 'child_process';
 
 	import {
@@ -32,15 +31,11 @@ declare module 'klasa' {
 		UserStore
 	} from 'discord.js';
 
-	import {
-		Schema,
-		GatewayStorageOptions,
-		Settings
-	} from '@klasa/settings-gateway';
+	import { Schema, GatewayStorageOptions, Settings } from '@klasa/settings-gateway';
 
 	export const version: string;
 
-//#region Classes
+	// #region Classes
 
 	export class KlasaClient extends Client {
 		public constructor(options?: KlasaClientOptions);
@@ -59,7 +54,7 @@ declare module 'klasa' {
 
 	export { KlasaClient as Client };
 
-//#region Extensions
+	// #region Extensions
 
 	export class KlasaGuild extends Guild {
 		public settings: Settings;
@@ -85,11 +80,11 @@ declare module 'klasa' {
 		private static prefixes: Map<string, CachedPrefix>;
 	}
 
-	export class KlasaUser extends User { }
+	export class KlasaUser extends User {}
 
-//#endregion Extensions
+	// #endregion Extensions
 
-//#region Parsers
+	// #region Parsers
 
 	export class Resolver {
 		public constructor(client: KlasaClient);
@@ -108,16 +103,16 @@ declare module 'klasa' {
 		public user(input: KlasaUser | GuildMember | KlasaMessage | Snowflake): Promise<KlasaUser>;
 
 		public static readonly regex: {
-			userOrMember: RegExp,
-			channel: RegExp,
-			role: RegExp,
-			snowflake: RegExp
+			userOrMember: RegExp;
+			channel: RegExp;
+			role: RegExp;
+			snowflake: RegExp;
 		};
 	}
 
-//#endregion Parsers
+	// #endregion Parsers
 
-//#region Permissions
+	// #region Permissions
 
 	export class PermissionLevels extends Collection<number, PermissionLevel> {
 		public constructor(levels?: number);
@@ -131,9 +126,9 @@ declare module 'klasa' {
 		public run(message: KlasaMessage, min: number): Promise<PermissionLevelsData>;
 	}
 
-//#endregion Permissions
+	// #endregion Permissions
 
-//#region Schedule
+	// #region Schedule
 
 	export class Schedule {
 		public constructor(client: KlasaClient);
@@ -182,9 +177,9 @@ declare module 'klasa' {
 		private static _validate(st: ScheduledTask): void;
 	}
 
-//#endregion Schedule
+	// #endregion Schedule
 
-//#region Settings
+	// #region Settings
 
 	// https://github.com/microsoft/TypeScript/issues/18877
 	export {
@@ -244,9 +239,9 @@ declare module 'klasa' {
 		QueryBuilderType
 	} from '@klasa/querybuilder';
 
-//#endregion Settings
+	// #endregion Settings
 
-//#region Pieces
+	// #region Pieces
 
 	export abstract class Piece {
 		public constructor(store: Store<string, Piece, typeof Piece>, file: string[], directory: string, options?: PieceOptions);
@@ -279,7 +274,15 @@ declare module 'klasa' {
 		public aliases: string[];
 		public abstract run(arg: string | undefined, possible: Possible, message: KlasaMessage): any;
 		public static regex: MentionRegex;
-		private static minOrMax(client: KlasaClient, value: number, min: number, max: number, possible: Possible, message: KlasaMessage, suffix: string): boolean;
+		private static minOrMax(
+			client: KlasaClient,
+			value: number,
+			min: number,
+			max: number,
+			possible: Possible,
+			message: KlasaMessage,
+			suffix: string
+		): boolean;
 	}
 
 	export abstract class Command extends AliasPiece {
@@ -393,9 +396,9 @@ declare module 'klasa' {
 		public toJSON(): PieceTaskJSON;
 	}
 
-//#endregion Pieces
+	// #endregion Pieces
 
-//#region Stores
+	// #region Stores
 
 	export abstract class Store<K, V extends Piece, VConstructor = Constructor<V>> extends Collection<K, V> {
 		public constructor(client: KlasaClient, name: string, holds: VConstructor);
@@ -424,15 +427,15 @@ declare module 'klasa' {
 		public aliases: Collection<K, V>;
 	}
 
-	export class ArgumentStore extends AliasStore<string, Argument, typeof Argument> { }
+	export class ArgumentStore extends AliasStore<string, Argument, typeof Argument> {}
 
-	export class CommandStore extends AliasStore<string, Command, typeof Command> { }
+	export class CommandStore extends AliasStore<string, Command, typeof Command> {}
 
 	export class EventStore extends Store<string, Event, typeof Event> {
 		private _onceEvents: Set<string>;
 	}
 
-	export class ExtendableStore extends Store<string, Extendable, typeof Extendable> { }
+	export class ExtendableStore extends Store<string, Extendable, typeof Extendable> {}
 
 	export class FinalizerStore extends Store<string, Finalizer, typeof Finalizer> {
 		public run(message: KlasaMessage, command: Command, response: KlasaMessage | KlasaMessage[], runTime: Stopwatch): Promise<void>;
@@ -450,13 +453,13 @@ declare module 'klasa' {
 		public run(message: KlasaMessage): Promise<void>;
 	}
 
-	export class TaskStore extends Store<string, Task, typeof Task> { }
+	export class TaskStore extends Store<string, Task, typeof Task> {}
 
-	export class KlasaUserStore extends UserStore { }
+	export class KlasaUserStore extends UserStore {}
 
-//#endregion Stores
+	// #endregion Stores
 
-//#region Usage
+	// #region Usage
 
 	export class CommandPrompt extends TextPrompt {
 		public constructor(message: KlasaMessage, usage: CommandUsage, options: TextPromptOptions);
@@ -549,7 +552,7 @@ declare module 'klasa' {
 		public customResolvers: Record<string, ArgResolverCustomMethod>;
 
 		public createCustomResolver(type: string, resolver: ArgResolverCustomMethod): this;
-		public customizeResponse(name: string, response: ((message: KlasaMessage) => string)): this;
+		public customizeResponse(name: string, response: (message: KlasaMessage) => string): this;
 		public createPrompt(message: KlasaMessage, options?: TextPromptOptions): TextPrompt;
 		public toJSON(): Tag[];
 		public toString(): string;
@@ -560,9 +563,9 @@ declare module 'klasa' {
 		private static tagSpace(usage: Record<string, any>, char: string): void;
 	}
 
-//#endregion Usage
+	// #endregion Usage
 
-//#region Util
+	// #region Util
 
 	export class Colors {
 		public constructor(options?: ColorsFormatOptions);
@@ -583,7 +586,6 @@ declare module 'klasa' {
 		private static style(styles: string | string[], data?: ColorsFormatData): ColorsFormatData;
 		private static background(style: ColorsFormatType, data?: ColorsFormatData): ColorsFormatData;
 		private static text(style: ColorsFormatType, data?: ColorsFormatData): ColorsFormatData;
-
 	}
 
 	export const constants: Constants;
@@ -663,7 +665,14 @@ declare module 'klasa' {
 	}
 
 	export class ReactionHandler extends ReactionCollector {
-		public constructor(message: KlasaMessage, filter: Function, options: ReactionHandlerOptions, display: RichDisplay | RichMenu, emojis: EmojiResolvable[]);
+		public constructor(
+			message: KlasaMessage,
+			filter: Function,
+			options: ReactionHandlerOptions,
+			display: RichDisplay | RichMenu,
+			emojis: EmojiResolvable[]
+		);
+
 		public display: RichDisplay | RichMenu;
 		public methodMap: Map<string, EmojiResolvable>;
 		public currentPage: number;
@@ -796,7 +805,7 @@ declare module 'klasa' {
 		public static clean(text: string): string;
 		public static codeBlock(lang: string, expression: string | number | Stringifible): string;
 		public static deepClone<T = any>(source: T): T;
-		public static exec(exec: string, options?: ExecOptions): Promise<{ stdout: string, stderr: string }>;
+		public static exec(exec: string, options?: ExecOptions): Promise<{ stdout: string; stderr: string }>;
 		public static getTypeName(input: any): string;
 		public static isClass(input: any): input is Constructor<any>;
 		public static isFunction(input: any): input is Function;
@@ -821,11 +830,11 @@ declare module 'klasa' {
 
 	export { Util as util };
 
-//#endregion Util
+	// #endregion Util
 
-//#endregion Classes
+	// #endregion Classes
 
-//#region Typedefs
+	// #region Typedefs
 
 	export interface KlasaClientOptions extends ClientOptions {
 		commandEditing?: boolean;
@@ -1006,7 +1015,7 @@ declare module 'klasa' {
 		aliases?: string[];
 	}
 
-	export interface ArgumentOptions extends AliasPieceOptions { }
+	export interface ArgumentOptions extends AliasPieceOptions {}
 
 	export interface CommandOptions extends AliasPieceOptions {
 		autoAliases?: boolean;
@@ -1057,11 +1066,11 @@ declare module 'klasa' {
 		once?: boolean;
 	}
 
-	export interface SerializerOptions extends AliasPieceOptions { }
-	export interface ProviderOptions extends PieceOptions { }
-	export interface FinalizerOptions extends PieceOptions { }
-	export interface LanguageOptions extends PieceOptions { }
-	export interface TaskOptions extends PieceOptions { }
+	export interface SerializerOptions extends AliasPieceOptions {}
+	export interface ProviderOptions extends PieceOptions {}
+	export interface FinalizerOptions extends PieceOptions {}
+	export interface LanguageOptions extends PieceOptions {}
+	export interface TaskOptions extends PieceOptions {}
 
 	export interface PieceJSON {
 		directory: string;
@@ -1100,14 +1109,14 @@ declare module 'klasa' {
 		emitter: string;
 	}
 
-	export interface PieceInhibitorJSON extends PieceJSON, Required<InhibitorOptions> { }
-	export interface PieceMonitorJSON extends PieceJSON, Required<MonitorOptions> { }
-	export interface PieceArgumentJSON extends AliasPieceJSON, Required<ArgumentOptions> { }
-	export interface PieceSerializerJSON extends AliasPieceJSON, Required<SerializerOptions> { }
-	export interface PieceProviderJSON extends PieceJSON, Required<ProviderOptions> { }
-	export interface PieceFinalizerJSON extends PieceJSON, Required<FinalizerOptions> { }
-	export interface PieceLanguageJSON extends PieceJSON, Required<LanguageOptions> { }
-	export interface PieceTaskJSON extends PieceJSON, Required<TaskOptions> { }
+	export interface PieceInhibitorJSON extends PieceJSON, Required<InhibitorOptions> {}
+	export interface PieceMonitorJSON extends PieceJSON, Required<MonitorOptions> {}
+	export interface PieceArgumentJSON extends AliasPieceJSON, Required<ArgumentOptions> {}
+	export interface PieceSerializerJSON extends AliasPieceJSON, Required<SerializerOptions> {}
+	export interface PieceProviderJSON extends PieceJSON, Required<ProviderOptions> {}
+	export interface PieceFinalizerJSON extends PieceJSON, Required<FinalizerOptions> {}
+	export interface PieceLanguageJSON extends PieceJSON, Required<LanguageOptions> {}
+	export interface PieceTaskJSON extends PieceJSON, Required<TaskOptions> {}
 
 	// Usage
 	export interface TextPromptOptions {
@@ -1261,7 +1270,7 @@ declare module 'klasa' {
 	}
 
 	export interface RichDisplayRunOptions {
-		filter?: ((reaction: MessageReaction, user: KlasaUser) => boolean);
+		filter?: (reaction: MessageReaction, user: KlasaUser) => boolean;
 		firstLast?: boolean;
 		jump?: boolean;
 		max?: number;
@@ -1326,7 +1335,7 @@ declare module 'klasa' {
 	}
 
 	interface Constructor<C> {
-		new(...args: any[]): C;
+		new (...args: any[]): C;
 	}
 
 	type PrimitiveType = string | number | boolean;
@@ -1337,9 +1346,11 @@ declare module 'klasa' {
 	};
 
 	type ValueOf<T> = T[keyof T];
-	type FilterKeyInstances<O, T> = ValueOf<{
-		[K in keyof O]: O[K] extends T ? K : never
-	}>;
+	type FilterKeyInstances<O, T> = ValueOf<
+		{
+			[K in keyof O]: O[K] extends T ? K : never;
+		}
+	>;
 
 	export interface TitleCaseVariants extends Record<string, string> {
 		textchannel: 'TextChannel';
@@ -1348,19 +1359,12 @@ declare module 'klasa' {
 		guildmember: 'GuildMember';
 	}
 
-//#endregion
+	// #endregion
 
-//#region Augments
-	import {
-		SettingsUpdateResults,
-		SettingsUpdateContext,
-		ProviderStore,
-		SerializerStore,
-		GatewayDriver
-	} from '@klasa/settings-gateway';
+	// #region Augments
+	import { SettingsUpdateResults, SettingsUpdateContext, ProviderStore, SerializerStore, GatewayDriver } from '@klasa/settings-gateway';
 
 	module 'discord.js' {
-
 		export interface Client {
 			constructor: typeof KlasaClient;
 			readonly invite: string;
@@ -1397,7 +1401,17 @@ declare module 'klasa' {
 			on(event: 'commandRun', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
 			on(event: 'commandSuccess', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
 			on(event: 'commandUnknown', listener: (message: KlasaMessage, command: string, prefix: RegExp, prefixLength: number) => void): this;
-			on(event: 'finalizerError', listener: (message: KlasaMessage, command: Command, response: KlasaMessage, runTime: Stopwatch, finalizer: Finalizer, error: Error | string) => void): this;
+			on(
+				event: 'finalizerError',
+				listener: (
+					message: KlasaMessage,
+					command: Command,
+					response: KlasaMessage,
+					runTime: Stopwatch,
+					finalizer: Finalizer,
+					error: Error | string
+				) => void
+			): this;
 			on(event: 'klasaReady', listener: () => void): this;
 			on(event: 'log', listener: (data: any) => void): this;
 			on(event: 'monitorError', listener: (message: KlasaMessage, monitor: Monitor, error: Error | string) => void): this;
@@ -1419,7 +1433,17 @@ declare module 'klasa' {
 			once(event: 'commandRun', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
 			once(event: 'commandSuccess', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
 			once(event: 'commandUnknown', listener: (message: KlasaMessage, command: string, prefix: RegExp, prefixLength: number) => void): this;
-			once(event: 'finalizerError', listener: (message: KlasaMessage, command: Command, response: KlasaMessage, runTime: Stopwatch, finalizer: Finalizer, error: Error | string) => void): this;
+			once(
+				event: 'finalizerError',
+				listener: (
+					message: KlasaMessage,
+					command: Command,
+					response: KlasaMessage,
+					runTime: Stopwatch,
+					finalizer: Finalizer,
+					error: Error | string
+				) => void
+			): this;
 			once(event: 'klasaReady', listener: () => void): this;
 			once(event: 'log', listener: (data: any) => void): this;
 			once(event: 'monitorError', listener: (message: KlasaMessage, monitor: Monitor, error: Error | string) => void): this;
@@ -1441,7 +1465,17 @@ declare module 'klasa' {
 			off(event: 'commandRun', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
 			off(event: 'commandSuccess', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
 			off(event: 'commandUnknown', listener: (message: KlasaMessage, command: string, prefix: RegExp, prefixLength: number) => void): this;
-			off(event: 'finalizerError', listener: (message: KlasaMessage, command: Command, response: KlasaMessage, runTime: Stopwatch, finalizer: Finalizer, error: Error | string) => void): this;
+			off(
+				event: 'finalizerError',
+				listener: (
+					message: KlasaMessage,
+					command: Command,
+					response: KlasaMessage,
+					runTime: Stopwatch,
+					finalizer: Finalizer,
+					error: Error | string
+				) => void
+			): this;
 			off(event: 'klasaReady', listener: () => void): this;
 			off(event: 'log', listener: (data: any) => void): this;
 			off(event: 'monitorError', listener: (message: KlasaMessage, monitor: Monitor, error: Error | string) => void): this;
@@ -1478,11 +1512,11 @@ declare module 'klasa' {
 			readonly reprompted: boolean;
 			readonly reactable: boolean;
 			send(content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			send(content?: StringResolvable, options?: MessageOptions & { split?: false } | MessageAdditions): Promise<KlasaMessage>;
-			send(content?: StringResolvable, options?: MessageOptions & { split: true | SplitOptions } | MessageAdditions): Promise<KlasaMessage[]>;
+			send(content?: StringResolvable, options?: (MessageOptions & { split?: false }) | MessageAdditions): Promise<KlasaMessage>;
+			send(content?: StringResolvable, options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions): Promise<KlasaMessage[]>;
 			send(options?: MessageOptions | MessageAdditions | APIMessage): Promise<KlasaMessage>;
-			send(options?: MessageOptions & { split?: false } | MessageAdditions | APIMessage): Promise<KlasaMessage>;
-			send(options?: MessageOptions & { split: true | SplitOptions } | MessageAdditions | APIMessage): Promise<KlasaMessage[]>;
+			send(options?: (MessageOptions & { split?: false }) | MessageAdditions | APIMessage): Promise<KlasaMessage>;
+			send(options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions | APIMessage): Promise<KlasaMessage[]>;
 			edit(content: StringResolvable, options?: MessageEditOptions | MessageEmbed): Promise<KlasaMessage>;
 			edit(options: MessageEditOptions | MessageEmbed | APIMessage): Promise<KlasaMessage>;
 			usableCommands(): Promise<Collection<string, Command>>;
@@ -1493,38 +1527,92 @@ declare module 'klasa' {
 			settings: Settings;
 		}
 
-		export interface TextChannel extends SendAliases, ChannelExtendables { }
+		export interface TextChannel extends SendAliases, ChannelExtendables {}
 
-		export interface DMChannel extends SendAliases, ChannelExtendables { }
+		export interface DMChannel extends SendAliases, ChannelExtendables {}
 
 		interface PartialSendAliases {
 			sendLocale(key: string, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendLocale(key: string, options?: MessageOptions & { split?: false } | MessageAdditions): Promise<KlasaMessage>;
-			sendLocale(key: string, options?: MessageOptions & { split: true | SplitOptions } | MessageAdditions): Promise<KlasaMessage[]>;
+			sendLocale(key: string, options?: (MessageOptions & { split?: false }) | MessageAdditions): Promise<KlasaMessage>;
+			sendLocale(key: string, options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions): Promise<KlasaMessage[]>;
 			sendLocale(key: string, localeArgs?: Array<any>, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendLocale(key: string, localeArgs?: Array<any>, options?: MessageOptions & { split?: false } | MessageAdditions): Promise<KlasaMessage>;
-			sendLocale(key: string, localeArgs?: Array<any>, options?: MessageOptions & { split: true | SplitOptions } | MessageAdditions): Promise<KlasaMessage[]>;
+			sendLocale(
+				key: string,
+				localeArgs?: Array<any>,
+				options?: (MessageOptions & { split?: false }) | MessageAdditions
+			): Promise<KlasaMessage>;
+			sendLocale(
+				key: string,
+				localeArgs?: Array<any>,
+				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+			): Promise<KlasaMessage[]>;
 			sendMessage(content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendMessage(content?: StringResolvable, options?: MessageOptions & { split?: false } | MessageAdditions): Promise<KlasaMessage>;
-			sendMessage(content?: StringResolvable, options?: MessageOptions & { split: true | SplitOptions } | MessageAdditions): Promise<KlasaMessage[]>;
+			sendMessage(content?: StringResolvable, options?: (MessageOptions & { split?: false }) | MessageAdditions): Promise<KlasaMessage>;
+			sendMessage(
+				content?: StringResolvable,
+				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+			): Promise<KlasaMessage[]>;
 			sendMessage(options?: MessageOptions | MessageAdditions | APIMessage): Promise<KlasaMessage>;
-			sendMessage(options?: MessageOptions & { split?: false } | MessageAdditions | APIMessage): Promise<KlasaMessage>;
-			sendMessage(options?: MessageOptions & { split: true | SplitOptions } | MessageAdditions | APIMessage): Promise<KlasaMessage[]>;
+			sendMessage(options?: (MessageOptions & { split?: false }) | MessageAdditions | APIMessage): Promise<KlasaMessage>;
+			sendMessage(options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions | APIMessage): Promise<KlasaMessage[]>;
 			sendEmbed(embed: MessageEmbed, content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendEmbed(embed: MessageEmbed, content?: StringResolvable, options?: MessageOptions & { split?: false } | MessageAdditions): Promise<KlasaMessage>;
-			sendEmbed(embed: MessageEmbed, content?: StringResolvable, options?: MessageOptions & { split: true | SplitOptions } | MessageAdditions): Promise<KlasaMessage[]>;
+			sendEmbed(
+				embed: MessageEmbed,
+				content?: StringResolvable,
+				options?: (MessageOptions & { split?: false }) | MessageAdditions
+			): Promise<KlasaMessage>;
+			sendEmbed(
+				embed: MessageEmbed,
+				content?: StringResolvable,
+				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+			): Promise<KlasaMessage[]>;
 			sendCode(language: string, content: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendCode(language: string, content: StringResolvable, options?: MessageOptions & { split?: false } | MessageAdditions): Promise<KlasaMessage>;
-			sendCode(language: string, content: StringResolvable, options?: MessageOptions & { split: true | SplitOptions } | MessageAdditions): Promise<KlasaMessage[]>;
+			sendCode(
+				language: string,
+				content: StringResolvable,
+				options?: (MessageOptions & { split?: false }) | MessageAdditions
+			): Promise<KlasaMessage>;
+			sendCode(
+				language: string,
+				content: StringResolvable,
+				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+			): Promise<KlasaMessage[]>;
 		}
 
 		interface SendAliases extends PartialSendAliases {
-			sendFile(attachment: BufferResolvable, name?: string, content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendFile(attachment: BufferResolvable, name?: string, content?: StringResolvable, options?: MessageOptions & { split?: false } | MessageAdditions): Promise<KlasaMessage>;
-			sendFile(attachment: BufferResolvable, name?: string, content?: StringResolvable, options?: MessageOptions & { split: true | SplitOptions } | MessageAdditions): Promise<KlasaMessage[]>;
-			sendFiles(attachments: MessageAttachment[], content: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendFiles(attachments: MessageAttachment[], content: StringResolvable, options?: MessageOptions & { split?: false } | MessageAdditions): Promise<KlasaMessage>;
-			sendFiles(attachments: MessageAttachment[], content: StringResolvable, options?: MessageOptions & { split: true | SplitOptions } | MessageAdditions): Promise<KlasaMessage[]>;
+			sendFile(
+				attachment: BufferResolvable,
+				name?: string,
+				content?: StringResolvable,
+				options?: MessageOptions | MessageAdditions
+			): Promise<KlasaMessage>;
+			sendFile(
+				attachment: BufferResolvable,
+				name?: string,
+				content?: StringResolvable,
+				options?: (MessageOptions & { split?: false }) | MessageAdditions
+			): Promise<KlasaMessage>;
+			sendFile(
+				attachment: BufferResolvable,
+				name?: string,
+				content?: StringResolvable,
+				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+			): Promise<KlasaMessage[]>;
+			sendFiles(
+				attachments: MessageAttachment[],
+				content: StringResolvable,
+				options?: MessageOptions | MessageAdditions
+			): Promise<KlasaMessage>;
+			sendFiles(
+				attachments: MessageAttachment[],
+				content: StringResolvable,
+				options?: (MessageOptions & { split?: false }) | MessageAdditions
+			): Promise<KlasaMessage>;
+			sendFiles(
+				attachments: MessageAttachment[],
+				content: StringResolvable,
+				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+			): Promise<KlasaMessage[]>;
 		}
 
 		interface ChannelExtendables {
@@ -1535,11 +1623,9 @@ declare module 'klasa' {
 		}
 
 		interface Constructor<C> {
-			new(...args: any[]): C;
+			new (...args: any[]): C;
 		}
-
 	}
 
-//#endregion
-
+	// #endregion
 }

@@ -19,7 +19,6 @@ const { isClass } = require('../../util/util');
  * @extends external:Collection
  */
 class Store extends Collection {
-
 	constructor(client, name, holds) {
 		super();
 
@@ -89,7 +88,7 @@ class Store extends Collection {
 	 * @returns {Promise<Array<*>>}
 	 */
 	init() {
-		return Promise.all(this.map(piece => piece.enabled ? piece.init() : piece.unload()));
+		return Promise.all(this.map((piece) => (piece.enabled ? piece.init() : piece.unload())));
 	}
 
 	/**
@@ -103,7 +102,7 @@ class Store extends Collection {
 		const loc = join(directory, ...file);
 		let piece = null;
 		try {
-			const Piece = (req => req.default || req)(require(loc));
+			const Piece = ((req) => req.default || req)(require(loc));
 			if (!isClass(Piece)) throw new TypeError('The exported structure is not a class.');
 			piece = this.set(new Piece(this, file, directory));
 		} catch (error) {
@@ -186,17 +185,21 @@ class Store extends Collection {
 	 * @private
 	 */
 	static async walk(store, directory = store.userDirectory) {
-		const files = await fs.scan(directory, { filter: (stats, path) => stats.isFile() && extname(path) === '.js' })
-			.catch(() => { if (store.client.options.createPiecesFolders) fs.ensureDir(directory).catch(err => store.client.emit('error', err)); });
+		const files = await fs
+			.scan(directory, {
+				filter: (stats, path) => stats.isFile() && extname(path) === '.js'
+			})
+			.catch(() => {
+				if (store.client.options.createPiecesFolders) fs.ensureDir(directory).catch((err) => store.client.emit('error', err));
+			});
 		if (!files) return [];
 
-		return Promise.all([...files.keys()].map(file => store.load(directory, relative(directory, file).split(sep))));
+		return Promise.all([...files.keys()].map((file) => store.load(directory, relative(directory, file).split(sep))));
 	}
 
 	static get [Symbol.species]() {
 		return Collection;
 	}
-
 }
 
 module.exports = Store;

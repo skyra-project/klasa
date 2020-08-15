@@ -7,7 +7,6 @@ const Piece = require('./Piece');
  * @see Serializer
  */
 class AliasPiece extends Piece {
-
 	/**
 	 * @typedef {PieceOptions} AliasPieceOptions
 	 * @property {string[]} [aliases=[]] The aliases for this piece
@@ -42,7 +41,6 @@ class AliasPiece extends Piece {
 			aliases: this.aliases.slice(0)
 		};
 	}
-
 }
 
 module.exports = AliasPiece;

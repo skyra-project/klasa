@@ -1,7 +1,6 @@
 const { Argument } = require('klasa');
 
 module.exports = class extends Argument {
-
 	get date() {
 		return this.store.get('date');
 	}
@@ -24,5 +23,4 @@ module.exports = class extends Argument {
 		if (date && !isNaN(date.getTime()) && date.getTime() > Date.now()) return date;
 		throw message.language.get('RESOLVER_INVALID_TIME', possible.name);
 	}
-
 };

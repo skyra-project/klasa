@@ -6,7 +6,6 @@ const Store = require('./base/Store');
  * @extends Store
  */
 class EventStore extends Store {
-
 	/**
 	 * Constructs our EventStore for use in Klasa
 	 * @since 0.0.1
@@ -70,7 +69,6 @@ class EventStore extends Store {
 		event._listen();
 		return event;
 	}
-
 }
 
 module.exports = EventStore;

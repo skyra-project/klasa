@@ -2,7 +2,6 @@ const { Event } = require('klasa');
 const gateways = ['users', 'clientStorage'];
 
 module.exports = class extends Event {
-
 	constructor(...args) {
 		super(...args, { event: 'settingsCreate' });
 	}
@@ -25,5 +24,4 @@ module.exports = class extends Event {
 	init() {
 		if (!this.client.shard) this.disable();
 	}
-
 };

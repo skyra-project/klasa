@@ -11,7 +11,6 @@ const { isFunction } = require('../util/util');
  * @extends AliasPiece
  */
 class Command extends AliasPiece {
-
 	/**
 	 * Defaulted to `language.get('COMMAND_HELP_NO_EXTENDED')`
 	 * @typedef {(string|Function)} ExtendedHelp
@@ -66,7 +65,6 @@ class Command extends AliasPiece {
 		 */
 		this.requiredPermissions = new Permissions(options.requiredPermissions).freeze();
 
-
 		/**
 		 * Whether this command should have it's responses deleted if the triggering message is deleted
 		 * @since 0.5.0
@@ -81,9 +79,9 @@ class Command extends AliasPiece {
 		 * @param {Language} language The language for the description
 		 * @returns {string}
 		 */
-		this.description = isFunction(options.description) ?
-			(language = this.client.languages.default) => options.description(language) :
-			options.description;
+		this.description = isFunction(options.description)
+			? (language = this.client.languages.default) => options.description(language)
+			: options.description;
 
 		/**
 		 * The extended help for the command
@@ -92,9 +90,9 @@ class Command extends AliasPiece {
 		 * @param {Language} language The language for the extended help
 		 * @returns {string}
 		 */
-		this.extendedHelp = isFunction(options.extendedHelp) ?
-			(language = this.client.languages.default) => options.extendedHelp(language) :
-			options.extendedHelp;
+		this.extendedHelp = isFunction(options.extendedHelp)
+			? (language = this.client.languages.default) => options.extendedHelp(language)
+			: options.extendedHelp;
 
 		/**
 		 * The full category for the command
@@ -342,7 +340,6 @@ class Command extends AliasPiece {
 			usageString: this.usageString
 		};
 	}
-
 }
 
 module.exports = Command;

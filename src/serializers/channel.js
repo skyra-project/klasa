@@ -2,9 +2,10 @@ const { Serializer } = require('klasa');
 const { Channel } = require('discord.js');
 
 module.exports = class extends Serializer {
-
 	constructor(...args) {
-		super(...args, { aliases: ['textchannel', 'voicechannel', 'categorychannel'] });
+		super(...args, {
+			aliases: ['textchannel', 'voicechannel', 'categorychannel']
+		});
 	}
 
 	checkChannel(data, entry, language) {
@@ -13,13 +14,16 @@ module.exports = class extends Serializer {
 			(entry.type === 'textchannel' && data.type === 'text') ||
 			(entry.type === 'voicechannel' && data.type === 'voice') ||
 			(entry.type === 'categorychannel' && data.type === 'category')
-		) return data;
+		)
+			return data;
 		throw language.get('RESOLVER_INVALID_CHANNEL', entry.key);
 	}
 
 	async validate(data, { entry, language, guild }) {
 		if (data instanceof Channel) return this.checkChannel(data, entry, language);
-		const channel = this.constructor.regex.channel.test(data) ? (guild || this.client).channels.get(this.constructor.regex.channel.exec(data)[1]) : null;
+		const channel = this.constructor.regex.channel.test(data)
+			? (guild || this.client).channels.get(this.constructor.regex.channel.exec(data)[1])
+			: null;
 		if (channel) return this.checkChannel(channel, entry, language);
 		throw language.get('RESOLVER_INVALID_CHANNEL', entry.key);
 	}
@@ -29,7 +33,10 @@ module.exports = class extends Serializer {
 	}
 
 	stringify(value, guild) {
-		return ((guild && guild.channels.get(value)) || { name: (value && value.name) || value }).name;
+		return (
+			(guild && guild.channels.get(value)) || {
+				name: (value && value.name) || value
+			}
+		).name;
 	}
-
 };

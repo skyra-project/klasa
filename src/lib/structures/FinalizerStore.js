@@ -6,7 +6,6 @@ const Store = require('./base/Store');
  * @extends Store
  */
 class FinalizerStore extends Store {
-
 	/**
 	 * Constructs our FinalizerStore for use in Klasa
 	 * @since 0.0.1
@@ -28,7 +27,6 @@ class FinalizerStore extends Store {
 	run(message, command, response, timer) {
 		for (const finalizer of this.values()) if (finalizer.enabled) finalizer._run(message, command, response, timer);
 	}
-
 }
 
 module.exports = FinalizerStore;

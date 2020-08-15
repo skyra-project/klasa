@@ -1,7 +1,6 @@
 const { Event } = require('klasa');
 
 module.exports = class extends Event {
-
 	run(warning) {
 		this.client.console.warn(warning);
 	}
@@ -9,5 +8,4 @@ module.exports = class extends Event {
 	init() {
 		if (!this.client.options.consoleEvents.warn) this.disable();
 	}
-
 };

@@ -7,7 +7,6 @@ const Piece = require('./base/Piece');
  * @extends {Piece}
  */
 class Task extends Piece {
-
 	/**
 	 * The run method to be overwritten in actual Task pieces
 	 * @since 0.5.0
@@ -19,7 +18,6 @@ class Task extends Piece {
 		// Defined in extension Classes
 		throw new Error(`The run method has not been implemented by ${this.type}:${this.name}.`);
 	}
-
 }
 
 module.exports = Task;

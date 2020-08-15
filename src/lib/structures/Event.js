@@ -7,7 +7,6 @@ const Piece = require('./base/Piece');
  * @extends Piece
  */
 class Event extends Piece {
-
 	/**
 	 * @typedef {PieceOptions} EventOptions
 	 * @property {boolean} [once=false] If this event should only be run once and then unloaded
@@ -149,7 +148,6 @@ class Event extends Piece {
 			emitter: this.emitter.constructor.name
 		};
 	}
-
 }
 
 module.exports = Event;

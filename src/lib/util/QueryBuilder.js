@@ -1,12 +1,13 @@
 const { mergeDefault } = require('./util');
-const { DEFAULTS: { QUERYBUILDER } } = require('./constants');
+const {
+	DEFAULTS: { QUERYBUILDER }
+} = require('./constants');
 const Type = require('./Type');
 
 /**
  * @extends {Map<string, Required<QueryBuilderDatatype>>}
  */
 class QueryBuilder extends Map {
-
 	/**
 	 * @typedef {Function} QueryBuilderArray
 	 * @param {schemaEntry} entry The schema entry for context
@@ -166,9 +167,7 @@ class QueryBuilder extends Map {
 		// If value is null, there is nothing to resolve.
 		if (value === null) return null;
 
-		return schemaEntry.array ?
-			datatype.arraySerializer(value, schemaEntry, datatype.serializer) :
-			datatype.serializer(value, schemaEntry);
+		return schemaEntry.array ? datatype.arraySerializer(value, schemaEntry, datatype.serializer) : datatype.serializer(value, schemaEntry);
 	}
 
 	/**
@@ -179,15 +178,18 @@ class QueryBuilder extends Map {
 	debug() {
 		const errors = [];
 		for (const [name, datatype] of this) {
-			if (!['string', 'function'].includes(typeof datatype.type)) errors.push(`"type" in datatype ${name} must be a string or a function, got: ${new Type(datatype.type)}`);
+			if (!['string', 'function'].includes(typeof datatype.type))
+				errors.push(`"type" in datatype ${name} must be a string or a function, got: ${new Type(datatype.type)}`);
 			if (typeof datatype.array !== 'function') errors.push(`"array" in datatype ${name} must be a function, got: ${new Type(datatype.array)}`);
-			if (typeof datatype.arraySerializer !== 'function') errors.push(`"arraySerializer" in datatype ${name} must be a function, got: ${new Type(datatype.array)}`);
-			if (typeof datatype.formatDatatype !== 'function') errors.push(`"formatDatatype" in datatype ${name} must be a function, got: ${new Type(datatype.array)}`);
-			if (typeof datatype.serializer !== 'function') errors.push(`"serializer" in datatype ${name} must be a function, got: ${new Type(datatype.array)}`);
+			if (typeof datatype.arraySerializer !== 'function')
+				errors.push(`"arraySerializer" in datatype ${name} must be a function, got: ${new Type(datatype.array)}`);
+			if (typeof datatype.formatDatatype !== 'function')
+				errors.push(`"formatDatatype" in datatype ${name} must be a function, got: ${new Type(datatype.array)}`);
+			if (typeof datatype.serializer !== 'function')
+				errors.push(`"serializer" in datatype ${name} must be a function, got: ${new Type(datatype.array)}`);
 		}
 		return errors.join('\n');
 	}
-
 }
 
 module.exports = QueryBuilder;

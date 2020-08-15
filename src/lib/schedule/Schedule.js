@@ -5,7 +5,6 @@ const ScheduledTask = require('./ScheduledTask');
  * The Schedule class that manages all scheduled tasks
  */
 class Schedule {
-
 	/**
 	 * @typedef  {Object} ScheduledTaskOptions
 	 * @property {string} [id] The ID for the task. By default, it generates one in base36
@@ -98,7 +97,7 @@ class Schedule {
 	 * @returns {ScheduledTask}
 	 */
 	get(id) {
-		return this.tasks.find(entry => entry.id === id);
+		return this.tasks.find((entry) => entry.id === id);
 	}
 
 	/**
@@ -139,7 +138,9 @@ class Schedule {
 	async create(taskName, time, options) {
 		const task = await this._add(taskName, time, options);
 		if (!task) return null;
-		await this.client.settings.update('schedules', task, { arrayAction: 'add' });
+		await this.client.settings.update('schedules', task, {
+			arrayAction: 'add'
+		});
 		return task;
 	}
 
@@ -150,13 +151,16 @@ class Schedule {
 	 * @returns {this}
 	 */
 	async delete(id) {
-		const taskIndex = this.tasks.findIndex(entry => entry.id === id);
+		const taskIndex = this.tasks.findIndex((entry) => entry.id === id);
 		if (taskIndex === -1) throw new Error('This task does not exist.');
 
 		this.tasks.splice(taskIndex, 1);
 		// Get the task and use it to remove
-		const task = this._tasks.find(entry => entry.id === id);
-		if (task) await this.client.settings.update('schedules', task, { arrayAction: 'remove' });
+		const task = this._tasks.find((entry) => entry.id === id);
+		if (task)
+			await this.client.settings.update('schedules', task, {
+				arrayAction: 'remove'
+			});
 
 		return this;
 	}
@@ -204,7 +208,7 @@ class Schedule {
 	 * @private
 	 */
 	_insert(task) {
-		const index = this.tasks.findIndex(entry => entry.time > task.time);
+		const index = this.tasks.findIndex((entry) => entry.time > task.time);
 		if (index === -1) this.tasks.push(task);
 		else this.tasks.splice(index, 0, task);
 		return task;
@@ -244,7 +248,6 @@ class Schedule {
 	*[Symbol.iterator]() {
 		yield* this.tasks;
 	}
-
 }
 
 module.exports = Schedule;

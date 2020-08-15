@@ -6,7 +6,6 @@ const Store = require('./base/Store');
  * @extends Store
  */
 class MonitorStore extends Store {
-
 	/**
 	 * Constructs our MonitorStore for use in Klasa
 	 * @since 0.0.1
@@ -24,7 +23,6 @@ class MonitorStore extends Store {
 	run(message) {
 		for (const monitor of this.values()) if (monitor.shouldRun(message)) monitor._run(message);
 	}
-
 }
 
 module.exports = MonitorStore;
