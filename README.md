@@ -1,4 +1,4 @@
-# @skyra/klasa-fork
+# klasa
 
 > Let's stop reinventing the wheel, and start coding the bots of our dreams!
 
