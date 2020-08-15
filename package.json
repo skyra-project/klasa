@@ -12,7 +12,7 @@
 		"format": "prettier --write src/**/*.js typings/**/*.ts",
 		"format:check": "prettier --check src/**/*.js typings/**/*.ts",
 		"prebuild": "rimraf dist",
-		"build": "babel src --out-dir dist --source-maps --source-type script",
+		"build": "babel src --out-dir dist --source-type script",
 		"watch": "yarn build --watch",
 		"sversion": "standard-version",
 		"commit": "git-cz",
