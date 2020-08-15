@@ -1,70 +1,77 @@
 {
-  "name": "@skyra/klasa-fork",
-  "version": "0.0.1",
-  "description": "Klasa: Croatian for 'class', is a class based remix on Komada.",
-  "main": "src/index.js",
-  "types": "typings/index.d.ts",
-  "author": "@skyra",
-  "license": "MIT",
-  "private": false,
-  "scripts": {
+	"name": "@skyra/klasa-fork",
+	"version": "0.0.1",
+	"description": "Klasa: Croatian for 'class', is a class based remix on Komada.",
+	"main": "dist/index.js",
+	"types": "typings/index.d.ts",
+	"author": "@skyra",
+	"license": "MIT",
+	"private": false,
+	"scripts": {
 		"lint": "eslint src typings --ext js,ts --fix",
-		"format": "prettier --write {src,typings}/**/*.{js,ts}",
-    "format:check": "prettier --check {src,typings}/**/*.{js,ts}",
-    		"sversion": "standard-version",
+		"format": "prettier --write src/**/*.js typings/**/*.ts",
+		"format:check": "prettier --check src/**/*.js typings/**/*.ts",
+		"prebuild": "rimraf dist",
+		"build": "babel src --out-dir dist --source-maps --source-type script",
+		"watch": "yarn build --watch",
+		"sversion": "standard-version",
 		"commit": "git-cz",
 		"cz": "git-cz"
-  },
-  "dependencies": {
-    "@klasa/querybuilder": "^0.0.1",
-    "@klasa/settings-gateway": "^0.0.10",
-    "fs-nextra": "^0.4.5"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^9.1.1",
-    "@commitlint/config-conventional": "^9.1.1",
-    "@skyra/eslint-config": "^5.3.0",
-    "@typescript-eslint/eslint-plugin": "^3.8.0",
-    "@typescript-eslint/parser": "^3.8.0",
-    "cz-conventional-changelog": "^3.2.0",
+	},
+	"dependencies": {
+		"@klasa/querybuilder": "^0.0.1",
+		"@klasa/settings-gateway": "^0.0.10",
+		"fs-nextra": "^0.5.1"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.10.5",
+		"@babel/core": "^7.11.1",
+		"@babel/preset-env": "^7.11.0",
+		"@commitlint/cli": "^9.1.1",
+		"@commitlint/config-conventional": "^9.1.1",
+		"@skyra/eslint-config": "^5.3.0",
+		"@types/node": "^14.0.27",
+		"@typescript-eslint/eslint-plugin": "^3.9.0",
+		"@typescript-eslint/parser": "^3.9.0",
+		"cz-conventional-changelog": "^3.2.0",
+		"discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140",
+		"eslint": "^7.7.0",
 		"eslint-config-prettier": "^6.11.0",
 		"eslint-plugin-prettier": "^3.1.4",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.11",
+		"husky": "^4.2.5",
+		"lint-staged": "^10.2.11",
 		"prettier": "^2.0.5",
-		"standard-version": "^8.0.2",
-    "@types/node": "^14.0.27",
-    "eslint": "^7.7.0",
-    "discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140",
-    "typescript": "^3.9.7"
-  },
-  "peerDependencies": {
-    "discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140"
-  },
-    "repository": {
-    "type": "git",
-    "url": "https://github.com/skyra-project/klasa.git"
-  },
-  "files": [
-    "src",
-    "typings"
-  ],
-  	"keywords": [
-    "klasa",
-    "discordjs",
-    "discord.js",
+		"rimraf": "^3.0.2",
+		"standard-version": "^9.0.0",
+		"typescript": "^3.9.7"
+	},
+	"peerDependencies": {
+		"discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/skyra-project/klasa.git"
+	},
+	"files": [
+		"dist",
+		"typings"
+	],
+	"keywords": [
+		"klasa",
+		"discordjs",
+		"discord.js",
 		"bot",
 		"typescript",
 		"ts",
 		"yarn",
 		"discord",
 		"skyra"
-  ],
-    "bugs": {
-    "url": "https://github.com/skyra-project/klasa/issues"
-  },
-  "homepage": "https://github.com/skyra-project/klasa/",
-  "husky": {
+	],
+	"bugs": {
+		"url": "https://github.com/skyra-project/klasa/issues"
+	},
+	"homepage": "https://github.com/skyra-project/klasa/",
+	"husky": {
 		"hooks": {
 			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
 			"pre-commit": "yarn lint-staged"
@@ -88,14 +95,14 @@
 	},
 	"publishConfig": {
 		"access": "public"
-  },
-  "resolutions": {
+	},
+	"resolutions": {
 		"acorn": "^7.3.1",
 		"minimist": "^1.2.2",
 		"kind-of": "^6.0.3",
 		"dot-prop": "^5.2.0"
 	},
-  "engines": {
-    "node": ">=14"
-  }
+	"engines": {
+		"node": ">=14"
+	}
 }
