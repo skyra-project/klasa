@@ -1,6 +1,6 @@
 {
 	"name": "@skyra/klasa-fork",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "Klasa: Croatian for 'class', is a class based remix on Komada.",
 	"main": "dist/index.js",
 	"types": "typings/index.d.ts",
