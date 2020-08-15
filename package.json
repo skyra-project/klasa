@@ -11,9 +11,6 @@
 		"lint": "eslint src typings --ext js,ts --fix",
 		"format": "prettier --write src/**/*.js typings/**/*.ts",
 		"format:check": "prettier --check src/**/*.js typings/**/*.ts",
-		"prebuild": "rimraf dist",
-		"build": "babel src --out-dir dist --source-type script",
-		"watch": "yarn build --watch",
 		"sversion": "standard-version",
 		"commit": "git-cz",
 		"cz": "git-cz"
@@ -24,9 +21,6 @@
 		"fs-nextra": "^0.5.1"
 	},
 	"devDependencies": {
-		"@babel/cli": "^7.10.5",
-		"@babel/core": "^7.11.1",
-		"@babel/preset-env": "^7.11.0",
 		"@commitlint/cli": "^9.1.1",
 		"@commitlint/config-conventional": "^9.1.1",
 		"@skyra/eslint-config": "^5.3.0",
@@ -53,7 +47,7 @@
 		"url": "https://github.com/skyra-project/klasa.git"
 	},
 	"files": [
-		"dist",
+		"src",
 		"typings"
 	],
 	"keywords": [
