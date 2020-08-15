@@ -295,7 +295,7 @@ declare module 'klasa' {
 		public cooldownLevel: 'author' | 'channel' | 'guild';
 		public deletable: boolean;
 		public description: string | ((language: Language) => string);
-		public extendedHelp: string | ((language: Language) => string);
+		public extendedHelp: string | ((language: Language) => any);
 		public flagSupport: boolean;
 		public fullCategory: string[];
 		public guarded: boolean;
@@ -710,7 +710,7 @@ declare module 'klasa' {
 		public setFooterPrefix(prefix: string): this;
 		public setFooterSuffix(suffix: string): this;
 		public useCustomFooters(): this;
-		public addPage(embed: Function | MessageEmbed): this;
+		public addPage(embed: (template: MessageEmbed) => MessageEmbed | MessageEmbed): this;
 		public setInfoPage(embed: MessageEmbed): RichDisplay;
 		public run(message: KlasaMessage, options?: RichDisplayRunOptions): Promise<ReactionHandler>;
 
@@ -1016,7 +1016,7 @@ declare module 'klasa' {
 		cooldownLevel?: 'author' | 'channel' | 'guild';
 		deletable?: boolean;
 		description?: string | string[] | ((language: Language) => string | string[]);
-		extendedHelp?: string | string[] | ((language: Language) => string | string[]);
+		extendedHelp?: string | string[] | ((language: Language) => any);
 		flagSupport?: boolean;
 		guarded?: boolean;
 		hidden?: boolean;
