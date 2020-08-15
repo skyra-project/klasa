@@ -111,6 +111,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://hellbound.xyz/"><img src="https://avatars0.githubusercontent.com/u/46569300?v=4?s=100" width="100px;" alt=""/><br /><sub><b>hellbound</b></sub></a><br /><a href="https://github.com/skyra-project/klasa/commits?author=hellbound1337" title="Code">💻</a></td>
     <td align="center"><a href="https://voied.me/"><img src="https://avatars3.githubusercontent.com/u/25951318?v=4?s=100" width="100px;" alt=""/><br /><sub><b>void</b></sub></a><br /><a href="https://github.com/skyra-project/klasa/commits?author=voiding" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/UnseenFaith"><img src="https://avatars1.githubusercontent.com/u/1832323?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Faith</b></sub></a><br /><a href="https://github.com/skyra-project/klasa/commits?author=UnseenFaith" title="Code">💻</a></td>
   </tr>
 </table>
 
