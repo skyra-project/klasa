@@ -8,9 +8,6 @@ const path = require('path');
 // lib/permissions
 const PermissionLevels = require('./permissions/PermissionLevels');
 
-// lib/schedule
-const Schedule = require('./schedule/Schedule');
-
 // lib/structures
 const ArgumentStore = require('./structures/ArgumentStore');
 const CommandStore = require('./structures/CommandStore');
@@ -24,7 +21,7 @@ const TaskStore = require('./structures/TaskStore');
 
 // lib/util
 const KlasaConsole = require('./util/KlasaConsole');
-const { DEFAULTS, MENTION_REGEX } = require('./util/constants');
+const { DEFAULTS } = require('./util/constants');
 const Stopwatch = require('./util/Stopwatch');
 const util = require('./util/util');
 
@@ -67,7 +64,6 @@ class KlasaClient extends Discord.Client {
 	 * @property {ProvidersOptions} [providers] The provider options
 	 * @property {ReadyMessage} [readyMessage] readyMessage to be passed throughout Klasa's ready event
 	 * @property {RegExp} [regexPrefix] The regular expression prefix if one is provided
-	 * @property {ScheduleOptions} [schedule={}] The options for the internal clock module that runs Schedule
 	 * @property {number} [slowmode=0] Amount of time in ms before the bot will respond to a users command since the last command that user has run
 	 * @property {boolean} [slowmodeAggressive=false] If the slowmode time should reset if a user spams commands faster than the slowmode allows for
 	 * @property {boolean} [typing=false] Whether the bot should type while processing commands
@@ -81,11 +77,6 @@ class KlasaClient extends Discord.Client {
 	 */
 
 	/**
-	 * @typedef {Object} ScheduleOptions
-	 * @property {number} [interval=60000] The interval in milliseconds for the clock to check the tasks
-	 */
-
-	/**
 	 * @typedef {Object} SettingsOptions
 	 * @property {boolean} [throwOnError=false] Whether settings updates and resets should throw their errors or not
 	 * @property {boolean} [preserve=true] Whether the bot should preserve (non-default) settings when removed from a guild
@@ -94,9 +85,7 @@ class KlasaClient extends Discord.Client {
 
 	/**
 	 * @typedef {Object} GatewaysOptions
-	 * @property {GatewayDriverRegisterOptions} [clientStorage] The options for clientStorage's gateway
 	 * @property {GatewayDriverRegisterOptions} [guilds] The options for guilds' gateway
-	 * @property {GatewayDriverRegisterOptions} [users] The options for users' gateway
 	 */
 
 	/**
@@ -261,13 +250,6 @@ class KlasaClient extends Discord.Client {
 		this.gateways = new GatewayDriver(this);
 
 		/**
-		 * The Settings instance that handles this client's settings
-		 * @since 0.5.0
-		 * @type {?Settings}
-		 */
-		this.settings = null;
-
-		/**
 		 * The application info cached from the discord api
 		 * @since 0.0.1
 		 * @type {external:ClientApplication}
@@ -288,13 +270,6 @@ class KlasaClient extends Discord.Client {
 
 		const coreDirectory = path.join(__dirname, '../');
 		for (const store of this.pieceStores.values()) store.registerCoreDirectory(coreDirectory);
-
-		/**
-		 * The Schedule that runs the tasks
-		 * @since 0.5.0
-		 * @type {Schedule}
-		 */
-		this.schedule = new Schedule(this);
 
 		/**
 		 * Whether the client is truly ready or not
@@ -485,9 +460,8 @@ class KlasaClient extends Discord.Client {
 		const { Gateway } = require('@klasa/settings-gateway');
 
 		// Setup default gateways and adjust client options as necessary
-		const { guilds, clientStorage } = client.options.settings.gateways;
+		const { guilds } = client.options.settings.gateways;
 		guilds.schema = 'schema' in guilds ? guilds.schema : client.constructor.defaultGuildSchema;
-		clientStorage.schema = 'schema' in clientStorage ? clientStorage.schema : client.constructor.defaultClientSchema;
 
 		const prefix = guilds.schema.get('prefix');
 		const language = guilds.schema.get('language');
@@ -509,7 +483,7 @@ class KlasaClient extends Discord.Client {
 			configurable: Boolean(client.options.regexPrefix)
 		});
 
-		client.gateways.register(new Gateway(client, 'guilds', guilds)).register(new Gateway(client, 'clientStorage', clientStorage));
+		client.gateways.register(new Gateway(client, 'guilds', guilds));
 	}
 }
 
@@ -561,19 +535,6 @@ KlasaClient.defaultGuildSchema = new Schema()
 			if (command.guarded) throw language.get('COMMAND_CONF_GUARDED', command.name);
 		}
 	});
-
-/**
- * The default Client Schema
- * @since 0.5.0
- * @type {Schema}
- */
-KlasaClient.defaultClientSchema = new Schema()
-	.add('userBlacklist', 'user', { array: true })
-	.add('guildBlacklist', 'string', {
-		array: true,
-		filter: (__, value) => !MENTION_REGEX.snowflake.test(value)
-	})
-	.add('schedules', 'any', { array: true });
 
 /**
  * Emitted when Klasa is fully ready and initialized.
@@ -694,7 +655,7 @@ KlasaClient.defaultClientSchema = new Schema()
  * Emitted when a task has encountered an error.
  * @event KlasaClient#taskError
  * @since 0.5.0
- * @param {ScheduledTask} scheduledTask The scheduled task
+ * @param {*} data The task data
  * @param {Task} task The task run
  * @param {(Error|string)} error The task error
  */

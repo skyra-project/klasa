@@ -10,7 +10,7 @@ class Task extends Piece {
 	/**
 	 * The run method to be overwritten in actual Task pieces
 	 * @since 0.5.0
-	 * @param {*} data The data from the ScheduledTask instance
+	 * @param {*} data The data
 	 * @returns {void}
 	 * @abstract
 	 */

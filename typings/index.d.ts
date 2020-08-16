@@ -27,8 +27,7 @@ declare module 'klasa' {
 		Snowflake,
 		StringResolvable,
 		TextChannel,
-		User,
-		UserStore
+		User
 	} from 'discord.js';
 
 	import { Schema, GatewayStorageOptions, Settings } from '@klasa/settings-gateway';
@@ -124,57 +123,6 @@ declare module 'klasa' {
 	}
 
 	// #endregion Permissions
-
-	// #region Schedule
-
-	export class Schedule {
-		public constructor(client: KlasaClient);
-		public client: KlasaClient;
-		public tasks: ScheduledTask[];
-		public timeInterval: number;
-		private _interval: NodeJS.Timer;
-
-		private readonly _tasks: ScheduledTaskOptions[];
-		public init(): Promise<void>;
-		public execute(): Promise<void>;
-		public next(): ScheduledTask;
-		public create(taskName: string, time: Date | number | string, options?: ScheduledTaskOptions): Promise<ScheduledTask>;
-		public get(id: string): ScheduledTask | void;
-		public delete(id: string): Promise<this>;
-		public clear(): Promise<void>;
-
-		private _add(taskName: string, time: Date | number | string, options: ScheduledTaskOptions): ScheduledTask;
-		private _insert(task: ScheduledTask): ScheduledTask;
-		private _clearInterval(): void;
-		private _checkInterval(): void;
-
-		public [Symbol.iterator](): Iterator<ScheduledTask>;
-	}
-
-	export class ScheduledTask {
-		public constructor(client: KlasaClient, taskName: string, time: Date | number | string, options?: ScheduledTaskOptions);
-		public readonly client: KlasaClient;
-		public readonly store: Schedule;
-		public taskName: string;
-		public recurring: Cron | null;
-		public time: Date;
-		public id: string;
-		public data: any;
-
-		private running: boolean;
-
-		public readonly task?: Task;
-		public run(): Promise<this>;
-		public update(options?: ScheduledTaskUpdateOptions): Promise<this>;
-		public delete(): Promise<Schedule>;
-		public toJSON(): ScheduledTaskJSON;
-
-		private static _resolveTime(time: Date | number | Cron | string): [Date, Cron];
-		private static _generateID(client: KlasaClient, time: Date | number): string;
-		private static _validate(st: ScheduledTask): void;
-	}
-
-	// #endregion Schedule
 
 	// #region Settings
 
@@ -373,8 +321,6 @@ declare module 'klasa' {
 		public ignoreOthers: boolean;
 		public ignoreSelf: boolean;
 		public ignoreWebhooks: boolean;
-		public ignoreBlacklistedUsers: boolean;
-		public ignoreBlacklistedGuilds: boolean;
 
 		public abstract run(message: KlasaMessage): void;
 		public shouldRun(message: KlasaMessage): boolean;
@@ -851,15 +797,10 @@ declare module 'klasa' {
 		providers?: ProvidersOptions;
 		readyMessage?: ReadyMessage;
 		regexPrefix?: RegExp;
-		schedule?: ScheduleOptions;
 		slowmode?: number;
 		slowmodeAggressive?: boolean;
 		settings?: SettingsOptions;
 		typing?: boolean;
-	}
-
-	export interface ScheduleOptions {
-		interval?: number;
 	}
 
 	export interface SettingsOptions {
@@ -895,9 +836,7 @@ declare module 'klasa' {
 	export type ReadyMessage = string | ((client: KlasaClient) => string);
 
 	export interface GatewaysOptions extends Partial<Record<string, GatewayStorageOptions>> {
-		clientStorage?: GatewayStorageOptions;
 		guilds?: GatewayStorageOptions;
-		users?: GatewayStorageOptions;
 	}
 
 	// Parsers
@@ -979,26 +918,7 @@ declare module 'klasa' {
 		permission: boolean;
 	}
 
-	// Schedule
-	export interface ScheduledTaskOptions {
-		catchUp?: boolean;
-		data?: any;
-		id?: string;
-	}
-
 	export type TimeResolvable = Cron | Date | number | string;
-
-	export interface ScheduledTaskJSON extends Required<ScheduledTaskOptions> {
-		taskName: string;
-		time: number;
-	}
-
-	export interface ScheduledTaskUpdateOptions extends Filter<ScheduledTaskOptions, 'id'> {
-		id?: never;
-		data?: any;
-		repeat?: string;
-		time?: TimeResolvable;
-	}
 
 	// Structures
 	export interface PieceOptions {
@@ -1051,8 +971,6 @@ declare module 'klasa' {
 		ignoreOthers?: boolean;
 		ignoreSelf?: boolean;
 		ignoreWebhooks?: boolean;
-		ignoreBlacklistedUsers?: boolean;
-		ignoreBlacklistedGuilds?: boolean;
 	}
 
 	export interface EventOptions extends PieceOptions {
@@ -1381,9 +1299,7 @@ declare module 'klasa' {
 			pieceStores: Collection<string, any>;
 			permissionLevels: PermissionLevels;
 			gateways: GatewayDriver;
-			settings: Settings | null;
 			application: ClientApplication;
-			schedule: Schedule;
 			ready: boolean;
 			mentionPrefix: RegExp | null;
 			registerStore<K, V extends Piece, VConstructor = Constructor<V>>(store: Store<K, V, VConstructor>): KlasaClient;
@@ -1418,7 +1334,7 @@ declare module 'klasa' {
 			on(event: 'settingsCreate', listener: (entry: Settings, changes: SettingsUpdateResults, context: SettingsUpdateContext) => void): this;
 			on(event: 'settingsDelete', listener: (entry: Settings) => void): this;
 			on(event: 'settingsUpdate', listener: (entry: Settings, changes: SettingsUpdateResults, context: SettingsUpdateContext) => void): this;
-			on(event: 'taskError', listener: (scheduledTask: ScheduledTask, task: Task, error: Error) => void): this;
+			on(event: 'taskError', listener: (data: unknown, task: Task, error: Error) => void): this;
 			on(event: 'verbose', listener: (data: any) => void): this;
 			on(event: 'wtf', listener: (failure: Error) => void): this;
 			once(event: 'argumentError', listener: (message: KlasaMessage, command: Command, params: any[], error: string) => void): this;
@@ -1450,7 +1366,7 @@ declare module 'klasa' {
 			once(event: 'settingsCreate', listener: (entry: Settings, changes: SettingsUpdateResults, context: SettingsUpdateContext) => void): this;
 			once(event: 'settingsDelete', listener: (entry: Settings) => void): this;
 			once(event: 'settingsUpdate', listener: (entry: Settings, changes: SettingsUpdateResults, context: SettingsUpdateContext) => void): this;
-			once(event: 'taskError', listener: (scheduledTask: ScheduledTask, task: Task, error: Error) => void): this;
+			once(event: 'taskError', listener: (data: unknown, task: Task, error: Error) => void): this;
 			once(event: 'verbose', listener: (data: any) => void): this;
 			once(event: 'wtf', listener: (failure: Error) => void): this;
 			off(event: 'argumentError', listener: (message: KlasaMessage, command: Command, params: any[], error: string) => void): this;
@@ -1482,7 +1398,7 @@ declare module 'klasa' {
 			off(event: 'settingsCreate', listener: (entry: Settings, changes: SettingsUpdateResults, context: SettingsUpdateContext) => void): this;
 			off(event: 'settingsDelete', listener: (entry: Settings) => void): this;
 			off(event: 'settingsUpdate', listener: (entry: Settings, changes: SettingsUpdateResults, context: SettingsUpdateContext) => void): this;
-			off(event: 'taskError', listener: (scheduledTask: ScheduledTask, task: Task, error: Error) => void): this;
+			off(event: 'taskError', listener: (data: unknown, task: Task, error: Error) => void): this;
 			off(event: 'verbose', listener: (data: any) => void): this;
 			off(event: 'wtf', listener: (failure: Error) => void): this;
 		}
