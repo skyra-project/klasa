@@ -8,7 +8,7 @@ const quotes = ['"', "'", '“”', '‘’'];
 class TextPrompt {
 	/**
 	 * @typedef {Object} TextPromptOptions
-	 * @property {KlasaUser} [target=message.author] The intended target of this TextPrompt, if someone other than the author
+	 * @property {User} [target=message.author] The intended target of this TextPrompt, if someone other than the author
 	 * @property {external:TextBasedChannel} [channel=message.channel] The channel to prompt in, if other than this channel
 	 * @property {number} [limit=Infinity] The number of re-prompts before this TextPrompt gives up
 	 * @property {number} [time=30000] The time-limit for re-prompting
@@ -44,7 +44,7 @@ class TextPrompt {
 		/**
 		 * The target this prompt is for
 		 * @since 0.5.0
-		 * @type {KlasaUser}
+		 * @type {User}
 		 */
 		this.target = options.target || message.author;
 

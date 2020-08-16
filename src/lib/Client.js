@@ -22,9 +22,6 @@ const LanguageStore = require('./structures/LanguageStore');
 const MonitorStore = require('./structures/MonitorStore');
 const TaskStore = require('./structures/TaskStore');
 
-// lib/extensions
-const KlasaUserStore = require('./extensions/KlasaUserStore');
-
 // lib/util
 const KlasaConsole = require('./util/KlasaConsole');
 const { DEFAULTS, MENTION_REGEX } = require('./util/constants');
@@ -150,13 +147,6 @@ class KlasaClient extends Discord.Client {
 		 * @name KlasaClient#options
 		 * @type {KlasaClientOptions}
 		 */
-
-		/**
-		 * The KlasaUser cache
-		 * @since 0.5.0
-		 * @type {KlasaUserStore}
-		 */
-		this.users = new KlasaUserStore(this);
 
 		/**
 		 * The directory where the user files are at
@@ -341,7 +331,7 @@ class KlasaClient extends Discord.Client {
 	/**
 	 * The owners for this bot
 	 * @since 0.5.0
-	 * @type {Set<KlasaUser>}
+	 * @type {Set<User>}
 	 * @readonly
 	 */
 	get owners() {
@@ -495,9 +485,8 @@ class KlasaClient extends Discord.Client {
 		const { Gateway } = require('@klasa/settings-gateway');
 
 		// Setup default gateways and adjust client options as necessary
-		const { guilds, users, clientStorage } = client.options.settings.gateways;
+		const { guilds, clientStorage } = client.options.settings.gateways;
 		guilds.schema = 'schema' in guilds ? guilds.schema : client.constructor.defaultGuildSchema;
-		users.schema = 'schema' in users ? users.schema : client.constructor.defaultUserSchema;
 		clientStorage.schema = 'schema' in clientStorage ? clientStorage.schema : client.constructor.defaultClientSchema;
 
 		const prefix = guilds.schema.get('prefix');
@@ -520,10 +509,7 @@ class KlasaClient extends Discord.Client {
 			configurable: Boolean(client.options.regexPrefix)
 		});
 
-		client.gateways
-			.register(new Gateway(client, 'guilds', guilds))
-			.register(new Gateway(client, 'users', users))
-			.register(new Gateway(client, 'clientStorage', clientStorage));
+		client.gateways.register(new Gateway(client, 'guilds', guilds)).register(new Gateway(client, 'clientStorage', clientStorage));
 	}
 }
 
@@ -575,13 +561,6 @@ KlasaClient.defaultGuildSchema = new Schema()
 			if (command.guarded) throw language.get('COMMAND_CONF_GUARDED', command.name);
 		}
 	});
-
-/**
- * The default User Schema
- * @since 0.5.0
- * @type {Schema}
- */
-KlasaClient.defaultUserSchema = new Schema();
 
 /**
  * The default Client Schema
