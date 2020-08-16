@@ -10,10 +10,6 @@ module.exports = {
 	// lib/permissions
 	PermissionLevels: require('./lib/permissions/PermissionLevels'),
 
-	// lib/schedule
-	Schedule: require('./lib/schedule/Schedule'),
-	ScheduledTask: require('./lib/schedule/ScheduledTask'),
-
 	// lib/structures/base
 	AliasPiece: require('./lib/structures/base/AliasPiece'),
 	AliasStore: require('./lib/structures/base/AliasStore'),

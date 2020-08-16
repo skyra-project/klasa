@@ -89,8 +89,6 @@ exports.DEFAULTS = {
 				ignoreOthers: true,
 				ignoreWebhooks: true,
 				ignoreEdits: true,
-				ignoreBlacklistedUsers: true,
-				ignoreBlacklistedGuilds: true,
 				allowedTypes: ['DEFAULT']
 			},
 			providers: { enabled: true },
@@ -100,16 +98,13 @@ exports.DEFAULTS = {
 			},
 			tasks: { enabled: true }
 		},
-		schedule: { interval: 60000 },
 		slowmode: 0,
 		slowmodeAggressive: false,
 		settings: {
 			preserve: true,
 			throwOnError: false,
 			gateways: {
-				guilds: {},
-				users: {},
-				clientStorage: {}
+				guilds: {}
 			}
 		}
 	},

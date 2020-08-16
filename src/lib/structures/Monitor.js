@@ -14,8 +14,6 @@ class Monitor extends Piece {
 	 * @property {boolean} [ignoreOthers=true] Whether the monitor ignores others or not
 	 * @property {boolean} [ignoreWebhooks=true] Whether the monitor ignores webhooks or not
 	 * @property {boolean} [ignoreEdits=true] Whether the monitor ignores edits or not
-	 * @property {boolean} [ignoreBlacklistedUsers=true] Wether the monitor should ignore blacklisted users or not
-	 * @property {boolean} [ignoreBlacklistedGuilds=true] Wether the monitor should ignore blacklisted guilds or not
 	 * @property {string[]} [allowedTypes=['DEFAULT']] The types of messages allowed for this monitor
 	 */
 
@@ -71,20 +69,6 @@ class Monitor extends Piece {
 		 * @type {boolean}
 		 */
 		this.ignoreEdits = options.ignoreEdits;
-
-		/**
-		 * Wether the monitor should ignore blacklisted users
-		 * @since 0.5.0
-		 * @type {boolean}
-		 */
-		this.ignoreBlacklistedUsers = options.ignoreBlacklistedUsers;
-
-		/**
-		 * Wether the monitor should ignore blacklisted guilds
-		 * @since 0.5.0
-		 * @type {boolean}
-		 */
-		this.ignoreBlacklistedGuilds = options.ignoreBlacklistedGuilds;
 	}
 
 	/**
@@ -127,9 +111,7 @@ class Monitor extends Piece {
 			!(this.ignoreSelf && this.client.user === message.author) &&
 			!(this.ignoreOthers && this.client.user !== message.author) &&
 			!(this.ignoreWebhooks && message.webhookID) &&
-			!(this.ignoreEdits && message._edits.length) &&
-			!(this.ignoreBlacklistedUsers && this.client.settings.get('userBlacklist').includes(message.author.id)) &&
-			!(this.ignoreBlacklistedGuilds && message.guild && this.client.settings.get('guildBlacklist').includes(message.guild.id))
+			!(this.ignoreEdits && message._edits.length)
 		);
 	}
 
@@ -144,9 +126,7 @@ class Monitor extends Piece {
 			ignoreSelf: this.ignoreSelf,
 			ignoreOthers: this.ignoreOthers,
 			ignoreWebhooks: this.ignoreWebhooks,
-			ignoreEdits: this.ignoreEdits,
-			ignoreBlacklistedUsers: this.ignoreBlacklistedUsers,
-			ignoreBlacklistedGuilds: this.ignoreBlacklistedGuilds
+			ignoreEdits: this.ignoreEdits
 		};
 	}
 }
