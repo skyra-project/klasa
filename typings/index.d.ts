@@ -45,7 +45,6 @@ declare module 'klasa' {
 		public sweepMessages(lifetime?: number, commandLifeTime?: number): number;
 		public static basePermissions: Permissions;
 		public static defaultGuildSchema: Schema;
-		public static defaultUserSchema: Schema;
 		public static defaultClientSchema: Schema;
 		public static defaultPermissionLevels: PermissionLevels;
 		public static plugin: symbol;
@@ -80,8 +79,6 @@ declare module 'klasa' {
 		private static prefixes: Map<string, CachedPrefix>;
 	}
 
-	export class KlasaUser extends User {}
-
 	// #endregion Extensions
 
 	// #region Parsers
@@ -95,12 +92,12 @@ declare module 'klasa' {
 		public float(input: string | number): Promise<number>;
 		public guild(input: KlasaGuild | Snowflake): Promise<KlasaGuild>;
 		public integer(input: string | number): Promise<number>;
-		public member(input: KlasaUser | GuildMember | Snowflake, guild: KlasaGuild): Promise<GuildMember>;
+		public member(input: User | GuildMember | Snowflake, guild: KlasaGuild): Promise<GuildMember>;
 		public message(input: KlasaMessage | Snowflake, channel: Channel): Promise<KlasaMessage>;
 		public role(input: Role | Snowflake, guild: KlasaGuild): Promise<Role>;
 		public string(input: string): Promise<string>;
 		public url(input: string): Promise<string>;
-		public user(input: KlasaUser | GuildMember | KlasaMessage | Snowflake): Promise<KlasaUser>;
+		public user(input: User | GuildMember | KlasaMessage | Snowflake): Promise<User>;
 
 		public static readonly regex: {
 			userOrMember: RegExp;
@@ -455,8 +452,6 @@ declare module 'klasa' {
 
 	export class TaskStore extends Store<string, Task, typeof Task> {}
 
-	export class KlasaUserStore extends UserStore {}
-
 	// #endregion Stores
 
 	// #region Usage
@@ -508,7 +503,7 @@ declare module 'klasa' {
 		public constructor(message: KlasaMessage, usage: Usage, options?: TextPromptOptions);
 		public readonly client: KlasaClient;
 		public message: KlasaMessage;
-		public target: KlasaUser;
+		public target: User;
 		public channel: TextChannel | DMChannel;
 		public usage: Usage | CommandUsage;
 		public reprompted: boolean;
@@ -719,7 +714,7 @@ declare module 'klasa' {
 		public setFooterPrefix(prefix: string): this;
 		public setFooterSuffix(suffix: string): this;
 		public useCustomFooters(): this;
-		public addPage(embed: (template: MessageEmbed) => MessageEmbed | MessageEmbed): this;
+		public addPage(embed: MessageEmbed | ((template: MessageEmbed) => MessageEmbed)): this;
 		public setInfoPage(embed: MessageEmbed): RichDisplay;
 		public run(message: KlasaMessage, options?: RichDisplayRunOptions): Promise<ReactionHandler>;
 
@@ -1123,7 +1118,7 @@ declare module 'klasa' {
 		channel?: TextChannel | DMChannel;
 		limit?: number;
 		quotedStringSupport?: boolean;
-		target?: KlasaUser;
+		target?: User;
 		time?: number;
 		flagSupport?: boolean;
 	}
@@ -1270,7 +1265,7 @@ declare module 'klasa' {
 	}
 
 	export interface RichDisplayRunOptions {
-		filter?: (reaction: MessageReaction, user: KlasaUser) => boolean;
+		filter?: (reaction: MessageReaction, user: User) => boolean;
 		firstLast?: boolean;
 		jump?: boolean;
 		max?: number;
@@ -1372,7 +1367,6 @@ declare module 'klasa' {
 			options: Required<KlasaClientOptions>;
 			userBaseDirectory: string;
 			console: KlasaConsole;
-			users: KlasaUserStore;
 			arguments: ArgumentStore;
 			commands: CommandStore;
 			inhibitors: InhibitorStore;
