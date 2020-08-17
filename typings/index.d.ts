@@ -307,9 +307,10 @@ declare module 'klasa' {
 
 	export abstract class Language extends Piece {
 		public constructor(store: LanguageStore, file: string[], directory: string, options?: LanguageOptions);
-		public language: Record<string, string | string[] | ((...args: any[]) => string | string[])>;
+		public language: LanguageKeys;
 
-		public get<T = string, A extends readonly unknown[] = readonly unknown[]>(term: string, ...args: A): T;
+		public get<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
+		public get<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
 		public toJSON(): PieceLanguageJSON;
 	}
 
@@ -843,6 +844,20 @@ declare module 'klasa' {
 	export interface ArgResolverCustomMethod {
 		(arg: string, possible: Possible, message: KlasaMessage, params: any[]): any;
 	}
+
+	interface LanguageKeys {}
+
+	interface Fn {
+		(...args: readonly any[]): unknown;
+	}
+
+	export type LanguageKeysSimple = {
+		[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? never : K;
+	}[keyof LanguageKeys];
+
+	export type LanguageKeysComplex = {
+		[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? K : never;
+	}[keyof LanguageKeys];
 
 	export interface Constants {
 		DEFAULTS: ConstantsDefaults;
@@ -1442,18 +1457,28 @@ declare module 'klasa' {
 		export interface DMChannel extends SendAliases, ChannelExtendables {}
 
 		interface PartialSendAliases {
-			sendLocale(key: string, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendLocale(key: string, options?: (MessageOptions & { split?: false }) | MessageAdditions): Promise<KlasaMessage>;
-			sendLocale(key: string, options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions): Promise<KlasaMessage[]>;
-			sendLocale(key: string, localeArgs?: Array<any>, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendLocale(
-				key: string,
-				localeArgs?: Array<any>,
+			sendLocale<T extends LanguageKeysSimple>(key: T, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
+			sendLocale<T extends LanguageKeysSimple>(
+				key: T,
 				options?: (MessageOptions & { split?: false }) | MessageAdditions
 			): Promise<KlasaMessage>;
-			sendLocale(
-				key: string,
-				localeArgs?: Array<any>,
+			sendLocale<T extends LanguageKeysSimple>(
+				key: T,
+				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+			): Promise<KlasaMessage[]>;
+			sendLocale<T extends LanguageKeysComplex>(
+				key: T,
+				localeArgs?: Parameters<LanguageKeys[T]>,
+				options?: MessageOptions | MessageAdditions
+			): Promise<KlasaMessage>;
+			sendLocale<T extends LanguageKeysComplex>(
+				key: T,
+				localeArgs?: Parameters<LanguageKeys[T]>,
+				options?: (MessageOptions & { split?: false }) | MessageAdditions
+			): Promise<KlasaMessage>;
+			sendLocale<T extends LanguageKeysComplex>(
+				key: T,
+				localeArgs?: Parameters<LanguageKeys[T]>,
 				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
 			): Promise<KlasaMessage[]>;
 			sendMessage(content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
