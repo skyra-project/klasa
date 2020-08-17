@@ -311,12 +311,12 @@ declare module 'klasa' {
 
 	export abstract class Language extends Piece {
 		public constructor(store: LanguageStore, file: string[], directory: string, options?: LanguageOptions);
-		// @ts-expect-error LanguageKeys are defined within Skyra
+		// @ts-ignore LanguageKeys are defined within Skyra
 		public language: LanguageKeys;
 
-		// @ts-expect-error LanguageKeys are defined within Skyra
+		// @ts-ignore LanguageKeys are defined within Skyra
 		public get<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
-		// @ts-expect-error LanguageKeys are defined within Skyra
+		// @ts-ignore LanguageKeys are defined within Skyra
 		public get<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
 		public toJSON(): PieceLanguageJSON;
 	}
@@ -855,15 +855,15 @@ declare module 'klasa' {
 	}
 
 	export type LanguageKeysSimple = {
-		// @ts-expect-error LanguageKeys are defined within Skyra
+		// @ts-ignore LanguageKeys are defined within Skyra
 		[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? never : K;
-		// @ts-expect-error LanguageKeys are defined within Skyra
+		// @ts-ignore LanguageKeys are defined within Skyra
 	}[keyof LanguageKeys];
 
 	export type LanguageKeysComplex = {
-		// @ts-expect-error LanguageKeys are defined within Skyra
+		// @ts-ignore LanguageKeys are defined within Skyra
 		[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? K : never;
-		// @ts-expect-error LanguageKeys are defined within Skyra
+		// @ts-ignore LanguageKeys are defined within Skyra
 	}[keyof LanguageKeys];
 
 	export interface Constants {
@@ -1470,19 +1470,19 @@ declare module 'klasa' {
 			): Promise<KlasaMessage[]>;
 			sendLocale<T extends LanguageKeysComplex>(
 				key: T,
-				// @ts-expect-error LanguageKeys are defined within Skyra
+				// @ts-ignore LanguageKeys are defined within Skyra
 				localeArgs?: Parameters<LanguageKeys[T]>,
 				options?: MessageOptions | MessageAdditions
 			): Promise<KlasaMessage>;
 			sendLocale<T extends LanguageKeysComplex>(
 				key: T,
-				// @ts-expect-error LanguageKeys are defined within Skyra
+				// @ts-ignore LanguageKeys are defined within Skyra
 				localeArgs?: Parameters<LanguageKeys[T]>,
 				options?: (MessageOptions & { split?: false }) | MessageAdditions
 			): Promise<KlasaMessage>;
 			sendLocale<T extends LanguageKeysComplex>(
 				key: T,
-				// @ts-expect-error LanguageKeys are defined within Skyra
+				// @ts-ignore LanguageKeys are defined within Skyra
 				localeArgs?: Parameters<LanguageKeys[T]>,
 				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
 			): Promise<KlasaMessage[]>;
