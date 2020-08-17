@@ -1,8 +1,17 @@
 /// <reference types="node" />
 
 declare module 'klasa' {
+	import {
+		GatewayDriver,
+		GatewayStorageOptions,
+		ProviderStore,
+		Schema,
+		SerializerStore,
+		Settings,
+		SettingsUpdateContext,
+		SettingsUpdateResults
+	} from '@klasa/settings-gateway';
 	import { ExecOptions } from 'child_process';
-
 	import {
 		APIMessage,
 		Channel,
@@ -30,8 +39,6 @@ declare module 'klasa' {
 		User
 	} from 'discord.js';
 
-	import { Schema, GatewayStorageOptions, Settings } from '@klasa/settings-gateway';
-
 	export const version: string;
 
 	// #region Classes
@@ -50,7 +57,66 @@ declare module 'klasa' {
 		public static use(mod: any): typeof KlasaClient;
 	}
 
+	export {
+		DATATYPES,
+		OPTIONS,
+		QueryBuilder,
+		QueryBuilderArray,
+		QueryBuilderArraySerializer,
+		QueryBuilderDatatype,
+		QueryBuilderEntryOptions,
+		QueryBuilderFormatDatatype,
+		QueryBuilderSerializer,
+		QueryBuilderType
+	} from '@klasa/querybuilder';
+	// #endregion Permissions
+	// #region Settings
+	// https://github.com/microsoft/TypeScript/issues/18877
+	export {
+		ArrayActions,
+		ArrayActionsString,
+		DeepReadonly,
+		Gateway,
+		GatewayDriver,
+		GatewayDriverJson,
+		GatewayStorage,
+		GatewayStorageJson,
+		GatewayStorageOptions,
+		KeyedObject,
+		Provider,
+		ProviderStore,
+		ProxyMap,
+		ProxyMapEntry,
+		ReadonlyKeyedObject,
+		Schema,
+		SchemaAddCallback,
+		SchemaEntry,
+		SchemaEntryEditOptions,
+		SchemaEntryFilterFunction,
+		SchemaEntryJson,
+		SchemaEntryOptions,
+		SchemaFolder,
+		SchemaFolderJson,
+		SchemaJson,
+		Serializer,
+		SerializerStore,
+		SerializerUpdateContext,
+		Settings,
+		SettingsExistenceStatus,
+		SettingsFolder,
+		SettingsFolderJson,
+		SettingsFolderResetOptions,
+		SettingsFolderUpdateOptions,
+		SettingsFolderUpdateOptionsNonOverwrite,
+		SettingsFolderUpdateOptionsOverwrite,
+		SettingsUpdateContext,
+		SettingsUpdateResult,
+		SettingsUpdateResults,
+		SQLProvider,
+		SqlProviderParsedTupleUpdateInput
+	} from '@klasa/settings-gateway';
 	export { KlasaClient as Client };
+	export { Util as util };
 
 	// #region Extensions
 
@@ -121,68 +187,6 @@ declare module 'klasa' {
 
 		public run(message: KlasaMessage, min: number): Promise<PermissionLevelsData>;
 	}
-
-	// #endregion Permissions
-
-	// #region Settings
-
-	// https://github.com/microsoft/TypeScript/issues/18877
-	export {
-		ArrayActions,
-		ArrayActionsString,
-		DeepReadonly,
-		Gateway,
-		GatewayDriver,
-		GatewayDriverJson,
-		GatewayStorage,
-		GatewayStorageJson,
-		GatewayStorageOptions,
-		KeyedObject,
-		Provider,
-		ProviderStore,
-		ProxyMap,
-		ProxyMapEntry,
-		ReadonlyKeyedObject,
-		Schema,
-		SchemaAddCallback,
-		SchemaEntry,
-		SchemaEntryEditOptions,
-		SchemaEntryFilterFunction,
-		SchemaEntryJson,
-		SchemaEntryOptions,
-		SchemaFolder,
-		SchemaFolderJson,
-		SchemaJson,
-		Serializer,
-		SerializerStore,
-		SerializerUpdateContext,
-		Settings,
-		SettingsExistenceStatus,
-		SettingsFolder,
-		SettingsFolderJson,
-		SettingsFolderResetOptions,
-		SettingsFolderUpdateOptions,
-		SettingsFolderUpdateOptionsNonOverwrite,
-		SettingsFolderUpdateOptionsOverwrite,
-		SettingsUpdateContext,
-		SettingsUpdateResult,
-		SettingsUpdateResults,
-		SQLProvider,
-		SqlProviderParsedTupleUpdateInput
-	} from '@klasa/settings-gateway';
-
-	export {
-		DATATYPES,
-		OPTIONS,
-		QueryBuilder,
-		QueryBuilderArray,
-		QueryBuilderArraySerializer,
-		QueryBuilderDatatype,
-		QueryBuilderEntryOptions,
-		QueryBuilderFormatDatatype,
-		QueryBuilderSerializer,
-		QueryBuilderType
-	} from '@klasa/querybuilder';
 
 	// #endregion Settings
 
@@ -307,9 +311,12 @@ declare module 'klasa' {
 
 	export abstract class Language extends Piece {
 		public constructor(store: LanguageStore, file: string[], directory: string, options?: LanguageOptions);
+		// @ts-expect-error LanguageKeys are defined within Skyra
 		public language: LanguageKeys;
 
+		// @ts-expect-error LanguageKeys are defined within Skyra
 		public get<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
+		// @ts-expect-error LanguageKeys are defined within Skyra
 		public get<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
 		public toJSON(): PieceLanguageJSON;
 	}
@@ -770,8 +777,6 @@ declare module 'klasa' {
 		public static PRIMITIVE_TYPES: string[];
 	}
 
-	export { Util as util };
-
 	// #endregion Util
 
 	// #endregion Classes
@@ -845,18 +850,20 @@ declare module 'klasa' {
 		(arg: string, possible: Possible, message: KlasaMessage, params: any[]): any;
 	}
 
-	interface LanguageKeys {}
-
 	interface Fn {
 		(...args: readonly any[]): unknown;
 	}
 
 	export type LanguageKeysSimple = {
+		// @ts-expect-error LanguageKeys are defined within Skyra
 		[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? never : K;
+		// @ts-expect-error LanguageKeys are defined within Skyra
 	}[keyof LanguageKeys];
 
 	export type LanguageKeysComplex = {
+		// @ts-expect-error LanguageKeys are defined within Skyra
 		[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? K : never;
+		// @ts-expect-error LanguageKeys are defined within Skyra
 	}[keyof LanguageKeys];
 
 	export interface Constants {
@@ -1287,11 +1294,6 @@ declare module 'klasa' {
 		guildmember: 'GuildMember';
 	}
 
-	// #endregion
-
-	// #region Augments
-	import { SettingsUpdateResults, SettingsUpdateContext, ProviderStore, SerializerStore, GatewayDriver } from '@klasa/settings-gateway';
-
 	module 'discord.js' {
 		export interface Client {
 			constructor: typeof KlasaClient;
@@ -1468,16 +1470,19 @@ declare module 'klasa' {
 			): Promise<KlasaMessage[]>;
 			sendLocale<T extends LanguageKeysComplex>(
 				key: T,
+				// @ts-expect-error LanguageKeys are defined within Skyra
 				localeArgs?: Parameters<LanguageKeys[T]>,
 				options?: MessageOptions | MessageAdditions
 			): Promise<KlasaMessage>;
 			sendLocale<T extends LanguageKeysComplex>(
 				key: T,
+				// @ts-expect-error LanguageKeys are defined within Skyra
 				localeArgs?: Parameters<LanguageKeys[T]>,
 				options?: (MessageOptions & { split?: false }) | MessageAdditions
 			): Promise<KlasaMessage>;
 			sendLocale<T extends LanguageKeysComplex>(
 				key: T,
+				// @ts-expect-error LanguageKeys are defined within Skyra
 				localeArgs?: Parameters<LanguageKeys[T]>,
 				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
 			): Promise<KlasaMessage[]>;
