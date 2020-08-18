@@ -1,9 +1,9 @@
 const { Argument } = require('klasa');
 
 module.exports = class extends Argument {
-	constructor(...args) {
-		super(...args, { aliases: ['str'] });
-	}
+    constructor(...args) {
+        super(...args, { aliases: ['str'] });
+    }
 
 	run(arg, possible, message) {
 		if (!arg) throw message.language.get('RESOLVER_INVALID_STRING', { name: possible.name });
