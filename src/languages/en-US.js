@@ -96,7 +96,7 @@ module.exports = class extends Language {
 			COMMAND_EVAL_OUTPUT: (time, output, type) => `**Output**:${output}\n**Type**:${type}\n${time}`,
 			COMMAND_EVAL_SENDFILE: (time, type) => `Output was too long... sent the result as a file.\n**Type**:${type}\n${time}`,
 			COMMAND_EVAL_SENDCONSOLE: (time, type) => `Output was too long... sent the result to console.\n**Type**:${type}\n${time}`,
-			COMMAND_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
+			COMMAND_UNLOAD: ({ type, name }) => `✅ Unloaded ${type}: ${name}`,
 			COMMAND_UNLOAD_DESCRIPTION: 'Unloads the klasa piece.',
 			COMMAND_UNLOAD_WARN: "You probably don't want to unload that, since you wouldn't be able to run any command to enable it again",
 			COMMAND_TRANSFER_ERROR: '❌ That file has been transfered already or never existed.',
