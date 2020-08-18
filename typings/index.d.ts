@@ -1471,19 +1471,19 @@ declare module 'klasa' {
 			sendLocale<T extends LanguageKeysComplex>(
 				key: T,
 				// @ts-ignore LanguageKeys are defined within Skyra
-				localeArgs?: Parameters<LanguageKeys[T]>,
+				localeArgs: Parameters<LanguageKeys[T]>,
 				options?: MessageOptions | MessageAdditions
 			): Promise<KlasaMessage>;
 			sendLocale<T extends LanguageKeysComplex>(
 				key: T,
 				// @ts-ignore LanguageKeys are defined within Skyra
-				localeArgs?: Parameters<LanguageKeys[T]>,
+				localeArgs: Parameters<LanguageKeys[T]>,
 				options?: (MessageOptions & { split?: false }) | MessageAdditions
 			): Promise<KlasaMessage>;
 			sendLocale<T extends LanguageKeysComplex>(
 				key: T,
 				// @ts-ignore LanguageKeys are defined within Skyra
-				localeArgs?: Parameters<LanguageKeys[T]>,
+				localeArgs: Parameters<LanguageKeys[T]>,
 				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
 			): Promise<KlasaMessage[]>;
 			sendMessage(content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
