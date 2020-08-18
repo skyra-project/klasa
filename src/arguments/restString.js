@@ -10,7 +10,7 @@ module.exports = class extends Argument {
 	}
 
 	run(arg, possible, message) {
-		if (!arg) throw message.language.get('RESOLVER_INVALID_STRING', possible.name);
+		if (!arg) throw message.language.get('RESOLVER_INVALID_STRING', { name: possible.name });
 		const {
 			args,
 			usage: { usageDelim }

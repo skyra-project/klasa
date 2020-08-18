@@ -198,7 +198,12 @@ class TextPrompt {
 		const possibleAbortOptions = this.message.language.get('TEXT_PROMPT_ABORT_OPTIONS');
 		const edits = this.message.edits.length;
 		const message = await this.prompt(
-			this.message.language.get('MONITOR_COMMAND_HANDLER_REPROMPT', `<@!${this.target.id}>`, prompt, this.time / 1000, possibleAbortOptions)
+			this.message.language.get('MONITOR_COMMAND_HANDLER_REPROMPT', {
+				tag: `<@!${this.target.id}>`,
+				name: prompt,
+				time: this.time / 1000,
+				cancelOptions: possibleAbortOptions
+			})
 		);
 		if (this.message.edits.length !== edits || message.prefix || possibleAbortOptions.includes(message.content.toLowerCase()))
 			throw this.message.language.get('MONITOR_COMMAND_HANDLER_ABORTED');
@@ -225,13 +230,12 @@ class TextPrompt {
 		const possibleCancelOptions = this.message.language.get('TEXT_PROMPT_ABORT_OPTIONS');
 		try {
 			message = await this.prompt(
-				this.message.language.get(
-					'MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT',
-					`<@!${this.message.author.id}>`,
-					this._currentUsage.possibles[0].name,
-					this.time / 1000,
-					possibleCancelOptions
-				)
+				this.message.language.get('MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT', {
+					tag: `<@!${this.message.author.id}>`,
+					name: this._currentUsage.possibles[0].name,
+					time: this.time / 1000,
+					cancelOptions: possibleCancelOptions
+				})
 			);
 			this.responses.set(message.id, message);
 		} catch (err) {
@@ -308,12 +312,15 @@ class TextPrompt {
 				return this.handleError(
 					error ||
 						(this.args[this.params.length] === undefined
-							? this.message.language.get('COMMANDMESSAGE_MISSING_REQUIRED', possible.name)
+							? this.message.language.get('COMMANDMESSAGE_MISSING_REQUIRED', { name: possible.name })
 							: err)
 				);
 			}
 			return this.handleError(
-				error || this.message.language.get('COMMANDMESSAGE_NOMATCH', this._currentUsage.possibles.map((poss) => poss.name).join(', '))
+				error ||
+					this.message.language.get('COMMANDMESSAGE_NOMATCH', {
+						possibles: this._currentUsage.possibles.map((poss) => poss.name).join(', ')
+					})
 			);
 		}
 	}

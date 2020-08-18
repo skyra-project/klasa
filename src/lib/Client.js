@@ -532,7 +532,8 @@ KlasaClient.defaultGuildSchema = new Schema()
 	.add('disabledCommands', 'command', {
 		array: true,
 		filter: (client, command, { language }) => {
-			if (command.guarded) throw language.get('COMMAND_CONF_GUARDED', command.name);
+			if (command.guarded) throw language.get('COMMAND_CONF_GUARDED', { name: command.name });
+			return false;
 		}
 	});
 
