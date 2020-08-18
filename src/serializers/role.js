@@ -9,7 +9,7 @@ module.exports = class extends Serializer {
 			? guild.roles.get(this.constructor.regex.role.exec(data)[1])
 			: guild.roles.find((rol) => rol.name === data) || null;
 		if (role) return role;
-		throw language.get('RESOLVER_INVALID_ROLE', entry.key);
+		throw language.get('RESOLVER_INVALID_ROLE', { name: entry.key });
 	}
 
 	serialize(value) {

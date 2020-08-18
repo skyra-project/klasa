@@ -21,6 +21,6 @@ module.exports = class extends Command {
 				if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').unload();
 			`);
 		}
-		return message.sendLocale('COMMAND_UNLOAD', [piece.type, piece.name]);
+		return message.sendLocale('COMMAND_UNLOAD', [{ type: piece.type, name: piece.name }]);
 	}
 };

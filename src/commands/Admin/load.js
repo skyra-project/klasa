@@ -31,10 +31,10 @@ module.exports = class extends Command {
 					}
 				`);
 			}
-			return message.sendLocale('COMMAND_LOAD', [timer.stop(), store.name, piece.name]);
+			return message.sendLocale('COMMAND_LOAD', [{ time: timer.stop(), type: store.name, name: piece.name }]);
 		} catch (error) {
 			timer.stop();
-			throw message.language.get('COMMAND_LOAD_ERROR', store.name, piece ? piece.name : path.join('/'), error);
+			throw message.language.get('COMMAND_LOAD_ERROR', { type: store.name, name: piece ? piece.name : path.join('/'), error });
 		}
 	}
 
