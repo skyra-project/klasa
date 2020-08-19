@@ -183,7 +183,7 @@
   resolved "https://registry.yarnpkg.com/@klasa/request-handler/-/request-handler-0.0.3.tgz#ed72de611ece3dd99725cb797fc13e07bb05e618"
   integrity sha512-Z1O+Aa2kW/I4Uos4EZalByveIuQKRfuRx+JCsgsogDBd95N5Ub47AH+LEd5i+uzjnJ6iDHfodpVlaHojJ4Q+ZQ==
 
-"@klasa/settings-gateway@skyra-project/settings-gateway#build":
+"@klasa/settings-gateway@github:skyra-project/settings-gateway#77146e99c811bf52d2261693a31690965fe64224":
   version "1.0.0"
   resolved "https://codeload.github.com/skyra-project/settings-gateway/tar.gz/77146e99c811bf52d2261693a31690965fe64224"
   dependencies:
