@@ -10,7 +10,7 @@ declare module 'klasa' {
 		Settings,
 		SettingsUpdateContext,
 		SettingsUpdateResults
-	} from '@klasa/settings-gateway';
+	} from '@skyra/settings-gateway';
 	import { ExecOptions } from 'child_process';
 	import {
 		APIMessage,
@@ -114,7 +114,7 @@ declare module 'klasa' {
 		SettingsUpdateResults,
 		SQLProvider,
 		SqlProviderParsedTupleUpdateInput
-	} from '@klasa/settings-gateway';
+	} from '@skyra/settings-gateway';
 	export { KlasaClient as Client };
 	export { Util as util };
 
