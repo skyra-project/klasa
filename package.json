@@ -17,7 +17,7 @@
 	},
 	"dependencies": {
 		"@klasa/querybuilder": "^0.0.1",
-		"@klasa/settings-gateway": "skyra-project/settings-gateway#build",
+		"@klasa/settings-gateway": "github:skyra-project/settings-gateway#77146e99c811bf52d2261693a31690965fe64224",
 		"fs-nextra": "^0.5.1"
 	},
 	"devDependencies": {
