@@ -128,7 +128,7 @@ class KlasaClient extends Discord.Client {
 		super(options);
 
 		// Requiring here to avoid circular dependencies
-		const { SerializerStore, ProviderStore, GatewayDriver } = require('@skyra/settings-gateway');
+		const { SerializerStore, ProviderStore, GatewayDriver } = require('@klasa/settings-gateway');
 
 		/**
 		 * The options the client was instantiated with.
@@ -457,7 +457,7 @@ class KlasaClient extends Discord.Client {
 	 * @private
 	 */
 	static registerGateways(client) {
-		const { Gateway } = require('@skyra/settings-gateway');
+		const { Gateway } = require('@klasa/settings-gateway');
 
 		// Setup default gateways and adjust client options as necessary
 		const { guilds } = client.options.settings.gateways;
@@ -518,7 +518,7 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
 	.add(10, ({ author, client }) => client.owners.has(author));
 
 // Requiring here to avoid circular dependencies
-const { Schema } = require('@skyra/settings-gateway/dist/lib/schema/Schema');
+const { Schema } = require('@klasa/settings-gateway/dist/lib/schema/Schema');
 
 /**
  * The default Guild Schema
