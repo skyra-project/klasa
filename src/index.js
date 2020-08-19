@@ -66,7 +66,7 @@ module.exports = {
 };
 
 Object.assign(module.exports, require('@klasa/querybuilder'));
-Object.assign(module.exports, require('@skyra/settings-gateway'));
+Object.assign(module.exports, require('@klasa/settings-gateway'));
 
 /**
  * @external Channel
