@@ -38,14 +38,36 @@ class Argument extends AliasPiece {
 		suffix = suffix ? (message ? message.language : client.languages.default).get(suffix) : '';
 		if (min !== null && max !== null) {
 			if (value >= min && value <= max) return true;
-			if (min === max) throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_EXACTLY', possible.name, min, suffix);
-			throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_BOTH', possible.name, min, max, suffix);
+			if (min === max)
+				throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_EXACTLY', {
+					name: possible.name,
+					min,
+					inclusive: possible.inclusive,
+					suffix
+				});
+			throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_BOTH', {
+				name: possible.name,
+				min,
+				max,
+				inclusive: possible.inclusive,
+				suffix
+			});
 		} else if (min !== null) {
 			if (value >= min) return true;
-			throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_MIN', possible.name, min, suffix);
+			throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_MIN', {
+				name: possible.name,
+				min,
+				inclusive: possible.inclusive,
+				suffix
+			});
 		} else if (max !== null) {
 			if (value <= max) return true;
-			throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_MAX', possible.name, max, suffix);
+			throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_MAX', {
+				name: possible.name,
+				max,
+				inclusive: possible.inclusive,
+				suffix
+			});
 		}
 		return true;
 	}
