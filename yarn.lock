@@ -185,7 +185,7 @@
 
 "@klasa/settings-gateway@skyra-project/settings-gateway#build":
   version "1.0.0"
-  resolved "https://codeload.github.com/skyra-project/settings-gateway/tar.gz/192fec0b4c292d7c587b42eab1ee63dc42696da9"
+  resolved "https://codeload.github.com/skyra-project/settings-gateway/tar.gz/77146e99c811bf52d2261693a31690965fe64224"
   dependencies:
     "@discordjs/collection" "^0.1.6"
     "@klasa/querybuilder" "^0.0.1"
