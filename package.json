@@ -17,16 +17,16 @@
 	},
 	"dependencies": {
 		"@klasa/querybuilder": "^0.0.1",
-		"@klasa/settings-gateway": "github:skyra-project/settings-gateway#77146e99c811bf52d2261693a31690965fe64224",
+		"@klasa/settings-gateway": "github:skyra-project/settings-gateway#build",
 		"fs-nextra": "^0.5.1"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^9.1.1",
-		"@commitlint/config-conventional": "^9.1.1",
+		"@commitlint/cli": "^9.1.2",
+		"@commitlint/config-conventional": "^9.1.2",
 		"@skyra/eslint-config": "^5.3.0",
-		"@types/node": "^14.0.27",
-		"@typescript-eslint/eslint-plugin": "^3.9.0",
-		"@typescript-eslint/parser": "^3.9.0",
+		"@types/node": "^14.6.0",
+		"@typescript-eslint/eslint-plugin": "^3.9.1",
+		"@typescript-eslint/parser": "^3.9.1",
 		"cz-conventional-changelog": "^3.2.0",
 		"discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140",
 		"eslint": "^7.7.0",
