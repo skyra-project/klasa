@@ -6,14 +6,14 @@ module.exports = class extends Command {
 			aliases: ['u'],
 			permissionLevel: 10,
 			guarded: true,
-			description: (language) => language.get('COMMAND_UNLOAD_DESCRIPTION'),
+			description: (language) => language.get('commandUnloadDescription'),
 			usage: '<Piece:piece>'
 		});
 	}
 
 	async run(message, [piece]) {
 		if ((piece.type === 'event' && piece.name === 'message') || (piece.type === 'monitor' && piece.name === 'commandHandler')) {
-			return message.sendLocale('COMMAND_UNLOAD_WARN');
+			return message.sendLocale('commandUnloadWarn');
 		}
 		piece.unload();
 		if (this.client.shard) {
@@ -21,6 +21,6 @@ module.exports = class extends Command {
 				if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').unload();
 			`);
 		}
-		return message.sendLocale('COMMAND_UNLOAD', [{ type: piece.type, name: piece.name }]);
+		return message.sendLocale('commandUnload', [{ type: piece.type, name: piece.name }]);
 	}
 };

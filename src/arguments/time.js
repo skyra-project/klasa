@@ -21,6 +21,6 @@ module.exports = class extends Argument {
 			}
 		}
 		if (date && !isNaN(date.getTime()) && date.getTime() > Date.now()) return date;
-		throw message.language.get('RESOLVER_INVALID_TIME', { name: possible.name });
+		throw message.language.get('resolverInvalidTime', { name: possible.name });
 	}
 };

@@ -37,7 +37,7 @@
 		"prettier": "^2.0.5",
 		"rimraf": "^3.0.2",
 		"standard-version": "^9.0.0",
-		"typescript": "^3.9.7"
+		"typescript": "^4.0.2"
 	},
 	"peerDependencies": {
 		"discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140"

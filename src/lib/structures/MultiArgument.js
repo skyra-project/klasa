@@ -47,7 +47,7 @@ class MultiArgument extends Argument {
 		}
 
 		args.push(rest.splice(0, structures.length).join(usageDelim), ...rest);
-		if ((min && structures.length < min) || !structures.length) throw message.language.get(`RESOLVER_MULTI_TOO_FEW`, { name: base.name, min });
+		if ((min && structures.length < min) || !structures.length) throw message.language.get(`resolverMultiTooFew`, { name: base.name, min });
 		return structures;
 	}
 }

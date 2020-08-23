@@ -7,7 +7,7 @@ module.exports = class extends Serializer {
 		if (this.constructor.regex.userOrMember.test(data))
 			user = await this.client.users.fetch(this.constructor.regex.userOrMember.exec(data)[1]).catch(() => null);
 		if (user) return user;
-		throw language.get('RESOLVER_INVALID_USER', { name: entry.key });
+		throw language.get('resolverInvalidUser', { name: entry.key });
 	}
 
 	serialize(value) {

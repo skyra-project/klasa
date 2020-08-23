@@ -14,7 +14,7 @@ class ReactionHandler extends ReactionCollector {
 	 * @typedef {Object} ReactionHandlerOptions
 	 * @property {Function} [filter] A filter function to add to the ReactionHandler
 	 * @property {boolean} [stop=true] If a stop reaction should be included
-	 * @property {string} [prompt=message.language.get('REACTIONHANDLER_PROMPT')] The prompt to be used when awaiting user input on a page to jump to
+	 * @property {string} [prompt=message.language.get('reactionhandlerPrompt')] The prompt to be used when awaiting user input on a page to jump to
 	 * @property {number} [startPage=0] The page to start the RichMenu on
 	 * @property {number} [max] The maximum total amount of reactions to collect
 	 * @property {number} [maxEmojis] The maximum number of emojis to collect
@@ -60,7 +60,7 @@ class ReactionHandler extends ReactionCollector {
 		 * @since 0.4.0
 		 * @type {string}
 		 */
-		this.prompt = this.options.prompt || message.language.get('REACTIONHANDLER_PROMPT');
+		this.prompt = this.options.prompt || message.language.get('reactionhandlerPrompt');
 
 		/**
 		 * The amount of time before the jump menu should close

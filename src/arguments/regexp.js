@@ -8,6 +8,6 @@ module.exports = class extends Argument {
 	run(arg, possible, message) {
 		const results = possible.regex.exec(arg);
 		if (results !== null) return results;
-		throw message.language.get('RESOLVER_INVALID_REGEX_MATCH', { name: possible.name, pattern: possible.regex.toString() });
+		throw message.language.get('resolverInvalidRegexMatch', { name: possible.name, pattern: possible.regex.toString() });
 	}
 };

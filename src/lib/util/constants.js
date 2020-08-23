@@ -50,7 +50,7 @@ exports.DEFAULTS = {
 				cooldown: 0,
 				cooldownLevel: 'author',
 				description: '',
-				extendedHelp: (language) => language.get('COMMAND_HELP_NO_EXTENDED'),
+				extendedHelp: (language) => language.get('commandHelpNoExtended'),
 				enabled: true,
 				flagSupport: true,
 				guarded: false,

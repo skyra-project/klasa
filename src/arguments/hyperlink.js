@@ -10,6 +10,6 @@ module.exports = class extends Argument {
 		const res = parse(arg);
 		const hyperlink = res.protocol && res.hostname ? arg : null;
 		if (hyperlink !== null) return hyperlink;
-		throw message.language.get('RESOLVER_INVALID_URL', { name: possible.name });
+		throw message.language.get('resolverInvalidUrl', { name: possible.name });
 	}
 };

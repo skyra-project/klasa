@@ -11,12 +11,12 @@ module.exports = class extends Serializer {
 			case 'integer':
 				number = parseInt(data);
 				if (Number.isInteger(number) && this.constructor.minOrMax(number, entry, language)) return number;
-				throw language.get('RESOLVER_INVALID_INT', { name: entry.key });
+				throw language.get('resolverInvalidInt', { name: entry.key });
 			case 'number':
 			case 'float':
 				number = parseFloat(data);
 				if (!isNaN(number) && this.constructor.minOrMax(number, entry, language)) return number;
-				throw language.get('RESOLVER_INVALID_FLOAT', { name: entry.key });
+				throw language.get('resolverInvalidFloat', { name: entry.key });
 		}
 		// noop
 		return null;

@@ -6,6 +6,6 @@ module.exports = class extends Argument {
 			? await this.client.channels.fetch(this.constructor.regex.channel.exec(arg)[1]).catch(() => null)
 			: null;
 		if (channel && channel.type === 'voice') return channel;
-		throw message.language.get('RESOLVER_INVALID_CHANNEL', { name: possible.name });
+		throw message.language.get('resolverInvalidChannel', { name: possible.name });
 	}
 };

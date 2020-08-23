@@ -6,6 +6,6 @@ module.exports = class extends Argument {
 			const piece = store.get(arg);
 			if (piece) return piece;
 		}
-		throw message.language.get('RESOLVER_INVALID_PIECE', { name: possible.name, piece: 'piece' });
+		throw message.language.get('resolverInvalidPiece', { name: possible.name, piece: 'piece' });
 	}
 };

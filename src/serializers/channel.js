@@ -16,7 +16,7 @@ module.exports = class extends Serializer {
 			(entry.type === 'categorychannel' && data.type === 'category')
 		)
 			return data;
-		throw language.get('RESOLVER_INVALID_CHANNEL', { name: entry.key });
+		throw language.get('resolverInvalidChannel', { name: entry.key });
 	}
 
 	async validate(data, { entry, language, guild }) {
@@ -25,7 +25,7 @@ module.exports = class extends Serializer {
 			? (guild || this.client).channels.get(this.constructor.regex.channel.exec(data)[1])
 			: null;
 		if (channel) return this.checkChannel(channel, entry, language);
-		throw language.get('RESOLVER_INVALID_CHANNEL', { name: entry.key });
+		throw language.get('resolverInvalidChannel', { name: entry.key });
 	}
 
 	serialize(value) {
