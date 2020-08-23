@@ -181,7 +181,7 @@ class TextPrompt {
 		const message = await this.channel.send(text);
 		const responses = await message.channel.awaitMessages((msg) => msg.author === this.target, { time: this.time, max: 1 });
 		message.delete();
-		if (responses.size === 0) throw this.message.language.get('MESSAGE_PROMPT_TIMEOUT');
+		if (responses.size === 0) throw this.message.language.get('messagePromptTimeout');
 		return responses.first();
 	}
 
@@ -195,10 +195,10 @@ class TextPrompt {
 	async reprompt(prompt) {
 		this._prompted++;
 		if (this.typing) this.message.channel.stopTyping();
-		const possibleAbortOptions = this.message.language.get('TEXT_PROMPT_ABORT_OPTIONS');
+		const possibleAbortOptions = this.message.language.get('textPromptAbortOptions');
 		const edits = this.message.edits.length;
 		const message = await this.prompt(
-			this.message.language.get('MONITOR_COMMAND_HANDLER_REPROMPT', {
+			this.message.language.get('monitorCommandHandlerReprompt', {
 				tag: `<@!${this.target.id}>`,
 				name: prompt,
 				time: this.time / 1000,
@@ -206,7 +206,7 @@ class TextPrompt {
 			})
 		);
 		if (this.message.edits.length !== edits || message.prefix || possibleAbortOptions.includes(message.content.toLowerCase()))
-			throw this.message.language.get('MONITOR_COMMAND_HANDLER_ABORTED');
+			throw this.message.language.get('monitorCommandHandlerAborted');
 
 		this.responses.set(message.id, message);
 
@@ -227,10 +227,10 @@ class TextPrompt {
 	async repeatingPrompt() {
 		if (this.typing) this.message.channel.stopTyping();
 		let message;
-		const possibleCancelOptions = this.message.language.get('TEXT_PROMPT_ABORT_OPTIONS');
+		const possibleCancelOptions = this.message.language.get('textPromptAbortOptions');
 		try {
 			message = await this.prompt(
-				this.message.language.get('MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT', {
+				this.message.language.get('monitorCommandHandlerRepeatingReprompt', {
 					tag: `<@!${this.message.author.id}>`,
 					name: this._currentUsage.possibles[0].name,
 					time: this.time / 1000,
@@ -312,13 +312,13 @@ class TextPrompt {
 				return this.handleError(
 					error ||
 						(this.args[this.params.length] === undefined
-							? this.message.language.get('COMMANDMESSAGE_MISSING_REQUIRED', { name: possible.name })
+							? this.message.language.get('commandmessageMissingRequired', { name: possible.name })
 							: err)
 				);
 			}
 			return this.handleError(
 				error ||
-					this.message.language.get('COMMANDMESSAGE_NOMATCH', {
+					this.message.language.get('commandmessageNomatch', {
 						possibles: this._currentUsage.possibles.map((poss) => poss.name).join(', ')
 					})
 			);

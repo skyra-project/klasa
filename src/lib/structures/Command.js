@@ -12,7 +12,7 @@ const { isFunction } = require('../util/util');
  */
 class Command extends AliasPiece {
 	/**
-	 * Defaulted to `language.get('COMMAND_HELP_NO_EXTENDED')`
+	 * Defaulted to `language.get('commandHelpNoExtended')`
 	 * @typedef {(string|Function)} ExtendedHelp
 	 */
 
@@ -285,7 +285,7 @@ class Command extends AliasPiece {
 	 *
 	 * // Or also using functions to have multilingual support:
 	 * this.customizeResponse('targetUser', (message) =>
-	 *     message.language.get('COMMAND_REQUIRED_USER_FRIENDLY'));
+	 *     message.language.get('commandRequiredUserFriendly'));
 	 */
 	customizeResponse(name, response) {
 		this.usage.customizeResponse(name, response);

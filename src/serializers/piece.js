@@ -14,13 +14,13 @@ module.exports = class extends Serializer {
 				const pce = store.get(data);
 				if (pce) return pce;
 			}
-			throw language.get('RESOLVER_INVALID_PIECE', { name: entry.key, piece: entry.type });
+			throw language.get('resolverInvalidPiece', { name: entry.key, piece: entry.type });
 		}
 		const store = this.client.pieceStores.get(`${entry.type}s`);
-		if (!store) throw language.get('RESOLVER_INVALID_STORE', { store: entry.type });
+		if (!store) throw language.get('resolverInvalidStore', { store: entry.type });
 		const parsed = typeof data === 'string' ? store.get(data) : data;
 		if (parsed && parsed instanceof store.holds) return parsed;
-		throw language.get('RESOLVER_INVALID_PIECE', { name: entry.key, piece: entry.type });
+		throw language.get('resolverInvalidPiece', { name: entry.key, piece: entry.type });
 	}
 
 	serialize(value) {

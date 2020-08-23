@@ -5,14 +5,14 @@ module.exports = class extends Command {
 		super(...args, {
 			permissionLevel: 10,
 			guarded: true,
-			description: (language) => language.get('COMMAND_DISABLE_DESCRIPTION'),
+			description: (language) => language.get('commandDisableDescription'),
 			usage: '<Piece:piece>'
 		});
 	}
 
 	async run(message, [piece]) {
 		if ((piece.type === 'event' && piece.name === 'message') || (piece.type === 'monitor' && piece.name === 'commandHandler')) {
-			return message.sendLocale('COMMAND_DISABLE_WARN');
+			return message.sendLocale('commandDisableWarn');
 		}
 		piece.disable();
 		if (this.client.shard) {
@@ -20,7 +20,7 @@ module.exports = class extends Command {
 				if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').disable();
 			`);
 		}
-		return message.sendLocale('COMMAND_DISABLE', [{ type: piece.type, name: piece.name }], {
+		return message.sendLocale('commandDisable', [{ type: piece.type, name: piece.name }], {
 			code: 'diff'
 		});
 	}

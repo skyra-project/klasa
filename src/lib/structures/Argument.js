@@ -39,13 +39,13 @@ class Argument extends AliasPiece {
 		if (min !== null && max !== null) {
 			if (value >= min && value <= max) return true;
 			if (min === max)
-				throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_EXACTLY', {
+				throw (message ? message.language : client.languages.default).get('resolverMinmaxExactly', {
 					name: possible.name,
 					min,
 					inclusive: possible.inclusive,
 					suffix
 				});
-			throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_BOTH', {
+			throw (message ? message.language : client.languages.default).get('resolverMinmaxBoth', {
 				name: possible.name,
 				min,
 				max,
@@ -54,7 +54,7 @@ class Argument extends AliasPiece {
 			});
 		} else if (min !== null) {
 			if (value >= min) return true;
-			throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_MIN', {
+			throw (message ? message.language : client.languages.default).get('resolverMinmaxMin', {
 				name: possible.name,
 				min,
 				inclusive: possible.inclusive,
@@ -62,7 +62,7 @@ class Argument extends AliasPiece {
 			});
 		} else if (max !== null) {
 			if (value <= max) return true;
-			throw (message ? message.language : client.languages.default).get('RESOLVER_MINMAX_MAX', {
+			throw (message ? message.language : client.languages.default).get('resolverMinmaxMax', {
 				name: possible.name,
 				max,
 				inclusive: possible.inclusive,

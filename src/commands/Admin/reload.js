@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			aliases: ['r'],
 			permissionLevel: 10,
 			guarded: true,
-			description: (language) => language.get('COMMAND_RELOAD_DESCRIPTION'),
+			description: (language) => language.get('commandReloadDescription'),
 			usage: '<Store:store|Piece:piece|everything:default>'
 		});
 	}
@@ -22,7 +22,7 @@ module.exports = class extends Command {
 					if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.name}.loadAll().then(() => this.${piece.name}.init());
 				`);
 			}
-			return message.sendLocale('COMMAND_RELOAD_ALL', [{ type: piece, time: timer.stop() }]);
+			return message.sendLocale('commandReloadAll', [{ type: piece, time: timer.stop() }]);
 		}
 
 		try {
@@ -33,10 +33,10 @@ module.exports = class extends Command {
 					if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').reload();
 				`);
 			}
-			return message.sendLocale('COMMAND_RELOAD', [{ type: itm.type, name: itm.name, time: timer.stop() }]);
+			return message.sendLocale('commandReload', [{ type: itm.type, name: itm.name, time: timer.stop() }]);
 		} catch (err) {
 			piece.store.set(piece);
-			return message.sendLocale('COMMAND_RELOAD_FAILED', [{ type: piece.type, name: piece.name }]);
+			return message.sendLocale('commandReloadFailed', [{ type: piece.type, name: piece.name }]);
 		}
 	}
 
@@ -56,6 +56,6 @@ module.exports = class extends Command {
 				});
 			`);
 		}
-		return message.sendLocale('COMMAND_RELOAD_EVERYTHING', [{ time: timer.stop() }]);
+		return message.sendLocale('commandReloadEverything', [{ time: timer.stop() }]);
 	}
 };

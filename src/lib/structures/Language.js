@@ -26,7 +26,7 @@ class Language extends Piece {
 				return value(...args);
 			case 'undefined':
 				if (this === this.store.default) return this.language.DEFAULT(term);
-				return `${this.language.DEFAULT(term)}\n\n**${this.language.DEFAULT_LANGUAGE}:**\n${this.store.default.get(term, ...args)}`;
+				return `${this.language.default(term)}\n\n**${this.language.defaultLanguage}:**\n${this.store.default.get(term, ...args)}`;
 			default:
 				return value;
 		}

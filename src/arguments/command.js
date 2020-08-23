@@ -8,6 +8,6 @@ module.exports = class extends Argument {
 	run(arg, possible, message) {
 		const command = this.client.commands.get(arg.toLowerCase());
 		if (command) return command;
-		throw message.language.get('RESOLVER_INVALID_PIECE', { name: possible.name, piece: 'command' });
+		throw message.language.get('resolverInvalidPiece', { name: possible.name, piece: 'command' });
 	}
 };

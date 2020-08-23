@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			aliases: ['l'],
 			permissionLevel: 10,
 			guarded: true,
-			description: (language) => language.get('COMMAND_LOAD_DESCRIPTION'),
+			description: (language) => language.get('commandLoadDescription'),
 			usage: '[core] <Store:store> <path:...string>',
 			usageDelim: ' '
 		});
@@ -21,7 +21,7 @@ module.exports = class extends Command {
 		const piece = await (core ? this.tryEach(store, path) : store.load(store.userDirectory, path));
 
 		try {
-			if (!piece) throw message.language.get('COMMAND_LOAD_FAIL');
+			if (!piece) throw message.language.get('commandLoadFail');
 			await piece.init();
 			if (this.client.shard) {
 				await this.client.shard.broadcastEval(`
@@ -31,10 +31,10 @@ module.exports = class extends Command {
 					}
 				`);
 			}
-			return message.sendLocale('COMMAND_LOAD', [{ time: timer.stop(), type: store.name, name: piece.name }]);
+			return message.sendLocale('commandLoad', [{ time: timer.stop(), type: store.name, name: piece.name }]);
 		} catch (error) {
 			timer.stop();
-			throw message.language.get('COMMAND_LOAD_ERROR', { type: store.name, name: piece ? piece.name : path.join('/'), error });
+			throw message.language.get('commandLoadError', { type: store.name, name: piece ? piece.name : path.join('/'), error });
 		}
 	}
 

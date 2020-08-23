@@ -5,7 +5,7 @@ module.exports = class extends Command {
 		super(...args, {
 			permissionLevel: 10,
 			guarded: true,
-			description: (language) => language.get('COMMAND_ENABLE_DESCRIPTION'),
+			description: (language) => language.get('commandEnableDescription'),
 			usage: '<Piece:piece>'
 		});
 	}
@@ -17,6 +17,6 @@ module.exports = class extends Command {
 				if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').enable();
 			`);
 		}
-		return message.sendCode('diff', message.language.get('COMMAND_ENABLE', { type: piece.type, name: piece.name }));
+		return message.sendCode('diff', message.language.get('commandEnable', { type: piece.type, name: piece.name }));
 	}
 };
