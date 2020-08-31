@@ -10,7 +10,6 @@
 	"scripts": {
 		"lint": "eslint src typings --ext js,ts --fix",
 		"format": "prettier --write src/**/*.js typings/**/*.ts",
-		"format:check": "prettier --check src/**/*.js typings/**/*.ts",
 		"sversion": "standard-version",
 		"commit": "git-cz",
 		"cz": "git-cz"
