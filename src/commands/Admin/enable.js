@@ -17,6 +17,6 @@ module.exports = class extends Command {
 				if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').enable();
 			`);
 		}
-		return message.sendCode('diff', message.language.get('commandEnable', { type: piece.type, name: piece.name }));
+		return message.sendLocale('commandEnable', [{ type: piece.type, name: piece.name }], { code: 'diff' });
 	}
 };
