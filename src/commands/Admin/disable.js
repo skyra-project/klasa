@@ -11,7 +11,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message, [piece]) {
-		if ((piece.type === 'event' && piece.name === 'message') || (piece.type === 'monitor' && piece.name === 'commandHandler')) {
+		if ((piece.type === 'event' && piece.name === 'coreMessage') || (piece.type === 'monitor' && piece.name === 'commandHandler')) {
 			return message.sendLocale('commandDisableWarn');
 		}
 		piece.disable();

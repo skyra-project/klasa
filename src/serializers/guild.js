@@ -4,7 +4,7 @@ const { Guild } = require('discord.js');
 module.exports = class extends Serializer {
 	async validate(data, { entry, language }) {
 		if (data instanceof Guild) return data;
-		const guild = this.constructor.regex.channel.test(data) ? this.client.guilds.get(data) : null;
+		const guild = this.constructor.regex.channel.test(data) ? this.client.guilds.cache.get(data) : null;
 		if (guild) return guild;
 		throw language.get('resolverInvalidGuild', { name: entry.key });
 	}

@@ -309,7 +309,7 @@ class Util {
 			if (guild instanceof Guild) return guild;
 			if (guild instanceof GuildChannel || guild instanceof GuildMember || guild instanceof Message) return guild.guild;
 		} else if (type === 'string' && /^\d{17,19}$/.test(guild)) {
-			return client.guilds.get(guild) || null;
+			return client.guilds.cache.get(guild) || null;
 		}
 		return null;
 	}

@@ -22,7 +22,7 @@ module.exports = class extends Serializer {
 	async validate(data, { entry, language, guild }) {
 		if (data instanceof Channel) return this.checkChannel(data, entry, language);
 		const channel = this.constructor.regex.channel.test(data)
-			? (guild || this.client).channels.get(this.constructor.regex.channel.exec(data)[1])
+			? (guild || this.client).channels.cache.get(this.constructor.regex.channel.exec(data)[1])
 			: null;
 		if (channel) return this.checkChannel(channel, entry, language);
 		throw language.get('resolverInvalidChannel', { name: entry.key });
