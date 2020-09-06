@@ -1459,6 +1459,7 @@ declare module 'klasa' {
 		export interface DMChannel extends SendAliases, ChannelExtendables {}
 
 		export interface NewsChannel extends SendAliases, ChannelExtendables {}
+
 		interface PartialSendAliases {
 			sendLocale<T extends LanguageKeysSimple>(key: T, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
 			sendLocale<T extends LanguageKeysSimple>(
