@@ -18,7 +18,7 @@ module.exports = class extends Serializer {
 
 	stringify(value, guild) {
 		return (
-			(guild && guild.roles.get(value)) || {
+			(guild && guild.roles.cache.get(value)) || {
 				name: (value && value.name) || value
 			}
 		).name;
