@@ -39,35 +39,43 @@ class Argument extends AliasPiece {
 		if (min !== null && max !== null) {
 			if (value >= min && value <= max) return true;
 			if (min === max)
-				throw (message ? message.language : client.languages.default).get('resolverMinmaxExactly', {
+				throw (message ? message.language : client.languages.default).get(
+					possible.inclusive ? 'resolverMinmaxExactlyInclusive' : 'resolverMinmaxExactlyExclusive',
+					{
+						name: possible.name,
+						min,
+						suffix
+					}
+				);
+			throw (message ? message.language : client.languages.default).get(
+				possible.inclusive ? 'resolverMinmaxBothInclusive' : 'resolverMinmaxBothExclusive',
+				{
 					name: possible.name,
 					min,
-					inclusive: possible.inclusive,
+					max,
 					suffix
-				});
-			throw (message ? message.language : client.languages.default).get('resolverMinmaxBoth', {
-				name: possible.name,
-				min,
-				max,
-				inclusive: possible.inclusive,
-				suffix
-			});
+				}
+			);
 		} else if (min !== null) {
 			if (value >= min) return true;
-			throw (message ? message.language : client.languages.default).get('resolverMinmaxMin', {
-				name: possible.name,
-				min,
-				inclusive: possible.inclusive,
-				suffix
-			});
+			throw (message ? message.language : client.languages.default).get(
+				possible.inclusive ? 'resolverMinmaxMinInclusive' : 'resolverMinmaxMinExclusive',
+				{
+					name: possible.name,
+					min,
+					suffix
+				}
+			);
 		} else if (max !== null) {
 			if (value <= max) return true;
-			throw (message ? message.language : client.languages.default).get('resolverMinmaxMax', {
-				name: possible.name,
-				max,
-				inclusive: possible.inclusive,
-				suffix
-			});
+			throw (message ? message.language : client.languages.default).get(
+				possible.inclusive ? 'resolverMinmaxMaxInclusive' : 'resolverMinmaxMaxExclusive',
+				{
+					name: possible.name,
+					max,
+					suffix
+				}
+			);
 		}
 		return true;
 	}

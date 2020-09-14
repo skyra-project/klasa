@@ -202,7 +202,7 @@ class TextPrompt {
 				tag: `<@!${this.target.id}>`,
 				name: prompt,
 				time: this.time / 1000,
-				cancelOptions: possibleAbortOptions
+				cancelOptions: possibleAbortOptions.join('**, **')
 			})
 		);
 		if (this.message.edits.length !== edits || message.prefix || possibleAbortOptions.includes(message.content.toLowerCase()))
@@ -234,7 +234,7 @@ class TextPrompt {
 					tag: `<@!${this.message.author.id}>`,
 					name: this._currentUsage.possibles[0].name,
 					time: this.time / 1000,
-					cancelOptions: possibleCancelOptions
+					cancelOptions: possibleCancelOptions.join('**, **')
 				})
 			);
 			this.responses.set(message.id, message);
