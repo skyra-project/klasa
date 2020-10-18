@@ -24,6 +24,7 @@ const KlasaConsole = require('./util/KlasaConsole');
 const { DEFAULTS } = require('./util/constants');
 const Stopwatch = require('./util/Stopwatch');
 const util = require('./util/util');
+const getRootDirectory = require('./util/RootDir');
 
 // external plugins
 const plugins = new Set();
@@ -142,7 +143,7 @@ class KlasaClient extends Discord.Client {
 		 * @since 0.0.1
 		 * @type {string}
 		 */
-		this.userBaseDirectory = path.dirname(require.main.filename);
+		this.userBaseDirectory = getRootDirectory();
 
 		/**
 		 * The console for this instance of klasa. You can disable timestamps, colors, and add writable streams as configuration options to configure this.
