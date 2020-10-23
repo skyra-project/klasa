@@ -1189,6 +1189,7 @@ declare module 'klasa' {
 			registerStore<K, V extends Piece, VConstructor = Constructor<V>>(store: Store<K, V, VConstructor>): KlasaClient;
 			unregisterStore<K, V extends Piece, VConstructor = Constructor<V>>(store: Store<K, V, VConstructor>): KlasaClient;
 			sweepMessages(lifetime?: number, commandLifeTime?: number): number;
+			fetchPrefix(message: KlasaMessage): Promise<string | readonly string[] | null> | string | readonly string[] | null;
 			fetchLanguage(message: { channel: Channel; guild: Guild | null }): Promise<string>;
 			on(event: 'argumentError', listener: (message: KlasaMessage, command: Command, params: any[], error: string) => void): this;
 			on(event: 'commandError', listener: (message: KlasaMessage, command: Command, params: any[], error: Error | string) => void): this;
