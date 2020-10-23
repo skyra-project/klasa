@@ -26,7 +26,6 @@ module.exports = class extends Event {
 		}
 
 		this.client.mentionPrefix = new RegExp(`^<@!?${this.client.user.id}>`);
-		await Promise.all(this.client.gateways.map((gateway) => gateway.sync()));
 
 		// Init all the pieces
 		await Promise.all(this.client.pieceStores.filter((store) => !['extendables'].includes(store.name)).map((store) => store.init()));
