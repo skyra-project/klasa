@@ -4,14 +4,12 @@ declare module 'klasa' {
 	import { ExecOptions } from 'child_process';
 	import {
 		APIMessage,
-		Channel,
 		Client,
 		ClientOptions,
 		Collection,
 		DMChannel,
 		EmojiResolvable,
 		Guild,
-		GuildMember,
 		GuildResolvable,
 		Message,
 		MessageAdditions,
@@ -22,7 +20,6 @@ declare module 'klasa' {
 		PermissionResolvable,
 		Permissions,
 		ReactionCollector,
-		Role,
 		Snowflake,
 		StringResolvable,
 		TextChannel,
@@ -274,15 +271,15 @@ declare module 'klasa' {
 		public aliases: Collection<K, V>;
 	}
 
-	export class ArgumentStore extends AliasStore<string, Argument, typeof Argument> {}
+	export class ArgumentStore extends AliasStore<string, Argument, typeof Argument> { }
 
-	export class CommandStore extends AliasStore<string, Command, typeof Command> {}
+	export class CommandStore extends AliasStore<string, Command, typeof Command> { }
 
 	export class EventStore extends Store<string, Event, typeof Event> {
 		private _onceEvents: Set<string>;
 	}
 
-	export class ExtendableStore extends Store<string, Extendable, typeof Extendable> {}
+	export class ExtendableStore extends Store<string, Extendable, typeof Extendable> { }
 
 	export class FinalizerStore extends Store<string, Finalizer, typeof Finalizer> {
 		public run(message: KlasaMessage, command: Command, response: KlasaMessage | KlasaMessage[], runTime: Stopwatch): Promise<void>;
@@ -300,7 +297,7 @@ declare module 'klasa' {
 		public run(message: KlasaMessage): Promise<void>;
 	}
 
-	export class TaskStore extends Store<string, Task, typeof Task> {}
+	export class TaskStore extends Store<string, Task, typeof Task> { }
 
 	// #endregion Stores
 
@@ -834,7 +831,7 @@ declare module 'klasa' {
 		aliases?: string[];
 	}
 
-	export interface ArgumentOptions extends AliasPieceOptions {}
+	export interface ArgumentOptions extends AliasPieceOptions { }
 
 	export interface CommandOptions extends AliasPieceOptions {
 		autoAliases?: boolean;
@@ -882,9 +879,9 @@ declare module 'klasa' {
 		once?: boolean;
 	}
 
-	export interface FinalizerOptions extends PieceOptions {}
-	export interface LanguageOptions extends PieceOptions {}
-	export interface TaskOptions extends PieceOptions {}
+	export interface FinalizerOptions extends PieceOptions { }
+	export interface LanguageOptions extends PieceOptions { }
+	export interface TaskOptions extends PieceOptions { }
 
 	export interface PieceJSON {
 		directory: string;
@@ -923,12 +920,12 @@ declare module 'klasa' {
 		emitter: string;
 	}
 
-	export interface PieceInhibitorJSON extends PieceJSON, Required<InhibitorOptions> {}
-	export interface PieceMonitorJSON extends PieceJSON, Required<MonitorOptions> {}
-	export interface PieceArgumentJSON extends AliasPieceJSON, Required<ArgumentOptions> {}
-	export interface PieceFinalizerJSON extends PieceJSON, Required<FinalizerOptions> {}
-	export interface PieceLanguageJSON extends PieceJSON, Required<LanguageOptions> {}
-	export interface PieceTaskJSON extends PieceJSON, Required<TaskOptions> {}
+	export interface PieceInhibitorJSON extends PieceJSON, Required<InhibitorOptions> { }
+	export interface PieceMonitorJSON extends PieceJSON, Required<MonitorOptions> { }
+	export interface PieceArgumentJSON extends AliasPieceJSON, Required<ArgumentOptions> { }
+	export interface PieceFinalizerJSON extends PieceJSON, Required<FinalizerOptions> { }
+	export interface PieceLanguageJSON extends PieceJSON, Required<LanguageOptions> { }
+	export interface PieceTaskJSON extends PieceJSON, Required<TaskOptions> { }
 
 	// Usage
 	export interface TextPromptOptions {
@@ -1147,7 +1144,7 @@ declare module 'klasa' {
 	}
 
 	interface Constructor<C> {
-		new (...args: any[]): C;
+		new(...args: any[]): C;
 	}
 
 	type PrimitiveType = string | number | boolean;
@@ -1308,11 +1305,11 @@ declare module 'klasa' {
 			hasAtLeastPermissionLevel(min: number): Promise<boolean>;
 		}
 
-		export interface TextChannel extends SendAliases, ChannelExtendables {}
+		export interface TextChannel extends SendAliases, ChannelExtendables { }
 
-		export interface DMChannel extends SendAliases, ChannelExtendables {}
+		export interface DMChannel extends SendAliases, ChannelExtendables { }
 
-		export interface NewsChannel extends SendAliases, ChannelExtendables {}
+		export interface NewsChannel extends SendAliases, ChannelExtendables { }
 
 		interface PartialSendAliases {
 			sendLocale<T extends LanguageKeysSimple>(key: T, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
@@ -1420,7 +1417,7 @@ declare module 'klasa' {
 		}
 
 		interface Constructor<C> {
-			new (...args: any[]): C;
+			new(...args: any[]): C;
 		}
 	}
 
