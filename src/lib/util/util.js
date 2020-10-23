@@ -12,7 +12,7 @@ const REGEXPESC = /[-/\\^$*+?.()|[\]{}]/g;
  */
 class Util {
 	/**
-	 * @typedef {(KlasaGuild|KlasaMessage|external:GuildChannel)} GuildResolvable
+	 * @typedef {(external:Guild|KlasaMessage|external:GuildChannel)} GuildResolvable
 	 */
 
 	/**
@@ -300,7 +300,7 @@ class Util {
 	 * @since 0.5.0
 	 * @param {KlasaClient} client The KlasaClient
 	 * @param {GuildResolvable} guild A guild resolvable
-	 * @returns {?KlasaGuild}
+	 * @returns {?external:Guild}
 	 * @private
 	 */
 	static resolveGuild(client, guild) {

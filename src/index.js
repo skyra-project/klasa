@@ -4,7 +4,6 @@ module.exports = {
 	Client: require('./lib/Client'),
 
 	// lib/extensions
-	KlasaGuild: require('./lib/extensions/KlasaGuild'),
 	KlasaMessage: require('./lib/extensions/KlasaMessage'),
 
 	// lib/permissions
@@ -64,9 +63,6 @@ module.exports = {
 	// version
 	version: require('../package').version
 };
-
-Object.assign(module.exports, require('@klasa/querybuilder'));
-Object.assign(module.exports, require('@klasa/settings-gateway'));
 
 /**
  * @external Channel

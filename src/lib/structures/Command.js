@@ -34,7 +34,6 @@ class Command extends AliasPiece {
 	 * @property {number} [promptLimit=0] The number or attempts allowed for re-prompting an argument
 	 * @property {number} [promptTime=30000] The time allowed for re-prompting of this command
 	 * @property {boolean} [quotedStringSupport=false] Whether args for this command should not deliminated inside quotes
-	 * @property {string[]} [requiredSettings=[]] The required guild settings to use this command
 	 * @property {string[]} [runIn=['text','dm']] What channel types the command should run in
 	 * @property {boolean} [subcommands=false] Whether to enable sub commands or not
 	 * @property {string} [usage=''] The usage string for the command
@@ -156,13 +155,6 @@ class Command extends AliasPiece {
 		 * @type {boolean}
 		 */
 		this.quotedStringSupport = options.quotedStringSupport;
-
-		/**
-		 * The required per guild settings to run this command
-		 * @since 0.0.1
-		 * @type {string[]}
-		 */
-		this.requiredSettings = options.requiredSettings;
 
 		/**
 		 * What channels the command should run in
@@ -327,7 +319,6 @@ class Command extends AliasPiece {
 			promptLimit: this.promptLimit,
 			promptTime: this.promptTime,
 			quotedStringSupport: this.quotedStringSupport,
-			requiredSettings: this.requiredSettings.slice(0),
 			runIn: this.runIn.slice(0),
 			subCategory: this.subCategory,
 			subcommands: this.subcommands,

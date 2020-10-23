@@ -9,8 +9,8 @@ module.exports = class extends Argument {
 		return this.store.get('string');
 	}
 
-	run(arg, possible, message) {
-		if (!arg) throw message.language.get('resolverInvalidString', { name: possible.name });
+	async run(arg, possible, message) {
+		if (!arg) throw await message.fetchLocale('resolverInvalidString', { name: possible.name });
 		const {
 			args,
 			usage: { usageDelim }

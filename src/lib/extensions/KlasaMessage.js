@@ -246,9 +246,24 @@ module.exports = Structures.extend('Message', (Message) => {
 		 * @param {external:MessageOptions} [options] The D.JS message options plus Language arguments
 		 * @returns {Promise<KlasaMessage|KlasaMessage[]>}
 		 */
-		sendLocale(key, localeArgs = [], options = {}) {
+		async sendLocale(key, localeArgs = [], options = {}) {
 			if (!Array.isArray(localeArgs)) [options, localeArgs] = [localeArgs, []];
-			return this.sendMessage(APIMessage.transformOptions(this.language.get(key, ...localeArgs), undefined, options));
+			return this.sendMessage(APIMessage.transformOptions(await this.fetchLocale(key, ...localeArgs), undefined, options));
+		}
+
+		/**
+		 * Retrieves the localized message.
+		 * @since 0.5.0
+		 * @param {string} key The Language key to send
+		 * @param {Array<*>} [localeArgs] The language arguments to pass
+		 * @returns {Promise<string>}
+		 */
+		async fetchLocale(key, localeArgs = []) {
+			const languageKey = await this.client.fetchLanguage(this);
+			const language = this.client.languages.get(languageKey);
+			if (!language) throw new Error(`The language '${language}' is not available.`);
+
+			return language.get(key, ...localeArgs);
 		}
 
 		/**
@@ -259,7 +274,6 @@ module.exports = Structures.extend('Message', (Message) => {
 		 */
 		patch(data) {
 			const ret = super.patch(data);
-			this.language = this.guild ? this.guild.language : this.client.languages.default;
 			this._parseCommand();
 			return ret;
 		}
@@ -272,21 +286,6 @@ module.exports = Structures.extend('Message', (Message) => {
 		 */
 		_patch(data) {
 			super._patch(data);
-
-			/**
-			 * The language in this setting
-			 * @since 0.3.0
-			 * @type {Language}
-			 */
-			this.language = this.guild ? this.guild.language : this.client.languages.default;
-
-			/**
-			 * The guild level settings for this context (guild || default)
-			 * @since 0.5.0
-			 * @type {Settings}
-			 */
-			this.guildSettings = this.guild ? this.guild.settings : this.client.gateways.get('guilds').schema.defaults;
-
 			this._parseCommand();
 		}
 
@@ -295,7 +294,7 @@ module.exports = Structures.extend('Message', (Message) => {
 		 * @since 0.5.0
 		 * @private
 		 */
-		_parseCommand() {
+		async _parseCommand() {
 			// Clear existing command state so edits to non-commands do not re-run commands
 			this.prefix = null;
 			this.prefixLength = null;
@@ -304,7 +303,7 @@ module.exports = Structures.extend('Message', (Message) => {
 			this.prompter = null;
 
 			try {
-				const prefix = this._customPrefix() || this._mentionPrefix() || this._naturalPrefix() || this._prefixLess();
+				const prefix = (await this._customPrefix()) || this._mentionPrefix() || this._naturalPrefix() || this._prefixLess();
 
 				if (!prefix) return;
 
@@ -321,17 +320,17 @@ module.exports = Structures.extend('Message', (Message) => {
 					time: this.command.promptTime,
 					limit: this.command.promptLimit
 				});
-			} catch (error) {}
+			} catch {}
 		}
 
 		/**
 		 * Checks if the per-guild or default prefix is used
 		 * @since 0.5.0
-		 * @returns {CachedPrefix | null}
+		 * @returns {Promise<CachedPrefix | null>}
 		 * @private
 		 */
-		_customPrefix() {
-			const prefix = this.guildSettings.get('prefix');
+		async _customPrefix() {
+			const prefix = await this.client.fetchPrefix(this);
 			if (!prefix || !prefix.length) return null;
 			for (const prf of Array.isArray(prefix) ? prefix : [prefix]) {
 				const testingPrefix =
@@ -360,7 +359,7 @@ module.exports = Structures.extend('Message', (Message) => {
 		 * @private
 		 */
 		_naturalPrefix() {
-			if (this.guildSettings.get('disableNaturalPrefix') || !this.client.options.regexPrefix) return null;
+			if (!this.client.options.regexPrefix) return null;
 			const results = this.client.options.regexPrefix.exec(this.content);
 			return results ? { length: results[0].length, regex: this.client.options.regexPrefix } : null;
 		}

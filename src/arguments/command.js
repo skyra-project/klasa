@@ -5,9 +5,9 @@ module.exports = class extends Argument {
 		super(...args, { aliases: ['cmd'] });
 	}
 
-	run(arg, possible, message) {
+	async run(arg, possible, message) {
 		const command = this.client.commands.get(arg.toLowerCase());
 		if (command) return command;
-		throw message.language.get('resolverInvalidPiece', { name: possible.name, piece: 'command' });
+		throw await message.fetchLocale('resolverInvalidPiece', { name: possible.name, piece: 'command' });
 	}
 };

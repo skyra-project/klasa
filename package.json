@@ -15,8 +15,6 @@
 		"cz": "git-cz"
 	},
 	"dependencies": {
-		"@klasa/querybuilder": "^0.0.1",
-		"@klasa/settings-gateway": "github:skyra-project/settings-gateway#build",
 		"fs-nextra": "^0.5.1"
 	},
 	"devDependencies": {

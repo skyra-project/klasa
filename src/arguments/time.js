@@ -9,7 +9,7 @@ module.exports = class extends Argument {
 		return this.store.get('duration');
 	}
 
-	run(arg, possible, message) {
+	async run(arg, possible, message) {
 		let date;
 		try {
 			date = this.date.run(arg, possible, message);
@@ -21,6 +21,6 @@ module.exports = class extends Argument {
 			}
 		}
 		if (date && !isNaN(date.getTime()) && date.getTime() > Date.now()) return date;
-		throw message.language.get('resolverInvalidTime', { name: possible.name });
+		throw await message.fetchLocale('resolverInvalidTime', { name: possible.name });
 	}
 };

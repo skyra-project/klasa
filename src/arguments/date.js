@@ -1,9 +1,9 @@
 const { Argument } = require('klasa');
 
 module.exports = class extends Argument {
-	run(arg, possible, message) {
+	async run(arg, possible, message) {
 		const date = new Date(arg);
 		if (!isNaN(date.getTime()) && date.getTime() > Date.now()) return date;
-		throw message.language.get('resolverInvalidDate', { name: possible.name });
+		throw await message.fetchLocale('resolverInvalidDate', { name: possible.name });
 	}
 };

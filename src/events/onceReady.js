@@ -29,7 +29,7 @@ module.exports = class extends Event {
 		await Promise.all(this.client.gateways.map((gateway) => gateway.sync()));
 
 		// Init all the pieces
-		await Promise.all(this.client.pieceStores.filter((store) => !['providers', 'extendables'].includes(store.name)).map((store) => store.init()));
+		await Promise.all(this.client.pieceStores.filter((store) => !['extendables'].includes(store.name)).map((store) => store.init()));
 		util.initClean(this.client);
 		this.client.ready = true;
 

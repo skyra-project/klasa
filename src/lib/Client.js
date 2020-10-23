@@ -62,31 +62,12 @@ class KlasaClient extends Discord.Client {
 	 * @property {PieceDefaults} [pieceDefaults={}] Overrides the defaults for all pieces
 	 * @property {string|string[]} [prefix] The default prefix the bot should respond to
 	 * @property {boolean} [production=false] Whether the bot should handle unhandled promise rejections automatically (handles when false) (also can be configured with process.env.NODE_ENV)
-	 * @property {ProvidersOptions} [providers] The provider options
 	 * @property {ReadyMessage} [readyMessage] readyMessage to be passed throughout Klasa's ready event
 	 * @property {RegExp} [regexPrefix] The regular expression prefix if one is provided
 	 * @property {number} [slowmode=0] Amount of time in ms before the bot will respond to a users command since the last command that user has run
 	 * @property {boolean} [slowmodeAggressive=false] If the slowmode time should reset if a user spams commands faster than the slowmode allows for
 	 * @property {boolean} [typing=false] Whether the bot should type while processing commands
 	 * @property {boolean} [prefixCaseInsensitive=false] Wether the bot should respond to case insensitive prefix or not
-	 * @property {SettingsOptions} [settings] The setting's options
-	 */
-
-	/**
-	 * @typedef {Object} ProvidersOptions
-	 * @property {string} [default] The default provider to use
-	 */
-
-	/**
-	 * @typedef {Object} SettingsOptions
-	 * @property {boolean} [throwOnError=false] Whether settings updates and resets should throw their errors or not
-	 * @property {boolean} [preserve=true] Whether the bot should preserve (non-default) settings when removed from a guild
-	 * @property {GatewayOptions} [gateways={}] The options for each built-in gateway
-	 */
-
-	/**
-	 * @typedef {Object} GatewaysOptions
-	 * @property {GatewayDriverRegisterOptions} [guilds] The options for guilds' gateway
 	 */
 
 	/**
@@ -108,7 +89,6 @@ class KlasaClient extends Discord.Client {
 	 * @property {InhibitorOptions} [inhibitors={}] The default inhibitor options
 	 * @property {LanguageOptions} [languages={}] The default language options
 	 * @property {MonitorOptions} [monitors={}] The default monitor options
-	 * @property {ProviderOptions} [providers={}] The default provider options
 	 */
 
 	/**
@@ -127,9 +107,6 @@ class KlasaClient extends Discord.Client {
 		if (!util.isObject(options)) throw new TypeError('The Client Options for Klasa must be an object.');
 		options = util.mergeDefault(DEFAULTS.CLIENT, options);
 		super(options);
-
-		// Requiring here to avoid circular dependencies
-		const { SerializerStore, ProviderStore, GatewayDriver } = require('@klasa/settings-gateway');
 
 		/**
 		 * The options the client was instantiated with.
@@ -195,13 +172,6 @@ class KlasaClient extends Discord.Client {
 		this.languages = new LanguageStore(this);
 
 		/**
-		 * The cache where providers are stored
-		 * @since 0.0.1
-		 * @type {ProviderStore}
-		 */
-		this.providers = new ProviderStore(this);
-
-		/**
 		 * The cache where events are stored
 		 * @since 0.0.1
 		 * @type {EventStore}
@@ -223,13 +193,6 @@ class KlasaClient extends Discord.Client {
 		this.tasks = new TaskStore(this);
 
 		/**
-		 * The Serializers where serializers are stored
-		 * @since 0.5.0
-		 * @type {SerializerStore}
-		 */
-		this.serializers = new SerializerStore(this);
-
-		/**
 		 * A Store registry
 		 * @since 0.3.0
 		 * @type {external:Collection}
@@ -244,13 +207,6 @@ class KlasaClient extends Discord.Client {
 		this.permissionLevels = this.validatePermissionLevels();
 
 		/**
-		 * The GatewayDriver instance where the gateways are stored
-		 * @since 0.5.0
-		 * @type {GatewayDriver}
-		 */
-		this.gateways = new GatewayDriver(this);
-
-		/**
 		 * The application info cached from the discord api
 		 * @since 0.0.1
 		 * @type {external:ClientApplication}
@@ -262,12 +218,10 @@ class KlasaClient extends Discord.Client {
 			.registerStore(this.finalizers)
 			.registerStore(this.monitors)
 			.registerStore(this.languages)
-			.registerStore(this.providers)
 			.registerStore(this.events)
 			.registerStore(this.extendables)
 			.registerStore(this.tasks)
-			.registerStore(this.arguments)
-			.registerStore(this.serializers);
+			.registerStore(this.arguments);
 
 		const coreDirectory = path.join(__dirname, '../');
 		for (const store of this.pieceStores.values()) store.registerCoreDirectory(coreDirectory);
@@ -285,8 +239,6 @@ class KlasaClient extends Discord.Client {
 		 * @type {RegExp}
 		 */
 		this.mentionPrefix = null;
-
-		this.constructor.registerGateways(this);
 
 		// Run all plugin functions in this context
 		for (const plugin of plugins) plugin.call(this);
@@ -379,14 +331,26 @@ class KlasaClient extends Discord.Client {
 			console.error(err);
 			process.exit();
 		});
+
 		this.emit('log', loaded.join('\n'));
-
-		// Providers must be init before settings, and those before all other stores.
-		await this.providers.init();
-		await this.gateways.init();
-
 		this.emit('log', `Loaded in ${timer.stop()}.`);
 		return super.login(token);
+	}
+
+	/**
+	 * Retrieves the prefix for the guild.
+	 * @param {KlasaMessage} message The message that gives context.
+	 */
+	fetchPrefix() {
+		return this.options.prefix ?? null;
+	}
+
+	/**
+	 * Retrieves the language key for the message.
+	 * @param {KlasaMessage} message The message that gives context.
+	 */
+	fetchLanguage() {
+		return this.options.language ?? 'en-US';
 	}
 
 	/**
@@ -450,42 +414,6 @@ class KlasaClient extends Discord.Client {
 		plugins.add(plugin);
 		return this;
 	}
-
-	/**
-	 * Register all built-in gateways
-	 * @since 0.5.0
-	 * @param {KlasaClient} client The client to register the gateways into
-	 * @private
-	 */
-	static registerGateways(client) {
-		const { Gateway } = require('@klasa/settings-gateway');
-
-		// Setup default gateways and adjust client options as necessary
-		const { guilds } = client.options.settings.gateways;
-		guilds.schema = 'schema' in guilds ? guilds.schema : client.constructor.defaultGuildSchema;
-
-		const prefix = guilds.schema.get('prefix');
-		const language = guilds.schema.get('language');
-
-		if (!prefix || prefix.default === null) {
-			guilds.schema.add('prefix', 'string', {
-				array: Array.isArray(client.options.prefix),
-				default: client.options.prefix
-			});
-		}
-
-		if (!language || language.default === null) {
-			guilds.schema.add('language', 'language', {
-				default: client.options.language
-			});
-		}
-
-		guilds.schema.add('disableNaturalPrefix', 'boolean', {
-			configurable: Boolean(client.options.regexPrefix)
-		});
-
-		client.gateways.register(new Gateway(client, 'guilds', guilds));
-	}
 }
 
 module.exports = KlasaClient;
@@ -517,26 +445,6 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
 	})
 	.add(9, ({ author, client }) => client.owners.has(author), { break: true })
 	.add(10, ({ author, client }) => client.owners.has(author));
-
-// Requiring here to avoid circular dependencies
-const { Schema } = require('@klasa/settings-gateway/dist/lib/schema/Schema');
-
-/**
- * The default Guild Schema
- * @since 0.5.0
- * @type {Schema}
- */
-KlasaClient.defaultGuildSchema = new Schema()
-	.add('prefix', 'string')
-	.add('language', 'language')
-	.add('disableNaturalPrefix', 'boolean')
-	.add('disabledCommands', 'command', {
-		array: true,
-		filter: (client, command, { language }) => {
-			if (command.guarded) throw language.get('commandConfGuarded', { name: command.name });
-			return false;
-		}
-	});
 
 /**
  * Emitted when Klasa is fully ready and initialized.
@@ -660,35 +568,6 @@ KlasaClient.defaultGuildSchema = new Schema()
  * @param {*} data The task data
  * @param {Task} task The task run
  * @param {(Error|string)} error The task error
- */
-
-/**
- * Emitted when a {@link Settings} instance synchronizes with the database.
- * @event KlasaClient#settingsSync
- * @since 0.5.0
- * @param {Settings} entry The patched Settings instance
- */
-
-/**
- * Emitted when {@link Settings#update} or {@link Settings#reset} is run.
- * @event KlasaClient#settingsUpdate
- * @since 0.5.0
- * @param {Settings} entry The patched Settings instance
- * @param {SettingsUpdateResultEntry[]} changes The keys that were updated
- */
-
-/**
- * Emitted when {@link Settings#destroy} is run.
- * @event KlasaClient#settingsDelete
- * @since 0.5.0
- * @param {Settings} entry The entry which got deleted
- */
-
-/**
- * Emitted when a new entry in the database has been created upon update.
- * @event KlasaClient#settingsCreate
- * @since 0.5.0
- * @param {Settings} entry The entry which got created
  */
 
 /**
