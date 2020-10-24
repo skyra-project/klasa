@@ -252,6 +252,15 @@ module.exports = Structures.extend('Message', (Message) => {
 		}
 
 		/**
+		 * Retrieves the {@link Language} for this message.
+		 */
+		async fetchLanguage() {
+			const languageKey = await this.client.fetchLanguage(this);
+			const language = this.client.languages.get(languageKey);
+			if (!language) throw new Error(`The language '${language}' is not available.`);
+		}
+
+		/**
 		 * Retrieves the localized message.
 		 * @since 0.5.0
 		 * @param {string} key The Language key to send
@@ -259,10 +268,7 @@ module.exports = Structures.extend('Message', (Message) => {
 		 * @returns {Promise<string>}
 		 */
 		async fetchLocale(key, localeArgs = []) {
-			const languageKey = await this.client.fetchLanguage(this);
-			const language = this.client.languages.get(languageKey);
-			if (!language) throw new Error(`The language '${language}' is not available.`);
-
+			const language = this.fetchLanguage();
 			return language.get(key, ...localeArgs);
 		}
 

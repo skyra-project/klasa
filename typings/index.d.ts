@@ -1282,7 +1282,6 @@ declare module 'klasa' {
 			commandText: string | null;
 			prefix: RegExp | null;
 			prefixLength: number | null;
-			fetchLocale(): Promise<string>;
 			readonly responses: KlasaMessage[];
 			readonly args: string[];
 			readonly params: any[];
@@ -1297,6 +1296,8 @@ declare module 'klasa' {
 			send(options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions | APIMessage): Promise<KlasaMessage[]>;
 			edit(content: StringResolvable, options?: MessageEditOptions | MessageEmbed): Promise<KlasaMessage>;
 			edit(options: MessageEditOptions | MessageEmbed | APIMessage): Promise<KlasaMessage>;
+			fetchLocale(key: string, ...args: readonly string[]): Promise<string>;
+			fetchLanguage(): Promise<Language>;
 			usableCommands(): Promise<Collection<string, Command>>;
 			hasAtLeastPermissionLevel(min: number): Promise<boolean>;
 		}
