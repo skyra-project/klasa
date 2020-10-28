@@ -1,9 +1,9 @@
 const { Extendable } = require('klasa');
-const { TextChannel, DMChannel, APIMessage } = require('discord.js');
+const { User, TextChannel, DMChannel, APIMessage } = require('discord.js');
 
 module.exports = class extends Extendable {
 	constructor(...args) {
-		super(...args, { appliesTo: [TextChannel, DMChannel] });
+		super(...args, { appliesTo: [User, TextChannel, DMChannel] });
 	}
 
 	sendCode(code, content, options = {}) {
@@ -43,7 +43,7 @@ module.exports = class extends Extendable {
 	 * @returns {Promise<string>}
 	 */
 	async fetchLocale(key, localeArgs = []) {
-		const languageKey = await this.client.fetchLanguage({ channel: this, guild: this.guild });
+		const languageKey = await this.client.fetchLanguage({ channel: this, guild: this.guild || null });
 		const language = this.client.languages.get(languageKey);
 		if (!language) throw new Error(`The language '${language}' is not available.`);
 

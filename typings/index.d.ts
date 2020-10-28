@@ -1143,8 +1143,6 @@ declare module 'klasa' {
 		new (...args: any[]): C;
 	}
 
-	type PrimitiveType = string | number | boolean;
-
 	// Based on the built-in `Pick<>` generic
 	type Filter<T, K extends keyof T> = {
 		[P in keyof T]: P extends K ? unknown : T[P];
@@ -1301,6 +1299,8 @@ declare module 'klasa' {
 			usableCommands(): Promise<Collection<string, Command>>;
 			hasAtLeastPermissionLevel(min: number): Promise<boolean>;
 		}
+
+		export interface User extends SendAliases {}
 
 		export interface TextChannel extends SendAliases, ChannelExtendables {}
 
