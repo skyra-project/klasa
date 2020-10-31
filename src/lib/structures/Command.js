@@ -268,7 +268,7 @@ class Command extends AliasPiece {
 	 * Customizes the response of an argument if it fails resolution. See tutorial {@link CommandsCustomResponses}
 	 * @since 0.5.0
 	 * @param {string} name The name of the usage argument
-	 * @param {(string|Function)} response The custom response or i18n function
+	 * @param {(string | (message) => string)} response The custom response or i18n function
 	 * @returns {this}
 	 * @chainable
 	 * @example

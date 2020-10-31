@@ -156,7 +156,11 @@ declare module 'klasa' {
 		public usage: CommandUsage;
 
 		public createCustomResolver(type: string, resolver: ArgResolverCustomMethod): this;
-		public customizeResponse(name: string, response: string | ((message: KlasaMessage, possible: Possible) => string)): this;
+		public customizeResponse(
+			name: string,
+			response: string | ((message: KlasaMessage, possible: Possible) => PromiseLike<string> | string)
+		): this;
+
 		public definePrompt(usageString: string, usageDelim?: string): Usage;
 		public run(message: KlasaMessage, params: any[]): Promise<KlasaMessage | KlasaMessage[] | null>;
 		public toJSON(): PieceCommandJSON;
