@@ -37,8 +37,6 @@ declare module 'klasa' {
 
 		public sweepMessages(lifetime?: number, commandLifeTime?: number): number;
 		public static basePermissions: Permissions;
-		public static defaultGuildSchema: Schema;
-		public static defaultClientSchema: Schema;
 		public static defaultPermissionLevels: PermissionLevels;
 		public static plugin: symbol;
 		public static use(mod: any): typeof KlasaClient;
@@ -117,7 +115,7 @@ declare module 'klasa' {
 		public aliases: string[];
 		public abstract run(arg: string | undefined, possible: Possible, message: KlasaMessage): any;
 		public static regex: MentionRegex;
-		private static async minOrMax(
+		private static minOrMax(
 			client: KlasaClient,
 			value: number,
 			min: number,
@@ -125,7 +123,7 @@ declare module 'klasa' {
 			possible: Possible,
 			message: KlasaMessage,
 			suffix: string
-		): boolean;
+		): Promise<boolean>;
 	}
 
 	export abstract class Command extends AliasPiece {
@@ -162,7 +160,7 @@ declare module 'klasa' {
 		): this;
 
 		public definePrompt(usageString: string, usageDelim?: string): Usage;
-		public run(message: KlasaMessage, params: any[]): Promise<KlasaMessage | KlasaMessage[] | null>;
+		public run(message: KlasaMessage, params: any[]): Promise<Message | Message[] | KlasaMessage | KlasaMessage[] | null>;
 		public toJSON(): PieceCommandJSON;
 	}
 
