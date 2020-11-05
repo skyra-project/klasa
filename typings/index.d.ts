@@ -73,7 +73,7 @@ declare module 'klasa' {
 	export class PermissionLevels extends Collection<number, PermissionLevel> {
 		public constructor(levels?: number);
 
-		public add(level: number, check: (message: KlasaMessage) => boolean, options?: PermissionLevelOptions): this;
+		public add(level: number, check: (message: KlasaMessage) => boolean | Promise<boolean>, options?: PermissionLevelOptions): this;
 		public debug(): string;
 		public isValid(): boolean;
 		public remove(level: number): this;
