@@ -1296,8 +1296,6 @@ declare module 'klasa' {
 			send(options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions | APIMessage): Promise<KlasaMessage[]>;
 			edit(content: StringResolvable, options?: MessageEditOptions | MessageEmbed): Promise<KlasaMessage>;
 			edit(options: MessageEditOptions | MessageEmbed | APIMessage): Promise<KlasaMessage>;
-			fetchLocale(key: string, ...args: readonly string[]): Promise<string>;
-			fetchLanguage(): Promise<Language>;
 			usableCommands(): Promise<Collection<string, Command>>;
 			hasAtLeastPermissionLevel(min: number): Promise<boolean>;
 		}
@@ -1369,7 +1367,8 @@ declare module 'klasa' {
 				content: StringResolvable,
 				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
 			): Promise<KlasaMessage[]>;
-			fetchLocale(): Promise<string>;
+			fetchLocale(key: string, ...args: readonly string[]): Promise<string>;
+			fetchLanguage(): Promise<Language>;
 		}
 
 		interface SendAliases extends PartialSendAliases {
