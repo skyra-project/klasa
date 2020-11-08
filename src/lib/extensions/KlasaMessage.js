@@ -268,7 +268,7 @@ module.exports = Structures.extend('Message', (Message) => {
 		 * @returns {Promise<string>}
 		 */
 		async fetchLocale(key, localeArgs = []) {
-			const language = this.fetchLanguage();
+			const language = await this.fetchLanguage();
 			return language.get(key, ...localeArgs);
 		}
 
