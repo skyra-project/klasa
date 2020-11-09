@@ -253,11 +253,14 @@ module.exports = Structures.extend('Message', (Message) => {
 
 		/**
 		 * Retrieves the {@link Language} for this message.
+		 * @since 0.5.0
+		 * @returns {Promise<Language>}
 		 */
 		async fetchLanguage() {
 			const languageKey = await this.client.fetchLanguage(this);
 			const language = this.client.languages.get(languageKey);
-			if (!language) throw new Error(`The language '${language}' is not available.`);
+			if (language) return language;
+			throw new Error(`The language '${language}' is not available.`);
 		}
 
 		/**
@@ -273,34 +276,10 @@ module.exports = Structures.extend('Message', (Message) => {
 		}
 
 		/**
-		 * Since d.js is dumb and has 2 patch methods, this is for edits
-		 * @since 0.5.0
-		 * @param {*} data The data passed from the original constructor
-		 * @private
-		 */
-		patch(data) {
-			const ret = super.patch(data);
-			this._parseCommand();
-			return ret;
-		}
-
-		/**
-		 * Extends the patch method from D.JS to attach and update the language to this instance
-		 * @since 0.5.0
-		 * @param {*} data The data passed from the original constructor
-		 * @private
-		 */
-		_patch(data) {
-			super._patch(data);
-			this._parseCommand();
-		}
-
-		/**
 		 * Parses this message as a command
 		 * @since 0.5.0
-		 * @private
 		 */
-		async _parseCommand() {
+		async parseCommand() {
 			// Clear existing command state so edits to non-commands do not re-run commands
 			this.prefix = null;
 			this.prefixLength = null;
