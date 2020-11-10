@@ -172,7 +172,7 @@ class ReactionHandler extends ReactionCollector {
 		if (this.awaiting) return;
 		this.awaiting = true;
 
-		if (!this.prompt) this.prompt = this.message.fetchLocale('reactionhandlerPrompt');
+		if (!this.prompt) this.prompt = await this.message.fetchLocale('reactionhandlerPrompt');
 		const message = await this.message.channel.send(this.prompt);
 		const collected = await this.message.channel.awaitMessages((mess) => mess.author === user, { max: 1, time: this.time });
 		this.awaiting = false;

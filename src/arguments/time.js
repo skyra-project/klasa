@@ -12,11 +12,11 @@ module.exports = class extends Argument {
 	async run(arg, possible, message) {
 		let date;
 		try {
-			date = this.date.run(arg, possible, message);
-		} catch (err) {
+			date = await this.date.run(arg, possible, message);
+		} catch {
 			try {
-				date = this.duration.run(arg, possible, message);
-			} catch (error) {
+				date = await this.duration.run(arg, possible, message);
+			} catch {
 				// noop
 			}
 		}

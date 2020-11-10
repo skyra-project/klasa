@@ -22,7 +22,7 @@ class RichDisplay {
 	 * @property {boolean} [stop=true] If a stop reaction should be included
 	 * @property {boolean} [jump=true] If a jump reaction should be included
 	 * @property {boolean} [firstLast=true] If a first and last reaction should be included
-	 * @property {string} [prompt=message.fetchLocale('reactionhandlerPrompt')] The prompt to be used when awaiting user input on a page to jump to
+	 * @property {string} [prompt=await message.fetchLocale('reactionhandlerPrompt')] The prompt to be used when awaiting user input on a page to jump to
 	 * @property {number} [startPage=0] The page to start the RichDisplay on
 	 * @property {number} [max] The maximum total amount of reactions to collect
 	 * @property {number} [maxEmojis] The maximum number of emojis to collect
