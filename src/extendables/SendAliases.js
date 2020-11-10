@@ -42,7 +42,7 @@ module.exports = class extends Extendable {
 	 * @param {Array<*>} [localeArgs] The language arguments to pass
 	 * @returns {Promise<string>}
 	 */
-	async fetchLocale(key, localeArgs = []) {
+	async fetchLocale(key, ...localeArgs) {
 		const languageKey = await this.client.fetchLanguage({ channel: this, guild: this.guild || null });
 		const language = this.client.languages.get(languageKey);
 		if (!language) throw new Error(`The language '${language}' is not available.`);
