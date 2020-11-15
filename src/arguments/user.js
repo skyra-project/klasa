@@ -10,6 +10,6 @@ module.exports = class extends Argument {
 			? await this.client.users.fetch(this.constructor.regex.userOrMember.exec(arg)[1]).catch(() => null)
 			: null;
 		if (user) return user;
-		throw message.language.get('resolverInvalidUser', { name: possible.name });
+		throw await message.fetchLocale('resolverInvalidUser', { name: possible.name });
 	}
 };

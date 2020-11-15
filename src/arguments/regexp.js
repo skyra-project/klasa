@@ -5,9 +5,9 @@ module.exports = class extends Argument {
 		super(...args, { aliases: ['reg', 'regex'] });
 	}
 
-	run(arg, possible, message) {
+	async run(arg, possible, message) {
 		const results = possible.regex.exec(arg);
 		if (results !== null) return results;
-		throw message.language.get('resolverInvalidRegexMatch', { name: possible.name, pattern: possible.regex.toString() });
+		throw await message.fetchLocale('resolverInvalidRegexMatch', { name: possible.name, pattern: possible.regex.toString() });
 	}
 };

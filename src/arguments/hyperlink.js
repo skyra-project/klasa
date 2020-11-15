@@ -6,10 +6,10 @@ module.exports = class extends Argument {
 		super(...args, { aliases: ['url'] });
 	}
 
-	run(arg, possible, message) {
+	async run(arg, possible, message) {
 		const res = parse(arg);
 		const hyperlink = res.protocol && res.hostname ? arg : null;
 		if (hyperlink !== null) return hyperlink;
-		throw message.language.get('resolverInvalidUrl', { name: possible.name });
+		throw await message.fetchLocale('resolverInvalidUrl', { name: possible.name });
 	}
 };

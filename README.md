@@ -39,8 +39,6 @@ Following suit from Komada (the Croatian word for "pieces"), Klasa is the Croati
     -   Inhibitors: Middleware that can stop a command from running (permissions...).
     -   Languages: Easy internationalization support for your bot!
     -   Monitors: Watch every single message your bot receives! They're perfect for no-mention-spam, swear word filter, and so on!
-    -   Providers: You can have one, or more, they're interfaces for the settings system and ensures the data is written correctly!
-    -   Serializers: These allow you to change how the Settings system reads, writes, and displays information.
 
 [i18next]: https://www.i18next.com
 [skyra]: https://github.com/skyra-project/skyra
@@ -116,6 +114,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

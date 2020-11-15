@@ -21,7 +21,7 @@ module.exports = class extends Command {
 		const piece = await (core ? this.tryEach(store, path) : store.load(store.userDirectory, path));
 
 		try {
-			if (!piece) throw message.language.get('commandLoadFail');
+			if (!piece) throw await message.fetchLocale('commandLoadFail');
 			await piece.init();
 			if (this.client.shard) {
 				await this.client.shard.broadcastEval(`
@@ -34,7 +34,7 @@ module.exports = class extends Command {
 			return message.sendLocale('commandLoad', [{ time: timer.stop(), type: store.name, name: piece.name }]);
 		} catch (error) {
 			timer.stop();
-			throw message.language.get('commandLoadError', { type: store.name, name: piece ? piece.name : path.join('/'), error });
+			throw await message.fetchLocale('commandLoadError', { type: store.name, name: piece ? piece.name : path.join('/'), error });
 		}
 	}
 

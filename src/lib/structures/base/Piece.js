@@ -11,9 +11,6 @@ const { join } = require('path');
  * @see Inhibitor
  * @see Language
  * @see Monitor
- * @see Provider
- * @see SqlProvider
- * @see Serializer
  * @see Task
  */
 class Piece {

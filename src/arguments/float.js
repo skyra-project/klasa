@@ -5,10 +5,10 @@ module.exports = class extends Argument {
 		super(...args, { aliases: ['num', 'number'] });
 	}
 
-	run(arg, possible, message) {
+	async run(arg, possible, message) {
 		const { min, max } = possible;
 		const number = parseFloat(arg);
-		if (isNaN(number)) throw message.language.get('resolverInvalidFloat', { name: possible.name });
-		return this.constructor.minOrMax(this.client, number, min, max, possible, message) ? number : null;
+		if (isNaN(number)) throw await message.fetchLocale('resolverInvalidFloat', { name: possible.name });
+		return (await this.constructor.minOrMax(this.client, number, min, max, possible, message)) ? number : null;
 	}
 };

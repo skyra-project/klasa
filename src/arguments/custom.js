@@ -7,7 +7,7 @@ module.exports = class extends Argument {
 			return resolved;
 		} catch (err) {
 			if (err) throw err;
-			throw message.language.get('resolverInvalidCustom', { name: possible.name, type: possible.type });
+			throw await message.fetchLocale('resolverInvalidCustom', { name: possible.name, type: possible.type });
 		}
 	}
 };
