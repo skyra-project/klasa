@@ -1,4 +1,4 @@
-const { mergeDefault, isObject } = require('./util');
+const { mergeDefault } = require('./util');
 
 const colorBase = {
 	shard: { background: 'cyan', text: 'black' },
@@ -37,7 +37,6 @@ exports.DEFAULTS = {
 		// eslint-disable-next-line no-process-env
 		production: process.env.NODE_ENV === 'production',
 		prefixCaseInsensitive: false,
-		providers: { default: 'json' },
 		pieceDefaults: {
 			arguments: {
 				enabled: true,
@@ -59,7 +58,6 @@ exports.DEFAULTS = {
 				permissionLevel: 0,
 				promptLimit: 0,
 				promptTime: 30000,
-				requiredSettings: [],
 				requiredPermissions: 0,
 				runIn: ['text', 'dm'],
 				subcommands: false,
@@ -91,22 +89,10 @@ exports.DEFAULTS = {
 				ignoreEdits: true,
 				allowedTypes: ['DEFAULT']
 			},
-			providers: { enabled: true },
-			serializers: {
-				enabled: true,
-				aliases: []
-			},
 			tasks: { enabled: true }
 		},
 		slowmode: 0,
-		slowmodeAggressive: false,
-		settings: {
-			preserve: true,
-			throwOnError: false,
-			gateways: {
-				guilds: {}
-			}
-		}
+		slowmodeAggressive: false
 	},
 
 	CONSOLE: {
@@ -134,42 +120,6 @@ exports.DEFAULTS = {
 				message: { text: 'red' },
 				time: { background: 'red' }
 			})
-		}
-	},
-
-	QUERYBUILDER: {
-		datatypes: [
-			['any', { type: 'TEXT' }],
-			[
-				'json',
-				{
-					type: 'JSON',
-					serializer: (value) => `'${JSON.stringify(value).replace(/'/g, "''")}'`
-				}
-			],
-			['boolean', { type: 'BOOLEAN', serializer: (value) => value }],
-			['bool', { extends: 'boolean' }],
-			['snowflake', { type: 'VARCHAR(19)' }],
-			['channel', { extends: 'snowflake' }],
-			['textchannel', { extends: 'channel' }],
-			['voicechannel', { extends: 'channel' }],
-			['categorychannel', { extends: 'channel' }],
-			['guild', { extends: 'snowflake' }],
-			['number', { type: 'FLOAT', serializer: (value) => value }],
-			['float', { extends: 'number' }],
-			['integer', { extends: 'number', type: 'INTEGER' }],
-			['command', { type: 'TEXT' }],
-			['language', { type: 'VARCHAR(5)' }],
-			['role', { extends: 'snowflake' }],
-			['string', { type: ({ max }) => (max ? `VARCHAR(${max})` : 'TEXT') }],
-			['url', { type: 'TEXT' }],
-			['user', { extends: 'snowflake' }]
-		],
-		queryBuilderOptions: {
-			array: () => 'TEXT',
-			arraySerializer: (values) => `'${JSON.stringify(values)}'`,
-			formatDatatype: (name, datatype, def = null) => `${name} ${datatype}${def !== null ? ` NOT NULL DEFAULT ${def}` : ''}`,
-			serializer: (value) => `'${(isObject(value) ? JSON.stringify(value) : String(value)).replace(/'/g, "''")}'`
 		}
 	}
 };

@@ -49,10 +49,10 @@ class MultiArgument extends Argument {
 		args.push(rest.splice(0, structures.length).join(usageDelim), ...rest);
 		if ((min && structures.length < min) || !structures.length) {
 			const minimal = !min || min <= 0 ? 1 : min;
-			throw message.language.get(`resolverMultiTooFew`, {
+			throw await message.fetchLocale(`resolverMultiTooFew`, {
 				name: base.name,
 				min: minimal,
-				conjunctionWord: message.language.get(minimal === 1 ? 'globalIs' : 'globalAnd')
+				conjunctionWord: await message.fetchLocale(minimal === 1 ? 'globalIs' : 'globalAnd')
 			});
 		}
 		return structures;

@@ -34,48 +34,36 @@ class Argument extends AliasPiece {
 	 * @returns {boolean}
 	 * @private
 	 */
-	static minOrMax(client, value, min = null, max = null, possible, message, suffix) {
-		suffix = suffix ? (message ? message.language : client.languages.default).get(suffix) : '';
+	static async minOrMax(client, value, min = null, max = null, possible, message, suffix) {
+		suffix = suffix ? await message.fetchLocale(suffix) : '';
 		if (min !== null && max !== null) {
 			if (value >= min && value <= max) return true;
 			if (min === max)
-				throw (message ? message.language : client.languages.default).get(
-					possible.inclusive ? 'resolverMinmaxExactlyInclusive' : 'resolverMinmaxExactlyExclusive',
-					{
-						name: possible.name,
-						min,
-						suffix
-					}
-				);
-			throw (message ? message.language : client.languages.default).get(
-				possible.inclusive ? 'resolverMinmaxBothInclusive' : 'resolverMinmaxBothExclusive',
-				{
+				throw await message.fetchLocale(possible.inclusive ? 'resolverMinmaxExactlyInclusive' : 'resolverMinmaxExactlyExclusive', {
 					name: possible.name,
 					min,
-					max,
 					suffix
-				}
-			);
+				});
+			throw await message.fetchLocale(possible.inclusive ? 'resolverMinmaxBothInclusive' : 'resolverMinmaxBothExclusive', {
+				name: possible.name,
+				min,
+				max,
+				suffix
+			});
 		} else if (min !== null) {
 			if (value >= min) return true;
-			throw (message ? message.language : client.languages.default).get(
-				possible.inclusive ? 'resolverMinmaxMinInclusive' : 'resolverMinmaxMinExclusive',
-				{
-					name: possible.name,
-					min,
-					suffix
-				}
-			);
+			throw await message.fetchLocale(possible.inclusive ? 'resolverMinmaxMinInclusive' : 'resolverMinmaxMinExclusive', {
+				name: possible.name,
+				min,
+				suffix
+			});
 		} else if (max !== null) {
 			if (value <= max) return true;
-			throw (message ? message.language : client.languages.default).get(
-				possible.inclusive ? 'resolverMinmaxMaxInclusive' : 'resolverMinmaxMaxExclusive',
-				{
-					name: possible.name,
-					max,
-					suffix
-				}
-			);
+			throw await message.fetchLocale(possible.inclusive ? 'resolverMinmaxMaxInclusive' : 'resolverMinmaxMaxExclusive', {
+				name: possible.name,
+				max,
+				suffix
+			});
 		}
 		return true;
 	}

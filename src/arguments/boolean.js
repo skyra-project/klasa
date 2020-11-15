@@ -7,10 +7,10 @@ module.exports = class extends Argument {
 		super(...args, { aliases: ['bool'] });
 	}
 
-	run(arg, possible, message) {
+	async run(arg, possible, message) {
 		const boolean = String(arg).toLowerCase();
 		if (truths.includes(boolean)) return true;
 		if (falses.includes(boolean)) return false;
-		throw message.language.get('resolverInvalidBool', { name: possible.name });
+		throw await message.fetchLocale('resolverInvalidBool', { name: possible.name });
 	}
 };
