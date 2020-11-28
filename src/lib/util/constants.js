@@ -88,8 +88,7 @@ exports.DEFAULTS = {
 				ignoreWebhooks: true,
 				ignoreEdits: true,
 				allowedTypes: ['DEFAULT']
-			},
-			tasks: { enabled: true }
+			}
 		},
 		slowmode: 0,
 		slowmodeAggressive: false

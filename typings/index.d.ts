@@ -236,12 +236,6 @@ declare module 'klasa' {
 		public run<T = any>(argument: string, possible: Possible, message: KlasaMessage): Promise<Array<T>>;
 	}
 
-	export abstract class Task extends Piece {
-		public constructor(store: TaskStore, file: string[], directory: string, options?: TaskOptions);
-		public abstract run(data?: any): unknown;
-		public toJSON(): PieceTaskJSON;
-	}
-
 	// #endregion Pieces
 
 	// #region Stores
@@ -298,8 +292,6 @@ declare module 'klasa' {
 	export class MonitorStore extends Store<string, Monitor, typeof Monitor> {
 		public run(message: KlasaMessage): Promise<void>;
 	}
-
-	export class TaskStore extends Store<string, Task, typeof Task> {}
 
 	// #endregion Stores
 
@@ -717,7 +709,6 @@ declare module 'klasa' {
 		inhibitors?: InhibitorOptions;
 		languages?: LanguageOptions;
 		monitors?: MonitorOptions;
-		tasks?: TaskOptions;
 	}
 
 	export type ReadyMessage = string | ((client: KlasaClient) => string);
@@ -879,7 +870,6 @@ declare module 'klasa' {
 
 	export interface FinalizerOptions extends PieceOptions {}
 	export interface LanguageOptions extends PieceOptions {}
-	export interface TaskOptions extends PieceOptions {}
 
 	export interface PieceJSON {
 		directory: string;
@@ -923,7 +913,6 @@ declare module 'klasa' {
 	export interface PieceArgumentJSON extends AliasPieceJSON, Required<ArgumentOptions> {}
 	export interface PieceFinalizerJSON extends PieceJSON, Required<FinalizerOptions> {}
 	export interface PieceLanguageJSON extends PieceJSON, Required<LanguageOptions> {}
-	export interface PieceTaskJSON extends PieceJSON, Required<TaskOptions> {}
 
 	// Usage
 	export interface TextPromptOptions {
@@ -1178,7 +1167,6 @@ declare module 'klasa' {
 			finalizers: FinalizerStore;
 			monitors: MonitorStore;
 			languages: LanguageStore;
-			tasks: TaskStore;
 			events: EventStore;
 			extendables: ExtendableStore;
 			pieceStores: Collection<string, any>;
@@ -1216,7 +1204,6 @@ declare module 'klasa' {
 			on(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
 			on(event: 'pieceReloaded', listener: (piece: Piece) => void): this;
 			on(event: 'pieceUnloaded', listener: (piece: Piece) => void): this;
-			on(event: 'taskError', listener: (data: unknown, task: Task, error: Error) => void): this;
 			on(event: 'verbose', listener: (data: any) => void): this;
 			on(event: 'wtf', listener: (failure: Error) => void): this;
 			once(event: 'argumentError', listener: (message: KlasaMessage, command: Command, params: any[], error: string) => void): this;
@@ -1244,7 +1231,6 @@ declare module 'klasa' {
 			once(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
 			once(event: 'pieceReloaded', listener: (piece: Piece) => void): this;
 			once(event: 'pieceUnloaded', listener: (piece: Piece) => void): this;
-			once(event: 'taskError', listener: (data: unknown, task: Task, error: Error) => void): this;
 			once(event: 'verbose', listener: (data: any) => void): this;
 			once(event: 'wtf', listener: (failure: Error) => void): this;
 			off(event: 'argumentError', listener: (message: KlasaMessage, command: Command, params: any[], error: string) => void): this;
@@ -1272,7 +1258,6 @@ declare module 'klasa' {
 			off(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
 			off(event: 'pieceReloaded', listener: (piece: Piece) => void): this;
 			off(event: 'pieceUnloaded', listener: (piece: Piece) => void): this;
-			off(event: 'taskError', listener: (data: unknown, task: Task, error: Error) => void): this;
 			off(event: 'verbose', listener: (data: any) => void): this;
 			off(event: 'wtf', listener: (failure: Error) => void): this;
 		}
