@@ -11,7 +11,6 @@ const { join } = require('path');
  * @see Inhibitor
  * @see Language
  * @see Monitor
- * @see Task
  */
 class Piece {
 	/**

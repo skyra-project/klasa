@@ -17,7 +17,6 @@ const FinalizerStore = require('./structures/FinalizerStore');
 const InhibitorStore = require('./structures/InhibitorStore');
 const LanguageStore = require('./structures/LanguageStore');
 const MonitorStore = require('./structures/MonitorStore');
-const TaskStore = require('./structures/TaskStore');
 
 // lib/util
 const KlasaConsole = require('./util/KlasaConsole');
@@ -186,13 +185,6 @@ class KlasaClient extends Discord.Client {
 		this.extendables = new ExtendableStore(this);
 
 		/**
-		 * The cache where tasks are stored
-		 * @since 0.5.0
-		 * @type {TaskStore}
-		 */
-		this.tasks = new TaskStore(this);
-
-		/**
 		 * A Store registry
 		 * @since 0.3.0
 		 * @type {external:Collection}
@@ -220,7 +212,6 @@ class KlasaClient extends Discord.Client {
 			.registerStore(this.languages)
 			.registerStore(this.events)
 			.registerStore(this.extendables)
-			.registerStore(this.tasks)
 			.registerStore(this.arguments);
 
 		const coreDirectory = path.join(__dirname, '../');
@@ -559,15 +550,6 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * @param {Stopwatch} timer The timer run from start to queue of the command
  * @param {Finalizer} finalizer The finalizer run
  * @param {(Error|string)} error The finalizer error
- */
-
-/**
- * Emitted when a task has encountered an error.
- * @event KlasaClient#taskError
- * @since 0.5.0
- * @param {*} data The task data
- * @param {Task} task The task run
- * @param {(Error|string)} error The task error
  */
 
 /**
