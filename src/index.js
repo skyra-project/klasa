@@ -33,8 +33,6 @@ module.exports = {
 	Monitor: require('./lib/structures/Monitor'),
 	MonitorStore: require('./lib/structures/MonitorStore'),
 	MultiArgument: require('./lib/structures/MultiArgument'),
-	Task: require('./lib/structures/Task'),
-	TaskStore: require('./lib/structures/TaskStore'),
 
 	// lib/usage
 	CommandPrompt: require('./lib/usage/CommandPrompt'),
