@@ -12,7 +12,6 @@ const PermissionLevels = require('./permissions/PermissionLevels');
 const ArgumentStore = require('./structures/ArgumentStore');
 const CommandStore = require('./structures/CommandStore');
 const EventStore = require('./structures/EventStore');
-const ExtendableStore = require('./structures/ExtendableStore');
 const FinalizerStore = require('./structures/FinalizerStore');
 const InhibitorStore = require('./structures/InhibitorStore');
 const LanguageStore = require('./structures/LanguageStore');
@@ -83,7 +82,6 @@ class KlasaClient extends Discord.Client {
 	 * @typedef {Object} PieceDefaults
 	 * @property {CommandOptions} [commands={}] The default command options
 	 * @property {EventOptions} [events={}] The default event options
-	 * @property {ExtendableOptions} [extendables={}] The default extendable options
 	 * @property {FinalizerOptions} [finalizers={}] The default finalizer options
 	 * @property {InhibitorOptions} [inhibitors={}] The default inhibitor options
 	 * @property {LanguageOptions} [languages={}] The default language options

@@ -180,15 +180,6 @@ declare module 'klasa' {
 		private _unlisten(): void;
 	}
 
-	export abstract class Extendable extends Piece {
-		public constructor(store: ExtendableStore, file: string[], directory: string, options?: ExtendableOptions);
-		public readonly appliesTo: Array<Constructor<any>>;
-		private staticPropertyDescriptors: PropertyDescriptorMap;
-		private instancePropertyDescriptors: PropertyDescriptorMap;
-		private originals: Map<Constructor<any>, OriginalPropertyDescriptors>;
-		public toJSON(): PieceExtendableJSON;
-	}
-
 	export abstract class Finalizer extends Piece {
 		public constructor(store: FinalizerStore, file: string[], directory: string, options?: FinalizerOptions);
 		public abstract run(message: KlasaMessage, command: Command, response: KlasaMessage | KlasaMessage[] | null, runTime: Stopwatch): void;
@@ -274,8 +265,6 @@ declare module 'klasa' {
 	export class EventStore extends Store<string, Event, typeof Event> {
 		private _onceEvents: Set<string>;
 	}
-
-	export class ExtendableStore extends Store<string, Extendable, typeof Extendable> {}
 
 	export class FinalizerStore extends Store<string, Finalizer, typeof Finalizer> {
 		public run(message: KlasaMessage, command: Command, response: KlasaMessage | KlasaMessage[], runTime: Stopwatch): Promise<void>;
@@ -1283,124 +1272,6 @@ declare module 'klasa' {
 			edit(options: MessageEditOptions | MessageEmbed | APIMessage): Promise<KlasaMessage>;
 			usableCommands(): Promise<Collection<string, Command>>;
 			hasAtLeastPermissionLevel(min: number): Promise<boolean>;
-		}
-
-		export interface User extends SendAliases {}
-
-		export interface TextChannel extends SendAliases, ChannelExtendables {}
-
-		export interface DMChannel extends SendAliases, ChannelExtendables {}
-
-		export interface NewsChannel extends SendAliases, ChannelExtendables {}
-
-		interface PartialSendAliases {
-			sendLocale<T extends LanguageKeysSimple>(key: T, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendLocale<T extends LanguageKeysSimple>(
-				key: T,
-				options?: (MessageOptions & { split?: false }) | MessageAdditions
-			): Promise<KlasaMessage>;
-			sendLocale<T extends LanguageKeysSimple>(
-				key: T,
-				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-			): Promise<KlasaMessage[]>;
-			sendLocale<T extends LanguageKeysComplex>(
-				key: T,
-				// @ts-ignore LanguageKeys are defined within Skyra
-				localeArgs: Parameters<LanguageKeys[T]>,
-				options?: MessageOptions | MessageAdditions
-			): Promise<KlasaMessage>;
-			sendLocale<T extends LanguageKeysComplex>(
-				key: T,
-				// @ts-ignore LanguageKeys are defined within Skyra
-				localeArgs: Parameters<LanguageKeys[T]>,
-				options?: (MessageOptions & { split?: false }) | MessageAdditions
-			): Promise<KlasaMessage>;
-			sendLocale<T extends LanguageKeysComplex>(
-				key: T,
-				// @ts-ignore LanguageKeys are defined within Skyra
-				localeArgs: Parameters<LanguageKeys[T]>,
-				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-			): Promise<KlasaMessage[]>;
-			sendMessage(content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendMessage(content?: StringResolvable, options?: (MessageOptions & { split?: false }) | MessageAdditions): Promise<KlasaMessage>;
-			sendMessage(
-				content?: StringResolvable,
-				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-			): Promise<KlasaMessage[]>;
-			sendMessage(options?: MessageOptions | MessageAdditions | APIMessage): Promise<KlasaMessage>;
-			sendMessage(options?: (MessageOptions & { split?: false }) | MessageAdditions | APIMessage): Promise<KlasaMessage>;
-			sendMessage(options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions | APIMessage): Promise<KlasaMessage[]>;
-			sendEmbed(embed: MessageEmbed, content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendEmbed(
-				embed: MessageEmbed,
-				content?: StringResolvable,
-				options?: (MessageOptions & { split?: false }) | MessageAdditions
-			): Promise<KlasaMessage>;
-			sendEmbed(
-				embed: MessageEmbed,
-				content?: StringResolvable,
-				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-			): Promise<KlasaMessage[]>;
-			sendCode(language: string, content: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			sendCode(
-				language: string,
-				content: StringResolvable,
-				options?: (MessageOptions & { split?: false }) | MessageAdditions
-			): Promise<KlasaMessage>;
-			sendCode(
-				language: string,
-				content: StringResolvable,
-				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-			): Promise<KlasaMessage[]>;
-			fetchLocale(key: string, ...args: readonly string[]): Promise<string>;
-			fetchLanguage(): Promise<Language>;
-		}
-
-		interface SendAliases extends PartialSendAliases {
-			sendFile(
-				attachment: BufferResolvable,
-				name?: string,
-				content?: StringResolvable,
-				options?: MessageOptions | MessageAdditions
-			): Promise<KlasaMessage>;
-			sendFile(
-				attachment: BufferResolvable,
-				name?: string,
-				content?: StringResolvable,
-				options?: (MessageOptions & { split?: false }) | MessageAdditions
-			): Promise<KlasaMessage>;
-			sendFile(
-				attachment: BufferResolvable,
-				name?: string,
-				content?: StringResolvable,
-				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-			): Promise<KlasaMessage[]>;
-			sendFiles(
-				attachments: MessageAttachment[],
-				content: StringResolvable,
-				options?: MessageOptions | MessageAdditions
-			): Promise<KlasaMessage>;
-			sendFiles(
-				attachments: MessageAttachment[],
-				content: StringResolvable,
-				options?: (MessageOptions & { split?: false }) | MessageAdditions
-			): Promise<KlasaMessage>;
-			sendFiles(
-				attachments: MessageAttachment[],
-				content: StringResolvable,
-				options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-			): Promise<KlasaMessage[]>;
-		}
-
-		interface ChannelExtendables {
-			readonly attachable: boolean;
-			readonly embedable: boolean;
-			readonly postable: boolean;
-			readonly readable: boolean;
-		}
-
-		interface Constructor<C> {
-			new (...args: any[]): C;
 		}
 	}
 
