@@ -137,7 +137,7 @@ class Event extends Piece {
 	}
 
 	/**
-	 * Defines the JSON.stringify behavior of this extendable.
+	 * Defines the JSON.stringify behavior of this event.
 	 * @returns {Object}
 	 */
 	toJSON() {

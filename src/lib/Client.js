@@ -12,7 +12,6 @@ const PermissionLevels = require('./permissions/PermissionLevels');
 const ArgumentStore = require('./structures/ArgumentStore');
 const CommandStore = require('./structures/CommandStore');
 const EventStore = require('./structures/EventStore');
-const ExtendableStore = require('./structures/ExtendableStore');
 const FinalizerStore = require('./structures/FinalizerStore');
 const InhibitorStore = require('./structures/InhibitorStore');
 const LanguageStore = require('./structures/LanguageStore');
@@ -83,7 +82,6 @@ class KlasaClient extends Discord.Client {
 	 * @typedef {Object} PieceDefaults
 	 * @property {CommandOptions} [commands={}] The default command options
 	 * @property {EventOptions} [events={}] The default event options
-	 * @property {ExtendableOptions} [extendables={}] The default extendable options
 	 * @property {FinalizerOptions} [finalizers={}] The default finalizer options
 	 * @property {InhibitorOptions} [inhibitors={}] The default inhibitor options
 	 * @property {LanguageOptions} [languages={}] The default language options
@@ -178,13 +176,6 @@ class KlasaClient extends Discord.Client {
 		this.events = new EventStore(this);
 
 		/**
-		 * The cache where extendables are stored
-		 * @since 0.0.1
-		 * @type {ExtendableStore}
-		 */
-		this.extendables = new ExtendableStore(this);
-
-		/**
 		 * A Store registry
 		 * @since 0.3.0
 		 * @type {external:Collection}
@@ -211,7 +202,6 @@ class KlasaClient extends Discord.Client {
 			.registerStore(this.monitors)
 			.registerStore(this.languages)
 			.registerStore(this.events)
-			.registerStore(this.extendables)
 			.registerStore(this.arguments);
 
 		const coreDirectory = path.join(__dirname, '../');

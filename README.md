@@ -34,7 +34,6 @@ Following suit from Komada (the Croatian word for "pieces"), Klasa is the Croati
 -   Many different pieces and standalone utils to help you build the bot of your dreams!
     -   Commands: The most basic piece, they run when somebody types the prefix and the command name or any of its aliases.
     -   Events: Hot-reloadable structures for events, with internal error handling.
-    -   Extendables: Easily extend Klasa or discord.js.
     -   Finalizers: Structures that run after successful command run.
     -   Inhibitors: Middleware that can stop a command from running (permissions...).
     -   Languages: Easy internationalization support for your bot!

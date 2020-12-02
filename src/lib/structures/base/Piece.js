@@ -6,7 +6,6 @@ const { join } = require('path');
  * @see Argument
  * @see Command
  * @see Event
- * @see Extendable
  * @see Finalizer
  * @see Inhibitor
  * @see Language

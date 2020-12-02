@@ -8,7 +8,6 @@ const { isClass } = require('../../util/util');
  * @see ArgumentStore
  * @see CommandStore
  * @see EventStore
- * @see ExtendableStore
  * @see FinalizerStore
  * @see InhibitorStore
  * @see LanguageStore
