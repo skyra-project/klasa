@@ -14,7 +14,7 @@ class AliasPiece extends Piece {
 	/**
 	 * @since 0.0.1
 	 * @param {Store} store The store this piece is for
-	 * @param {string[]} file The path from the pieces folder to the extendable file
+	 * @param {string[]} file The path from the pieces folder to the alias piece file
 	 * @param {string} directory The base directory to the pieces folder
 	 * @param {AliasPieceOptions} [options={}] The options for this piece
 	 */

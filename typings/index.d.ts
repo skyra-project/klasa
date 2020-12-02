@@ -197,13 +197,7 @@ declare module 'klasa' {
 
 	export abstract class Language extends Piece {
 		public constructor(store: LanguageStore, file: string[], directory: string, options?: LanguageOptions);
-		// @ts-ignore LanguageKeys are defined within Skyra
-		public language: LanguageKeys;
-
-		// @ts-ignore LanguageKeys are defined within Skyra
-		public get<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
-		// @ts-ignore LanguageKeys are defined within Skyra
-		public get<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
+		public language: unknown;
 		public toJSON(): PieceLanguageJSON;
 	}
 
@@ -693,7 +687,6 @@ declare module 'klasa' {
 		arguments?: ArgumentOptions;
 		commands?: CommandOptions;
 		events?: EventOptions;
-		extendables?: ExtendableOptions;
 		finalizers?: FinalizerOptions;
 		inhibitors?: InhibitorOptions;
 		languages?: LanguageOptions;
@@ -706,22 +699,6 @@ declare module 'klasa' {
 	export interface ArgResolverCustomMethod {
 		(arg: string, possible: Possible, message: KlasaMessage, params: any[]): any;
 	}
-
-	interface Fn {
-		(...args: readonly any[]): unknown;
-	}
-
-	export type LanguageKeysSimple = {
-		// @ts-ignore LanguageKeys are defined within Skyra
-		[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? never : K;
-		// @ts-ignore LanguageKeys are defined within Skyra
-	}[keyof LanguageKeys];
-
-	export type LanguageKeysComplex = {
-		// @ts-ignore LanguageKeys are defined within Skyra
-		[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? K : never;
-		// @ts-ignore LanguageKeys are defined within Skyra
-	}[keyof LanguageKeys];
 
 	export interface Constants {
 		DEFAULTS: ConstantsDefaults;
@@ -834,10 +811,6 @@ declare module 'klasa' {
 		usageDelim?: string;
 	}
 
-	export interface ExtendableOptions extends PieceOptions {
-		appliesTo: any[];
-	}
-
 	export interface InhibitorOptions extends PieceOptions {
 		spamProtection?: boolean;
 	}
@@ -887,10 +860,6 @@ declare module 'klasa' {
 			usageDelim: string | null;
 			nearlyFullUsage: string;
 		};
-	}
-
-	export interface PieceExtendableJSON extends PieceJSON, Filter<Required<ExtendableOptions>, 'appliesTo'> {
-		appliesTo: string[];
 	}
 
 	export interface PieceEventJSON extends PieceJSON, Filter<Required<EventOptions>, 'emitter'> {
@@ -1157,7 +1126,6 @@ declare module 'klasa' {
 			monitors: MonitorStore;
 			languages: LanguageStore;
 			events: EventStore;
-			extendables: ExtendableStore;
 			pieceStores: Collection<string, any>;
 			permissionLevels: PermissionLevels;
 			application: ClientApplication;
@@ -1251,7 +1219,7 @@ declare module 'klasa' {
 			off(event: 'wtf', listener: (failure: Error) => void): this;
 		}
 
-		export interface Message extends PartialSendAliases {
+		export interface Message {
 			command: Command | null;
 			commandText: string | null;
 			prefix: RegExp | null;

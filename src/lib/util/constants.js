@@ -69,11 +69,6 @@ exports.DEFAULTS = {
 				enabled: true,
 				once: false
 			},
-			extendables: {
-				enabled: true,
-				klasa: false,
-				appliesTo: []
-			},
 			finalizers: { enabled: true },
 			inhibitors: {
 				enabled: true,

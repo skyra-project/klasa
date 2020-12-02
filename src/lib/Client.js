@@ -176,13 +176,6 @@ class KlasaClient extends Discord.Client {
 		this.events = new EventStore(this);
 
 		/**
-		 * The cache where extendables are stored
-		 * @since 0.0.1
-		 * @type {ExtendableStore}
-		 */
-		this.extendables = new ExtendableStore(this);
-
-		/**
 		 * A Store registry
 		 * @since 0.3.0
 		 * @type {external:Collection}
@@ -209,7 +202,6 @@ class KlasaClient extends Discord.Client {
 			.registerStore(this.monitors)
 			.registerStore(this.languages)
 			.registerStore(this.events)
-			.registerStore(this.extendables)
 			.registerStore(this.arguments);
 
 		const coreDirectory = path.join(__dirname, '../');
