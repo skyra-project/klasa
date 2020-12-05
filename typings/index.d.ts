@@ -138,8 +138,6 @@ declare module 'klasa' {
 		public requiredPermissions: Permissions;
 		public cooldownLevel: 'author' | 'channel' | 'guild';
 		public deletable: boolean;
-		public description: string | ((language: Language) => string);
-		public extendedHelp: string | ((language: Language) => any);
 		public flagSupport: boolean;
 		public fullCategory: string[];
 		public guarded: boolean;
@@ -193,12 +191,6 @@ declare module 'klasa' {
 		public abstract run(message: KlasaMessage, command: Command): void | boolean | string | Promise<void | boolean | string>;
 		public toJSON(): PieceInhibitorJSON;
 		protected _run(message: KlasaMessage, command: Command): Promise<boolean | string>;
-	}
-
-	export abstract class Language extends Piece {
-		public constructor(store: LanguageStore, file: string[], directory: string, options?: LanguageOptions);
-		public language: unknown;
-		public toJSON(): PieceLanguageJSON;
 	}
 
 	export abstract class Monitor extends Piece {
@@ -266,10 +258,6 @@ declare module 'klasa' {
 
 	export class InhibitorStore extends Store<string, Inhibitor, typeof Inhibitor> {
 		public run(message: KlasaMessage, command: Command, selective?: boolean): Promise<void>;
-	}
-
-	export class LanguageStore extends Store<string, Language, typeof Language> {
-		public readonly default: Language;
 	}
 
 	export class MonitorStore extends Store<string, Monitor, typeof Monitor> {
@@ -662,7 +650,6 @@ declare module 'klasa' {
 		createPiecesFolders?: boolean;
 		customPromptDefaults?: CustomPromptDefaults;
 		disabledCorePieces?: string[];
-		language?: string;
 		noPrefixDM?: boolean;
 		owners?: string[];
 		permissionLevels?: PermissionLevels;
@@ -689,7 +676,6 @@ declare module 'klasa' {
 		events?: EventOptions;
 		finalizers?: FinalizerOptions;
 		inhibitors?: InhibitorOptions;
-		languages?: LanguageOptions;
 		monitors?: MonitorOptions;
 	}
 
@@ -795,8 +781,6 @@ declare module 'klasa' {
 		cooldown?: number;
 		cooldownLevel?: 'author' | 'channel' | 'guild';
 		deletable?: boolean;
-		description?: string | string[] | ((language: Language) => string | string[]);
-		extendedHelp?: string | string[] | ((language: Language) => any);
 		flagSupport?: boolean;
 		guarded?: boolean;
 		hidden?: boolean;
@@ -831,7 +815,6 @@ declare module 'klasa' {
 	}
 
 	export interface FinalizerOptions extends PieceOptions {}
-	export interface LanguageOptions extends PieceOptions {}
 
 	export interface PieceJSON {
 		directory: string;
@@ -870,7 +853,6 @@ declare module 'klasa' {
 	export interface PieceMonitorJSON extends PieceJSON, Required<MonitorOptions> {}
 	export interface PieceArgumentJSON extends AliasPieceJSON, Required<ArgumentOptions> {}
 	export interface PieceFinalizerJSON extends PieceJSON, Required<FinalizerOptions> {}
-	export interface PieceLanguageJSON extends PieceJSON, Required<LanguageOptions> {}
 
 	// Usage
 	export interface TextPromptOptions {
@@ -1124,7 +1106,6 @@ declare module 'klasa' {
 			inhibitors: InhibitorStore;
 			finalizers: FinalizerStore;
 			monitors: MonitorStore;
-			languages: LanguageStore;
 			events: EventStore;
 			pieceStores: Collection<string, any>;
 			permissionLevels: PermissionLevels;
@@ -1135,7 +1116,6 @@ declare module 'klasa' {
 			unregisterStore<K, V extends Piece, VConstructor = Constructor<V>>(store: Store<K, V, VConstructor>): KlasaClient;
 			sweepMessages(lifetime?: number, commandLifeTime?: number): number;
 			fetchPrefix(message: KlasaMessage): Promise<string | readonly string[] | null> | string | readonly string[] | null;
-			fetchLanguage(message: { channel: Channel; guild: Guild | null }): Promise<string>;
 			on(event: 'argumentError', listener: (message: KlasaMessage, command: Command, params: any[], error: string) => void): this;
 			on(event: 'commandError', listener: (message: KlasaMessage, command: Command, params: any[], error: Error | string) => void): this;
 			on(event: 'commandInhibited', listener: (message: KlasaMessage, command: Command, response: string | Error) => void): this;

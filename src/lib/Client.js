@@ -14,7 +14,6 @@ const CommandStore = require('./structures/CommandStore');
 const EventStore = require('./structures/EventStore');
 const FinalizerStore = require('./structures/FinalizerStore');
 const InhibitorStore = require('./structures/InhibitorStore');
-const LanguageStore = require('./structures/LanguageStore');
 const MonitorStore = require('./structures/MonitorStore');
 
 // lib/util
@@ -53,7 +52,6 @@ class KlasaClient extends Discord.Client {
 	 * @property {boolean} [createPiecesFolders=true] Whether Klasa should create pieces' folder at start up or not
 	 * @property {CustomPromptDefaults} [customPromptDefaults={}] The defaults for custom prompts
 	 * @property {string[]} [disabledCorePieces=[]] An array of disabled core piece types, e.g., ['commands', 'arguments']
-	 * @property {string} [language='en-US'] The default language Klasa should opt-in for the commands
 	 * @property {boolean} [noPrefixDM=false] Whether the bot should allow prefixless messages in DMs
 	 * @property {string[]} [owners] The discord user id for the users the bot should respect as the owner (gotten from Discord api if not provided)
 	 * @property {PermissionLevelsOverload} [permissionLevels] The permission levels to use with this bot
@@ -84,7 +82,6 @@ class KlasaClient extends Discord.Client {
 	 * @property {EventOptions} [events={}] The default event options
 	 * @property {FinalizerOptions} [finalizers={}] The default finalizer options
 	 * @property {InhibitorOptions} [inhibitors={}] The default inhibitor options
-	 * @property {LanguageOptions} [languages={}] The default language options
 	 * @property {MonitorOptions} [monitors={}] The default monitor options
 	 */
 
@@ -162,13 +159,6 @@ class KlasaClient extends Discord.Client {
 		this.monitors = new MonitorStore(this);
 
 		/**
-		 * The cache where languages are stored
-		 * @since 0.2.1
-		 * @type {LanguageStore}
-		 */
-		this.languages = new LanguageStore(this);
-
-		/**
 		 * The cache where events are stored
 		 * @since 0.0.1
 		 * @type {EventStore}
@@ -200,7 +190,6 @@ class KlasaClient extends Discord.Client {
 			.registerStore(this.inhibitors)
 			.registerStore(this.finalizers)
 			.registerStore(this.monitors)
-			.registerStore(this.languages)
 			.registerStore(this.events)
 			.registerStore(this.arguments);
 
@@ -324,14 +313,6 @@ class KlasaClient extends Discord.Client {
 	 */
 	fetchPrefix() {
 		return this.options.prefix ?? null;
-	}
-
-	/**
-	 * Retrieves the language key for the message.
-	 * @param {KlasaMessage} message The message that gives context.
-	 */
-	fetchLanguage() {
-		return this.options.language ?? 'en-US';
 	}
 
 	/**

@@ -10,9 +10,8 @@ const { isClass } = require('../../util/util');
  * @see EventStore
  * @see FinalizerStore
  * @see InhibitorStore
- * @see LanguageStore
  * @see MonitorStore
- * @extends external:Collection
+ * @extends Collection
  */
 class Store extends Collection {
 	constructor(client, name, holds) {

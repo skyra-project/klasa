@@ -36,7 +36,6 @@ Following suit from Komada (the Croatian word for "pieces"), Klasa is the Croati
     -   Events: Hot-reloadable structures for events, with internal error handling.
     -   Finalizers: Structures that run after successful command run.
     -   Inhibitors: Middleware that can stop a command from running (permissions...).
-    -   Languages: Easy internationalization support for your bot!
     -   Monitors: Watch every single message your bot receives! They're perfect for no-mention-spam, swear word filter, and so on!
 
 [i18next]: https://www.i18next.com
