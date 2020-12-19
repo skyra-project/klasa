@@ -223,7 +223,7 @@ declare module 'klasa' {
 		public readonly holds: VConstructor;
 		public readonly name: string;
 		public readonly userDirectory: string;
-		private readonly coreDirectories: Set<string>;
+		public readonly coreDirectories: Set<string>;
 
 		protected registerCoreDirectory(directory: string): this;
 		public delete(name: K | V): boolean;
