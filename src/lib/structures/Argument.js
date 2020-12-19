@@ -39,12 +39,12 @@ class Argument extends AliasPiece {
 		if (min !== null && max !== null) {
 			if (value >= min && value <= max) return true;
 			if (min === max)
-				throw await message.fetchLocale(possible.inclusive ? 'resolverMinmaxExactlyInclusive' : 'resolverMinmaxExactlyExclusive', {
+				throw await message.fetchLocale(possible.inclusive ? 'resolvers:minmaxExactlyInclusive' : 'resolvers:minmaxExactlyExclusive', {
 					name: possible.name,
 					min,
 					suffix
 				});
-			throw await message.fetchLocale(possible.inclusive ? 'resolverMinmaxBothInclusive' : 'resolverMinmaxBothExclusive', {
+			throw await message.fetchLocale(possible.inclusive ? 'resolvers:minmaxBothInclusive' : 'resolvers:minmaxBothExclusive', {
 				name: possible.name,
 				min,
 				max,
@@ -52,14 +52,14 @@ class Argument extends AliasPiece {
 			});
 		} else if (min !== null) {
 			if (value >= min) return true;
-			throw await message.fetchLocale(possible.inclusive ? 'resolverMinmaxMinInclusive' : 'resolverMinmaxMinExclusive', {
+			throw await message.fetchLocale(possible.inclusive ? 'resolvers:minmaxMinInclusive' : 'resolvers:minmaxMinExclusive', {
 				name: possible.name,
 				min,
 				suffix
 			});
 		} else if (max !== null) {
 			if (value <= max) return true;
-			throw await message.fetchLocale(possible.inclusive ? 'resolverMinmaxMaxInclusive' : 'resolverMinmaxMaxExclusive', {
+			throw await message.fetchLocale(possible.inclusive ? 'resolvers:minmaxMaxInclusive' : 'resolvers:minmaxMaxExclusive', {
 				name: possible.name,
 				max,
 				suffix
