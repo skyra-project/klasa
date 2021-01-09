@@ -8,7 +8,7 @@ module.exports = class extends Argument {
 	async run(arg, possible, message) {
 		const { min, max } = possible;
 		const number = parseFloat(arg);
-		if (isNaN(number)) throw await message.resolveKey('resolver:invalidFloat', { name: possible.name });
+		if (isNaN(number)) throw await message.resolveKey('resolvers:invalidFloat', { name: possible.name });
 		return (await this.constructor.minOrMax(this.client, number, min, max, possible, message)) ? number : null;
 	}
 };

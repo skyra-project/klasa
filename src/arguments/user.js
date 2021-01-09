@@ -10,6 +10,6 @@ module.exports = class extends Argument {
 			? await this.client.users.fetch(this.constructor.regex.userOrMember.exec(arg)[1]).catch(() => null)
 			: null;
 		if (user) return user;
-		throw await message.resolveKey('resolver:invalidUser', { name: possible.name });
+		throw await message.resolveKey('resolvers:invalidUser', { name: possible.name });
 	}
 };

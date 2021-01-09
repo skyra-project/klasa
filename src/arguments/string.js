@@ -6,7 +6,7 @@ module.exports = class extends Argument {
 	}
 
 	async run(arg, possible, message) {
-		if (!arg) throw await message.resolveKey('resolver:invalidString', { name: possible.name });
+		if (!arg) throw await message.resolveKey('resolvers:invalidString', { name: possible.name });
 		const { min, max } = possible;
 		return (await this.constructor.minOrMax(this.client, arg.length, min, max, possible, message, 'resolverStringSuffix')) ? arg : null;
 	}

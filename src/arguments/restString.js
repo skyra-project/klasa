@@ -10,7 +10,7 @@ module.exports = class extends Argument {
 	}
 
 	async run(arg, possible, message) {
-		if (!arg) throw await message.resolveKey('resolver:invalidString', { name: possible.name });
+		if (!arg) throw await message.resolveKey('resolvers:invalidString', { name: possible.name });
 		const {
 			args,
 			usage: { usageDelim }

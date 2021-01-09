@@ -6,6 +6,6 @@ module.exports = class extends Argument {
 			? await this.client.users.fetch(this.constructor.regex.userOrMember.exec(arg)[1]).catch(() => null)
 			: null;
 		if (user) return user.createDM();
-		throw await message.resolveKey('resolver:invalidChannel', { name: possible.name });
+		throw await message.resolveKey('resolvers:invalidChannel', { name: possible.name });
 	}
 };
