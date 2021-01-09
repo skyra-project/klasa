@@ -14,7 +14,7 @@ class ReactionHandler extends ReactionCollector {
 	 * @typedef {Object} ReactionHandlerOptions
 	 * @property {Function} [filter] A filter function to add to the ReactionHandler
 	 * @property {boolean} [stop=true] If a stop reaction should be included
-	 * @property {string} [prompt=await message.fetchLocale('klasa:reactionhandlerPrompt')] The prompt to be used when awaiting user input on a page to jump to
+	 * @property {string} [prompt=await message.resolveKey('klasa:reactionhandlerPrompt')] The prompt to be used when awaiting user input on a page to jump to
 	 * @property {number} [startPage=0] The page to start the RichMenu on
 	 * @property {number} [max] The maximum total amount of reactions to collect
 	 * @property {number} [maxEmojis] The maximum number of emojis to collect
@@ -172,7 +172,7 @@ class ReactionHandler extends ReactionCollector {
 		if (this.awaiting) return;
 		this.awaiting = true;
 
-		if (!this.prompt) this.prompt = await this.message.fetchLocale('klasa:reactionhandlerPrompt');
+		if (!this.prompt) this.prompt = await this.message.resolveKey('klasa:reactionhandlerPrompt');
 		const message = await this.message.channel.send(this.prompt);
 		const collected = await this.message.channel.awaitMessages((mess) => mess.author === user, { max: 1, time: this.time });
 		this.awaiting = false;

@@ -6,6 +6,6 @@ module.exports = class extends Argument {
 			const piece = store.get(arg);
 			if (piece) return piece;
 		}
-		throw await message.fetchLocale('resolver:invalidPiece', { name: possible.name, piece: 'piece' });
+		throw await message.resolveKey('resolver:invalidPiece', { name: possible.name, piece: 'piece' });
 	}
 };

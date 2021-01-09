@@ -6,6 +6,6 @@ module.exports = class extends Argument {
 			? await message.guild.members.fetch(this.constructor.regex.userOrMember.exec(arg)[1]).catch(() => null)
 			: null;
 		if (member) return member;
-		throw await message.fetchLocale('resolver:invalidMember', { name: possible.name });
+		throw await message.resolveKey('resolver:invalidMember', { name: possible.name });
 	}
 };

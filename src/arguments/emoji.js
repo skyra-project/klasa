@@ -4,6 +4,6 @@ module.exports = class extends Argument {
 	async run(arg, possible, message) {
 		const emoji = this.constructor.regex.emoji.test(arg) ? this.client.emojis.cache.get(this.constructor.regex.emoji.exec(arg)[1]) : null;
 		if (emoji) return emoji;
-		throw await message.fetchLocale('resolver:invalidEmoji', { name: possible.name });
+		throw await message.resolveKey('resolver:invalidEmoji', { name: possible.name });
 	}
 };
