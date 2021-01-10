@@ -195,10 +195,11 @@ class TextPrompt {
 	async reprompt(prompt) {
 		this._prompted++;
 		if (this.typing) this.message.channel.stopTyping();
-		const possibleAbortOptions = await this.message.resolveKey('klasa:textPromptAbortOptions');
+		const t = await this.message.fetchT();
+		const possibleAbortOptions = t('klasa:textPromptAbortOptions', { returnObjects: true });
 		const edits = this.message.edits.length;
 		const message = await this.prompt(
-			await this.message.resolveKey('klasa:monitorCommandHandlerReprompt', {
+			t('klasa:monitorCommandHandlerReprompt', {
 				tag: `<@!${this.target.id}>`,
 				name: prompt,
 				time: this.time / 1000,
@@ -206,7 +207,7 @@ class TextPrompt {
 			})
 		);
 		if (this.message.edits.length !== edits || message.prefix || possibleAbortOptions.includes(message.content.toLowerCase()))
-			throw await this.message.resolveKey('klasa:monitorCommandHandlerAborted');
+			throw t('klasa:monitorCommandHandlerAborted');
 
 		this.responses.set(message.id, message);
 
