@@ -181,7 +181,7 @@ class TextPrompt {
 		const message = await this.channel.send(text);
 		const responses = await message.channel.awaitMessages((msg) => msg.author === this.target, { time: this.time, max: 1 });
 		message.delete();
-		if (responses.size === 0) throw await this.message.fetchLocale('messagePromptTimeout');
+		if (responses.size === 0) throw await this.message.resolveKey('klasa:messagePromptTimeout');
 		return responses.first();
 	}
 
@@ -195,10 +195,11 @@ class TextPrompt {
 	async reprompt(prompt) {
 		this._prompted++;
 		if (this.typing) this.message.channel.stopTyping();
-		const possibleAbortOptions = await this.message.fetchLocale('textPromptAbortOptions');
+		const t = await this.message.fetchT();
+		const possibleAbortOptions = t('klasa:textPromptAbortOptions', { returnObjects: true });
 		const edits = this.message.edits.length;
 		const message = await this.prompt(
-			await this.message.fetchLocale('monitorCommandHandlerReprompt', {
+			t('klasa:monitorCommandHandlerReprompt', {
 				tag: `<@!${this.target.id}>`,
 				name: prompt,
 				time: this.time / 1000,
@@ -206,7 +207,7 @@ class TextPrompt {
 			})
 		);
 		if (this.message.edits.length !== edits || message.prefix || possibleAbortOptions.includes(message.content.toLowerCase()))
-			throw await this.message.fetchLocale('monitorCommandHandlerAborted');
+			throw t('klasa:monitorCommandHandlerAborted');
 
 		this.responses.set(message.id, message);
 
@@ -227,10 +228,10 @@ class TextPrompt {
 	async repeatingPrompt() {
 		if (this.typing) this.message.channel.stopTyping();
 		let message;
-		const possibleCancelOptions = await this.message.fetchLocale('textPromptAbortOptions');
+		const possibleCancelOptions = await this.message.resolveKey('klasa:textPromptAbortOptions');
 		try {
 			message = await this.prompt(
-				await this.message.fetchLocale('monitorCommandHandlerRepeatingReprompt', {
+				await this.message.resolveKey('klasa:monitorCommandHandlerRepeatingReprompt', {
 					tag: `<@!${this.message.author.id}>`,
 					name: this._currentUsage.possibles[0].name,
 					time: this.time / 1000,
@@ -312,13 +313,13 @@ class TextPrompt {
 				return this.handleError(
 					error ||
 						(this.args[this.params.length] === undefined
-							? await this.message.fetchLocale('commandmessageMissingRequired', { name: possible.name })
+							? await this.message.resolveKey('klasa:commandMessageMissingRequired', { name: possible.name })
 							: err)
 				);
 			}
 			return this.handleError(
 				error ||
-					(await this.message.fetchLocale('commandmessageNomatch', {
+					(await this.message.resolveKey('klasa:commandMessageNoMatch', {
 						possibles: this._currentUsage.possibles.map((poss) => poss.name).join(', ')
 					}))
 			);

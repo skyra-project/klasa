@@ -2,7 +2,6 @@ const { Permissions } = require('discord.js');
 const AliasPiece = require('./base/AliasPiece');
 const Usage = require('../usage/Usage');
 const CommandUsage = require('../usage/CommandUsage');
-const { isFunction } = require('../util/util');
 
 /**
  * Base class for all Klasa Commands. See {@tutorial CreatingCommands} for more information how to use this class
@@ -12,11 +11,6 @@ const { isFunction } = require('../util/util');
  */
 class Command extends AliasPiece {
 	/**
-	 * Defaulted to `language.get('commandHelpNoExtended')`
-	 * @typedef {(string|Function)} ExtendedHelp
-	 */
-
-	/**
 	 * @typedef {AliasPieceOptions} CommandOptions
 	 * @property {boolean} [autoAliases=true] If automatic aliases should be added (adds aliases of name and aliases without dashes)
 	 * @property {external:PermissionResolvable} [requiredPermissions=0] The required Discord permissions for the bot to use this command
@@ -24,8 +18,6 @@ class Command extends AliasPiece {
 	 * @property {number} [cooldown=0] The amount of time before the user can run the command again in seconds
 	 * @property {string} [cooldownLevel='author'] The level the cooldown applies to (valid options are 'author', 'channel', 'guild')
 	 * @property {boolean} [deletable=false] If the responses should be deleted if the triggering message is deleted
-	 * @property {(string|Function)} [description=''] The help description for the command
-	 * @property {ExtendedHelp} [extendedHelp] Extended help strings
 	 * @property {boolean} [flagSupport=true] Whether flags should be parsed or not
 	 * @property {boolean} [guarded=false] If the command can be disabled on a guild level (does not effect global disable)
 	 * @property {boolean} [hidden=false] If the command should be hidden
@@ -70,28 +62,6 @@ class Command extends AliasPiece {
 		 * @type {boolean}
 		 */
 		this.deletable = options.deletable;
-
-		/**
-		 * The description of the command
-		 * @since 0.0.1
-		 * @type {(string|Function)}
-		 * @param {Language} language The language for the description
-		 * @returns {string}
-		 */
-		this.description = isFunction(options.description)
-			? (language = this.client.languages.default) => options.description(language)
-			: options.description;
-
-		/**
-		 * The extended help for the command
-		 * @since 0.0.1
-		 * @type {(string|Function)}
-		 * @param {Language} language The language for the extended help
-		 * @returns {string}
-		 */
-		this.extendedHelp = isFunction(options.extendedHelp)
-			? (language = this.client.languages.default) => options.extendedHelp(language)
-			: options.extendedHelp;
 
 		/**
 		 * The full category for the command
@@ -309,8 +279,6 @@ class Command extends AliasPiece {
 			category: this.category,
 			cooldown: this.cooldown,
 			deletable: this.deletable,
-			description: isFunction(this.description) ? this.description() : this.description,
-			extendedHelp: isFunction(this.extendedHelp) ? this.extendedHelp() : this.extendedHelp,
 			fullCategory: this.fullCategory,
 			guarded: this.guarded,
 			hidden: this.hidden,

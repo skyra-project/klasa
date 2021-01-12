@@ -8,7 +8,6 @@ const { join } = require('path');
  * @see Event
  * @see Finalizer
  * @see Inhibitor
- * @see Language
  * @see Monitor
  */
 class Piece {

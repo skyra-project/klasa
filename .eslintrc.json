@@ -1,5 +1,5 @@
 {
-	"extends": ["@skyra", "plugin:prettier/recommended"],
+	"extends": ["@sapphire", "plugin:prettier/recommended"],
 	"rules": {
 		"@typescript-eslint/naming-convention": 0,
 		"@typescript-eslint/indent": 0,
@@ -27,7 +27,7 @@
 			}
 		},
 		{
-			"files":["typings/**"],
+			"files": ["typings/**"],
 			"rules": {
 				"@typescript-eslint/unified-signatures": 0,
 				"@typescript-eslint/init-declarations": 0,

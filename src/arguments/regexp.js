@@ -8,6 +8,6 @@ module.exports = class extends Argument {
 	async run(arg, possible, message) {
 		const results = possible.regex.exec(arg);
 		if (results !== null) return results;
-		throw await message.fetchLocale('resolverInvalidRegexMatch', { name: possible.name, pattern: possible.regex.toString() });
+		throw await message.resolveKey('resolvers:invalidRegexMatch', { name: possible.name, pattern: possible.regex.toString() });
 	}
 };

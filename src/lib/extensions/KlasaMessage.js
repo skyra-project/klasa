@@ -204,43 +204,6 @@ module.exports = Structures.extend('Message', (Message) => {
 		}
 
 		/**
-		 * Sends a message that will be editable via command editing (if nothing is attached)
-		 * @since 0.5.0
-		 * @param {string} key The Language key to send
-		 * @param {Array<*>} [localeArgs] The language arguments to pass
-		 * @param {external:MessageOptions} [options] The D.JS message options plus Language arguments
-		 * @returns {Promise<KlasaMessage|KlasaMessage[]>}
-		 */
-		async sendLocale(key, localeArgs = [], options = {}) {
-			if (!Array.isArray(localeArgs)) [options, localeArgs] = [localeArgs, []];
-			return this.send(APIMessage.transformOptions(await this.fetchLocale(key, ...localeArgs), undefined, options));
-		}
-
-		/**
-		 * Retrieves the {@link Language} for this message.
-		 * @since 0.5.0
-		 * @returns {Promise<Language>}
-		 */
-		async fetchLanguage() {
-			const languageKey = await this.client.fetchLanguage(this);
-			const language = this.client.languages.get(languageKey);
-			if (language) return language;
-			throw new Error(`The language '${language}' is not available.`);
-		}
-
-		/**
-		 * Retrieves the localized message.
-		 * @since 0.5.0
-		 * @param {string} key The Language key to send
-		 * @param {Array<*>} [localeArgs] The language arguments to pass
-		 * @returns {Promise<string>}
-		 */
-		async fetchLocale(key, ...localeArgs) {
-			const language = await this.fetchLanguage();
-			return language.get(key, ...localeArgs);
-		}
-
-		/**
 		 * Parses this message as a command
 		 * @since 0.5.0
 		 */
