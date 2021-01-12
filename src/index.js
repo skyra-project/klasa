@@ -26,8 +26,6 @@ module.exports = {
 	FinalizerStore: require('./lib/structures/FinalizerStore'),
 	Inhibitor: require('./lib/structures/Inhibitor'),
 	InhibitorStore: require('./lib/structures/InhibitorStore'),
-	Language: require('./lib/structures/Language'),
-	LanguageStore: require('./lib/structures/LanguageStore'),
 	Monitor: require('./lib/structures/Monitor'),
 	MonitorStore: require('./lib/structures/MonitorStore'),
 	MultiArgument: require('./lib/structures/MultiArgument'),

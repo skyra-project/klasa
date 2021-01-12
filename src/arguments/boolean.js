@@ -11,6 +11,6 @@ module.exports = class extends Argument {
 		const boolean = String(arg).toLowerCase();
 		if (truths.includes(boolean)) return true;
 		if (falses.includes(boolean)) return false;
-		throw await message.fetchLocale('resolverInvalidBool', { name: possible.name });
+		throw await message.resolveKey('resolvers:invalidBool', { name: possible.name });
 	}
 };

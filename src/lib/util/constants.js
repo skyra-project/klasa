@@ -22,7 +22,6 @@ exports.DEFAULTS = {
 		},
 		createPiecesFolders: true,
 		disabledCorePieces: [],
-		language: 'en-US',
 		noPrefixDM: false,
 		prefix: '',
 		readyMessage: (client) => `Successfully initialized. Ready to serve ${client.guilds.size} guild${client.guilds.size === 1 ? '' : 's'}.`,
@@ -49,7 +48,6 @@ exports.DEFAULTS = {
 				cooldown: 0,
 				cooldownLevel: 'author',
 				description: '',
-				extendedHelp: (language) => language.get('commandHelpNoExtended'),
 				enabled: true,
 				flagSupport: true,
 				guarded: false,
@@ -74,7 +72,6 @@ exports.DEFAULTS = {
 				enabled: true,
 				spamProtection: false
 			},
-			languages: { enabled: true },
 			monitors: {
 				enabled: true,
 				ignoreBots: true,
