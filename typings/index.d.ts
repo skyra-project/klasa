@@ -1187,12 +1187,14 @@ declare module 'klasa' {
 			commandText: string | null;
 			prefix: RegExp | null;
 			prefixLength: number | null;
+			prompter: CommandPrompt | null;
 			readonly responses: Message[];
 			readonly args: string[];
 			readonly params: any[];
 			readonly flagArgs: Record<string, string>;
 			readonly reprompted: boolean;
 			readonly reactable: boolean;
+			parseCommand(): Promise<void>;
 			send(content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<Message>;
 			send(content?: StringResolvable, options?: (MessageOptions & { split?: false }) | MessageAdditions): Promise<Message>;
 			send(content?: StringResolvable, options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions): Promise<Message[]>;
