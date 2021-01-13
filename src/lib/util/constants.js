@@ -67,7 +67,6 @@ exports.DEFAULTS = {
 				enabled: true,
 				once: false
 			},
-			finalizers: { enabled: true },
 			inhibitors: {
 				enabled: true,
 				spamProtection: false

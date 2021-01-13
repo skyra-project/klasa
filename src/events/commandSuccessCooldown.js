@@ -1,8 +1,8 @@
-const { Finalizer, RateLimitManager } = require('klasa');
+const { RateLimitManager, Event } = require('klasa');
 
-module.exports = class extends Finalizer {
+module.exports = class extends Event {
 	constructor(...args) {
-		super(...args);
+		super(...args, { event: 'commandSuccess' });
 		this.cooldowns = new WeakMap();
 	}
 

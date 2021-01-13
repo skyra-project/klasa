@@ -14,7 +14,6 @@ const PermissionLevels = require('./permissions/PermissionLevels');
 const ArgumentStore = require('./structures/ArgumentStore');
 const CommandStore = require('./structures/CommandStore');
 const EventStore = require('./structures/EventStore');
-const FinalizerStore = require('./structures/FinalizerStore');
 const InhibitorStore = require('./structures/InhibitorStore');
 const MonitorStore = require('./structures/MonitorStore');
 
@@ -82,7 +81,6 @@ class KlasaClient extends Discord.Client {
 	 * @typedef {Object} PieceDefaults
 	 * @property {CommandOptions} [commands={}] The default command options
 	 * @property {EventOptions} [events={}] The default event options
-	 * @property {FinalizerOptions} [finalizers={}] The default finalizer options
 	 * @property {InhibitorOptions} [inhibitors={}] The default inhibitor options
 	 * @property {MonitorOptions} [monitors={}] The default monitor options
 	 */
@@ -147,13 +145,6 @@ class KlasaClient extends Discord.Client {
 		this.inhibitors = new InhibitorStore(this);
 
 		/**
-		 * The cache where finalizers are stored
-		 * @since 0.0.1
-		 * @type {FinalizerStore}
-		 */
-		this.finalizers = new FinalizerStore(this);
-
-		/**
 		 * The cache where monitors are stored
 		 * @since 0.0.1
 		 * @type {MonitorStore}
@@ -190,7 +181,6 @@ class KlasaClient extends Discord.Client {
 
 		this.registerStore(this.commands)
 			.registerStore(this.inhibitors)
-			.registerStore(this.finalizers)
 			.registerStore(this.monitors)
 			.registerStore(this.events)
 			.registerStore(this.arguments);
@@ -511,18 +501,6 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * @param {Message} message The message that triggered the monitor
  * @param {Monitor} monitor The monitor run
  * @param {(Error|string)} error The monitor error
- */
-
-/**
- * Emitted when a finalizer has encountered an error.
- * @event KlasaClient#finalizerError
- * @since 0.5.0
- * @param {Message} message The message that triggered the finalizer
- * @param {Command} command The command this finalizer is for (may be different than message.command)
- * @param {*} response The response from the command
- * @param {Stopwatch} timer The timer run from start to queue of the command
- * @param {Finalizer} finalizer The finalizer run
- * @param {(Error|string)} error The finalizer error
  */
 
 /**
