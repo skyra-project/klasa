@@ -18,7 +18,7 @@ class MonitorStore extends Store {
 	/**
 	 * Runs our monitors on the message.
 	 * @since 0.0.1
-	 * @param {KlasaMessage} message The message object from Discord.js
+	 * @param {Message} message The message object from Discord.js
 	 */
 	run(message) {
 		for (const monitor of this.values()) if (monitor.shouldRun(message)) monitor._run(message);

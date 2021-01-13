@@ -3,9 +3,6 @@ module.exports = {
 	KlasaClient: require('./lib/Client'),
 	Client: require('./lib/Client'),
 
-	// lib/extensions
-	KlasaMessage: require('./lib/extensions/KlasaMessage'),
-
 	// lib/permissions
 	PermissionLevels: require('./lib/permissions/PermissionLevels'),
 

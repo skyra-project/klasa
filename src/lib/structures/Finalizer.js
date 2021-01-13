@@ -10,9 +10,9 @@ class Finalizer extends Piece {
 	/**
 	 * Run a finalizer and catch any uncaught promises
 	 * @since 0.5.0
-	 * @param {KlasaMessage} message The message that called the command
+	 * @param {Message} message The message that called the command
 	 * @param {Command} command The command this finalizer is for (may be different than message.command)
-	 * @param {?KlasaMessage|KlasaMessage[]} response The bot's response message, if one is returned
+	 * @param {?Message|Message[]} response The bot's response message, if one is returned
 	 * @param {Stopwatch} runTime The time it took to generate the command
 	 * @private
 	 */
@@ -27,9 +27,9 @@ class Finalizer extends Piece {
 	/**
 	 * The run method to be overwritten in actual finalizers
 	 * @since 0.0.1
-	 * @param {KlasaMessage} message The message used to trigger this finalizer
+	 * @param {Message} message The message used to trigger this finalizer
 	 * @param {Command} command The command this finalizer is for (may be different than message.command)
-	 * @param {?KlasaMessage|KlasaMessage[]} response The bot's response message, if one is returned
+	 * @param {?Message|Message[]} response The bot's response message, if one is returned
 	 * @param {Stopwatch} runTime The time it took to generate the command
 	 * @returns {void}
 	 * @abstract

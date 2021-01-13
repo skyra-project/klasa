@@ -18,7 +18,7 @@ class TextPrompt {
 
 	/**
 	 * @since 0.5.0
-	 * @param {KlasaMessage} message The message this prompt is for
+	 * @param {Message} message The message this prompt is for
 	 * @param {Usage} usage The usage for this prompt
 	 * @param {TextPromptOptions} [options={}] The options of this prompt
 	 */
@@ -37,7 +37,7 @@ class TextPrompt {
 		/**
 		 * The message this prompt is for
 		 * @since 0.5.0
-		 * @type {KlasaMessage}
+		 * @type {Message}
 		 */
 		this.message = message;
 
@@ -174,7 +174,7 @@ class TextPrompt {
 	/**
 	 * Prompts the target for a response
 	 * @param {StringResolvable | MessageOptions | MessageAdditions | APIMessage} text The text to prompt
-	 * @returns {KlasaMessage}
+	 * @returns {Message}
 	 * @private
 	 */
 	async prompt(text) {

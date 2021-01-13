@@ -25,7 +25,7 @@ class ReactionHandler extends ReactionCollector {
 	/**
 	 * Constructs our ReactionHandler instance
 	 * @since 0.4.0
-	 * @param {KlasaMessage} message A message this ReactionHandler should handle reactions
+	 * @param {Message} message A message this ReactionHandler should handle reactions
 	 * @param {Function} filter A filter function to determine which emoji reactions should be handled
 	 * @param {ReactionHandlerOptions} options The options for this ReactionHandler
 	 * @param {(RichDisplay|RichMenu)} display The RichDisplay or RichMenu that this handler is for

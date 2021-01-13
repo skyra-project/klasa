@@ -180,7 +180,7 @@ class RichDisplay {
 	/**
 	 * Runs the RichDisplay
 	 * @since 0.4.0
-	 * @param {KlasaMessage} message A message to either edit, or use to send a new message for this RichDisplay
+	 * @param {Message} message A message to either edit, or use to send a new message for this RichDisplay
 	 * @param {RichDisplayRunOptions} [options={}] The options to use while running this RichDisplay
 	 * @returns {ReactionHandler}
 	 */

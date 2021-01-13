@@ -309,7 +309,7 @@ class KlasaClient extends Discord.Client {
 
 	/**
 	 * Retrieves the prefix for the guild.
-	 * @param {KlasaMessage} message The message that gives context.
+	 * @param {Message} message The message that gives context.
 	 */
 	fetchPrefix() {
 		return this.options.prefix ?? null;
@@ -439,7 +439,7 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * Emitted when an unknown command is called.
  * @event KlasaClient#commandUnknown
  * @since 0.4.0
- * @param {KlasaMessage} message The message that triggered the command
+ * @param {Message} message The message that triggered the command
  * @param {string} command The command attempted to run
  * @param {RegExp} prefix The prefix used
  * @param {number} prefixLength The length of the prefix used
@@ -449,7 +449,7 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * Emitted when a command has been inhibited.
  * @event KlasaClient#commandInhibited
  * @since 0.3.0
- * @param {KlasaMessage} message The message that triggered the command
+ * @param {Message} message The message that triggered the command
  * @param {Command} command The command triggered
  * @param {?string[]} response The reason why it was inhibited if not silent
  */
@@ -458,7 +458,7 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * Emitted when a command has been run.
  * @event KlasaClient#commandRun
  * @since 0.3.0
- * @param {KlasaMessage} message The message that triggered the command
+ * @param {Message} message The message that triggered the command
  * @param {Command} command The command run
  * @param {string[]} args The raw arguments of the command
  */
@@ -467,7 +467,7 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * Emitted when a command has been run.
  * @event KlasaClient#commandSuccess
  * @since 0.5.0
- * @param {KlasaMessage} message The message that triggered the command
+ * @param {Message} message The message that triggered the command
  * @param {Command} command The command run
  * @param {any[]} params The resolved parameters of the command
  * @param {?any} response Usually a response message, but whatever the command returned
@@ -477,7 +477,7 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * Emitted when a command has encountered an error.
  * @event KlasaClient#commandError
  * @since 0.3.0
- * @param {KlasaMessage} message The message that triggered the command
+ * @param {Message} message The message that triggered the command
  * @param {Command} command The command run
  * @param {any[]} params The resolved parameters of the command
  * @param {Object} error The command error
@@ -487,7 +487,7 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * Emitted when an invalid argument is passed to a command.
  * @event KlasaClient#argumentError
  * @since 0.5.0
- * @param {KlasaMessage} message The message that triggered the command
+ * @param {Message} message The message that triggered the command
  * @param {Command} command The command run
  * @param {any[]} params The resolved parameters of the command
  * @param {string} error The argument error
@@ -506,7 +506,7 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * Emitted when a monitor has encountered an error.
  * @event KlasaClient#monitorError
  * @since 0.4.0
- * @param {KlasaMessage} message The message that triggered the monitor
+ * @param {Message} message The message that triggered the monitor
  * @param {Monitor} monitor The monitor run
  * @param {(Error|string)} error The monitor error
  */
@@ -515,9 +515,9 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * Emitted when a finalizer has encountered an error.
  * @event KlasaClient#finalizerError
  * @since 0.5.0
- * @param {KlasaMessage} message The message that triggered the finalizer
+ * @param {Message} message The message that triggered the finalizer
  * @param {Command} command The command this finalizer is for (may be different than message.command)
- * @param {KlasaMessage|any} response The response from the command
+ * @param {*} response The response from the command
  * @param {Stopwatch} timer The timer run from start to queue of the command
  * @param {Finalizer} finalizer The finalizer run
  * @param {(Error|string)} error The finalizer error
