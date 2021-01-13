@@ -108,7 +108,7 @@ class PermissionLevels extends Collection {
 	/**
 	 * Runs the defined permissionLevels
 	 * @since 0.2.1
-	 * @param {KlasaMessage} message The message to pass to perm level functions
+	 * @param {Message} message The message to pass to perm level functions
 	 * @param {number} min The minimum permissionLevel ok to pass
 	 * @returns {PermissionLevelsData}
 	 */

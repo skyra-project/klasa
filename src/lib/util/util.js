@@ -12,7 +12,7 @@ const REGEXPESC = /[-/\\^$*+?.()|[\]{}]/g;
  */
 class Util {
 	/**
-	 * @typedef {(external:Guild|KlasaMessage|external:GuildChannel)} GuildResolvable
+	 * @typedef {(external:Guild|external:Message|external:GuildChannel)} GuildResolvable
 	 */
 
 	/**

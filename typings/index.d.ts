@@ -52,20 +52,6 @@ declare module 'klasa' {
 		length: number;
 	}
 
-	export class KlasaMessage extends Message {
-		public parseCommand(): Promise<void>;
-		private prompter: CommandPrompt | null;
-		private _responses: KlasaMessage[];
-		private _patch(data: any): void;
-		private _customPrefix(): CachedPrefix | null;
-		private _mentionPrefix(): CachedPrefix | null;
-		private _naturalPrefix(): CachedPrefix | null;
-		private _prefixLess(): CachedPrefix | null;
-		private static generateNewPrefix(prefix: string, flags: string): CachedPrefix;
-
-		private static prefixes: Map<string, CachedPrefix>;
-	}
-
 	// #endregion Extensions
 
 	// #region Permissions
@@ -73,13 +59,13 @@ declare module 'klasa' {
 	export class PermissionLevels extends Collection<number, PermissionLevel> {
 		public constructor(levels?: number);
 
-		public add(level: number, check: (message: KlasaMessage) => boolean | Promise<boolean>, options?: PermissionLevelOptions): this;
+		public add(level: number, check: (message: Message) => boolean | Promise<boolean>, options?: PermissionLevelOptions): this;
 		public debug(): string;
 		public isValid(): boolean;
 		public remove(level: number): this;
 		public set(level: number, obj: PermissionLevelOptions | symbol): this;
 
-		public run(message: KlasaMessage, min: number): Promise<PermissionLevelsData>;
+		public run(message: Message, min: number): Promise<PermissionLevelsData>;
 	}
 
 	// #region Pieces
@@ -113,7 +99,7 @@ declare module 'klasa' {
 	export abstract class Argument extends AliasPiece {
 		public constructor(store: ArgumentStore, file: string[], directory: string, options?: ArgumentOptions);
 		public aliases: string[];
-		public abstract run(arg: string | undefined, possible: Possible, message: KlasaMessage): any;
+		public abstract run(arg: string | undefined, possible: Possible, message: Message): any;
 		public static regex: MentionRegex;
 		private static minOrMax(
 			client: KlasaClient,
@@ -121,7 +107,7 @@ declare module 'klasa' {
 			min: number,
 			max: number,
 			possible: Possible,
-			message: KlasaMessage,
+			message: Message,
 			suffix: string
 		): Promise<boolean>;
 	}
@@ -152,13 +138,10 @@ declare module 'klasa' {
 		public usage: CommandUsage;
 
 		public createCustomResolver(type: string, resolver: ArgResolverCustomMethod): this;
-		public customizeResponse(
-			name: string,
-			response: string | ((message: KlasaMessage, possible: Possible) => PromiseLike<string> | string)
-		): this;
+		public customizeResponse(name: string, response: string | ((message: Message, possible: Possible) => PromiseLike<string> | string)): this;
 
 		public definePrompt(usageString: string, usageDelim?: string): Usage;
-		public run(message: KlasaMessage, params: any[]): Promise<Message | Message[] | KlasaMessage | KlasaMessage[] | null>;
+		public run(message: Message, params: any[]): Promise<Message | Message[] | null>;
 		public toJSON(): PieceCommandJSON;
 	}
 
@@ -180,17 +163,17 @@ declare module 'klasa' {
 
 	export abstract class Finalizer extends Piece {
 		public constructor(store: FinalizerStore, file: string[], directory: string, options?: FinalizerOptions);
-		public abstract run(message: KlasaMessage, command: Command, response: KlasaMessage | KlasaMessage[] | null, runTime: Stopwatch): void;
+		public abstract run(message: Message, command: Command, response: Message | Message[] | null, runTime: Stopwatch): void;
 		public toJSON(): PieceFinalizerJSON;
-		protected _run(message: KlasaMessage, command: Command, response: KlasaMessage | KlasaMessage[] | null, runTime: Stopwatch): Promise<void>;
+		protected _run(message: Message, command: Command, response: Message | Message[] | null, runTime: Stopwatch): Promise<void>;
 	}
 
 	export abstract class Inhibitor extends Piece {
 		public constructor(store: InhibitorStore, file: string[], directory: string, options?: InhibitorOptions);
 		public spamProtection: boolean;
-		public abstract run(message: KlasaMessage, command: Command): void | boolean | string | Promise<void | boolean | string>;
+		public abstract run(message: Message, command: Command): void | boolean | string | Promise<void | boolean | string>;
 		public toJSON(): PieceInhibitorJSON;
-		protected _run(message: KlasaMessage, command: Command): Promise<boolean | string>;
+		protected _run(message: Message, command: Command): Promise<boolean | string>;
 	}
 
 	export abstract class Monitor extends Piece {
@@ -202,15 +185,15 @@ declare module 'klasa' {
 		public ignoreSelf: boolean;
 		public ignoreWebhooks: boolean;
 
-		public abstract run(message: KlasaMessage): void;
-		public shouldRun(message: KlasaMessage): boolean;
+		public abstract run(message: Message): void;
+		public shouldRun(message: Message): boolean;
 		public toJSON(): PieceMonitorJSON;
-		protected _run(message: KlasaMessage): Promise<void>;
+		protected _run(message: Message): Promise<void>;
 	}
 
 	export abstract class MultiArgument extends Argument {
 		public abstract readonly base: Argument;
-		public run<T = any>(argument: string, possible: Possible, message: KlasaMessage): Promise<Array<T>>;
+		public run<T = any>(argument: string, possible: Possible, message: Message): Promise<Array<T>>;
 	}
 
 	// #endregion Pieces
@@ -253,15 +236,15 @@ declare module 'klasa' {
 	}
 
 	export class FinalizerStore extends Store<string, Finalizer, typeof Finalizer> {
-		public run(message: KlasaMessage, command: Command, response: KlasaMessage | KlasaMessage[], runTime: Stopwatch): Promise<void>;
+		public run(message: Message, command: Command, response: Message | Message[], runTime: Stopwatch): Promise<void>;
 	}
 
 	export class InhibitorStore extends Store<string, Inhibitor, typeof Inhibitor> {
-		public run(message: KlasaMessage, command: Command, selective?: boolean): Promise<void>;
+		public run(message: Message, command: Command, selective?: boolean): Promise<void>;
 	}
 
 	export class MonitorStore extends Store<string, Monitor, typeof Monitor> {
-		public run(message: KlasaMessage): Promise<void>;
+		public run(message: Message): Promise<void>;
 	}
 
 	// #endregion Stores
@@ -269,7 +252,7 @@ declare module 'klasa' {
 	// #region Usage
 
 	export class CommandPrompt extends TextPrompt {
-		public constructor(message: KlasaMessage, usage: CommandUsage, options: TextPromptOptions);
+		public constructor(message: Message, usage: CommandUsage, options: TextPromptOptions);
 		private typing: boolean;
 
 		public run<T = any[]>(): Promise<T>;
@@ -283,8 +266,8 @@ declare module 'klasa' {
 		public commands: string;
 		public nearlyFullUsage: string;
 
-		public createPrompt(message: KlasaMessage, options?: TextPromptOptions): CommandPrompt;
-		public fullUsage(message: KlasaMessage): string;
+		public createPrompt(message: Message, options?: TextPromptOptions): CommandPrompt;
+		public fullUsage(message: Message): string;
 		public toString(): string;
 	}
 
@@ -303,7 +286,7 @@ declare module 'klasa' {
 		public constructor(members: string, count: number, required: number);
 		public required: number;
 		public possibles: Possible[];
-		public response: string | ((message: KlasaMessage) => string);
+		public response: string | ((message: Message) => string);
 
 		private register(name: string, response: ArgResolverCustomMethod): boolean;
 		private static pattern: RegExp;
@@ -312,9 +295,9 @@ declare module 'klasa' {
 	}
 
 	export class TextPrompt {
-		public constructor(message: KlasaMessage, usage: Usage, options?: TextPromptOptions);
+		public constructor(message: Message, usage: Usage, options?: TextPromptOptions);
 		public readonly client: KlasaClient;
-		public message: KlasaMessage;
+		public message: Message;
 		public target: User;
 		public channel: TextChannel | DMChannel;
 		public usage: Usage | CommandUsage;
@@ -325,14 +308,14 @@ declare module 'klasa' {
 		public time: number;
 		public limit: number;
 		public quotedStringSupport: boolean;
-		public responses: Collection<string, KlasaMessage>;
+		public responses: Collection<string, Message>;
 		private _repeat: boolean;
 		private _required: number;
 		private _prompted: number;
 		private _currentUsage: Tag;
 
 		public run<T = any[]>(prompt: StringResolvable | MessageOptions | MessageAdditions | APIMessage): Promise<T>;
-		private prompt(text: string): Promise<KlasaMessage>;
+		private prompt(text: string): Promise<Message>;
 		private reprompt(prompt: string): Promise<any[]>;
 		private repeatingPrompt(): Promise<any[]>;
 		private validateArgs(): Promise<any[]>;
@@ -359,8 +342,8 @@ declare module 'klasa' {
 		public customResolvers: Record<string, ArgResolverCustomMethod>;
 
 		public createCustomResolver(type: string, resolver: ArgResolverCustomMethod): this;
-		public customizeResponse(name: string, response: (message: KlasaMessage) => string): this;
-		public createPrompt(message: KlasaMessage, options?: TextPromptOptions): TextPrompt;
+		public customizeResponse(name: string, response: (message: Message) => string): this;
+		public createPrompt(message: Message, options?: TextPromptOptions): TextPrompt;
 		public toJSON(): Tag[];
 		public toString(): string;
 
@@ -473,7 +456,7 @@ declare module 'klasa' {
 
 	export class ReactionHandler extends ReactionCollector {
 		public constructor(
-			message: KlasaMessage,
+			message: Message,
 			filter: Function,
 			options: ReactionHandlerOptions,
 			display: RichDisplay | RichMenu,
@@ -528,7 +511,7 @@ declare module 'klasa' {
 		public useCustomFooters(): this;
 		public addPage(embed: MessageEmbed | ((template: MessageEmbed) => MessageEmbed)): this;
 		public setInfoPage(embed: MessageEmbed): RichDisplay;
-		public run(message: KlasaMessage, options?: RichDisplayRunOptions): Promise<ReactionHandler>;
+		public run(message: Message, options?: RichDisplayRunOptions): Promise<ReactionHandler>;
 
 		protected _determineEmojis(emojis: EmojiResolvable[], stop: boolean, jump: boolean, firstLast: boolean): EmojiResolvable[];
 		private _footer(): void;
@@ -542,7 +525,7 @@ declare module 'klasa' {
 		public options: MenuOptions[];
 
 		public addOption(name: string, body: string, inline?: boolean): RichMenu;
-		public run(message: KlasaMessage, options?: RichMenuRunOptions): Promise<ReactionHandler>;
+		public run(message: Message, options?: RichMenuRunOptions): Promise<ReactionHandler>;
 
 		protected _determineEmojis(emojis: EmojiResolvable[], stop: boolean): EmojiResolvable[];
 		private _paginate(): void;
@@ -683,7 +666,7 @@ declare module 'klasa' {
 
 	// Parsers
 	export interface ArgResolverCustomMethod {
-		(arg: string, possible: Possible, message: KlasaMessage, params: any[]): any;
+		(arg: string, possible: Possible, message: Message, params: any[]): any;
 	}
 
 	export interface Constants {
@@ -746,7 +729,7 @@ declare module 'klasa' {
 	// Permissions
 	export interface PermissionLevel {
 		break: boolean;
-		check: (message: KlasaMessage) => Promise<boolean> | boolean;
+		check: (message: Message) => Promise<boolean> | boolean;
 		fetch: boolean;
 	}
 
@@ -1115,19 +1098,19 @@ declare module 'klasa' {
 			registerStore<K, V extends Piece, VConstructor = Constructor<V>>(store: Store<K, V, VConstructor>): KlasaClient;
 			unregisterStore<K, V extends Piece, VConstructor = Constructor<V>>(store: Store<K, V, VConstructor>): KlasaClient;
 			sweepMessages(lifetime?: number, commandLifeTime?: number): number;
-			fetchPrefix(message: KlasaMessage): Promise<string | readonly string[] | null> | string | readonly string[] | null;
-			on(event: 'argumentError', listener: (message: KlasaMessage, command: Command, params: any[], error: string) => void): this;
-			on(event: 'commandError', listener: (message: KlasaMessage, command: Command, params: any[], error: Error | string) => void): this;
-			on(event: 'commandInhibited', listener: (message: KlasaMessage, command: Command, response: string | Error) => void): this;
-			on(event: 'commandRun', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
-			on(event: 'commandSuccess', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
-			on(event: 'commandUnknown', listener: (message: KlasaMessage, command: string, prefix: RegExp, prefixLength: number) => void): this;
+			fetchPrefix(message: Message): Promise<string | readonly string[] | null> | string | readonly string[] | null;
+			on(event: 'argumentError', listener: (message: Message, command: Command, params: any[], error: string) => void): this;
+			on(event: 'commandError', listener: (message: Message, command: Command, params: any[], error: Error | string) => void): this;
+			on(event: 'commandInhibited', listener: (message: Message, command: Command, response: string | Error) => void): this;
+			on(event: 'commandRun', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
+			on(event: 'commandSuccess', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
+			on(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
 			on(
 				event: 'finalizerError',
 				listener: (
-					message: KlasaMessage,
+					message: Message,
 					command: Command,
-					response: KlasaMessage,
+					response: Message,
 					runTime: Stopwatch,
 					finalizer: Finalizer,
 					error: Error | string
@@ -1135,7 +1118,7 @@ declare module 'klasa' {
 			): this;
 			on(event: 'klasaReady', listener: () => void): this;
 			on(event: 'log', listener: (data: any) => void): this;
-			on(event: 'monitorError', listener: (message: KlasaMessage, monitor: Monitor, error: Error | string) => void): this;
+			on(event: 'monitorError', listener: (message: Message, monitor: Monitor, error: Error | string) => void): this;
 			on(event: 'pieceDisabled', listener: (piece: Piece) => void): this;
 			on(event: 'pieceEnabled', listener: (piece: Piece) => void): this;
 			on(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
@@ -1143,18 +1126,18 @@ declare module 'klasa' {
 			on(event: 'pieceUnloaded', listener: (piece: Piece) => void): this;
 			on(event: 'verbose', listener: (data: any) => void): this;
 			on(event: 'wtf', listener: (failure: Error) => void): this;
-			once(event: 'argumentError', listener: (message: KlasaMessage, command: Command, params: any[], error: string) => void): this;
-			once(event: 'commandError', listener: (message: KlasaMessage, command: Command, params: any[], error: Error | string) => void): this;
-			once(event: 'commandInhibited', listener: (message: KlasaMessage, command: Command, response: string | Error) => void): this;
-			once(event: 'commandRun', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
-			once(event: 'commandSuccess', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
-			once(event: 'commandUnknown', listener: (message: KlasaMessage, command: string, prefix: RegExp, prefixLength: number) => void): this;
+			once(event: 'argumentError', listener: (message: Message, command: Command, params: any[], error: string) => void): this;
+			once(event: 'commandError', listener: (message: Message, command: Command, params: any[], error: Error | string) => void): this;
+			once(event: 'commandInhibited', listener: (message: Message, command: Command, response: string | Error) => void): this;
+			once(event: 'commandRun', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
+			once(event: 'commandSuccess', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
+			once(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
 			once(
 				event: 'finalizerError',
 				listener: (
-					message: KlasaMessage,
+					message: Message,
 					command: Command,
-					response: KlasaMessage,
+					response: Message,
 					runTime: Stopwatch,
 					finalizer: Finalizer,
 					error: Error | string
@@ -1162,7 +1145,7 @@ declare module 'klasa' {
 			): this;
 			once(event: 'klasaReady', listener: () => void): this;
 			once(event: 'log', listener: (data: any) => void): this;
-			once(event: 'monitorError', listener: (message: KlasaMessage, monitor: Monitor, error: Error | string) => void): this;
+			once(event: 'monitorError', listener: (message: Message, monitor: Monitor, error: Error | string) => void): this;
 			once(event: 'pieceDisabled', listener: (piece: Piece) => void): this;
 			once(event: 'pieceEnabled', listener: (piece: Piece) => void): this;
 			once(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
@@ -1170,18 +1153,18 @@ declare module 'klasa' {
 			once(event: 'pieceUnloaded', listener: (piece: Piece) => void): this;
 			once(event: 'verbose', listener: (data: any) => void): this;
 			once(event: 'wtf', listener: (failure: Error) => void): this;
-			off(event: 'argumentError', listener: (message: KlasaMessage, command: Command, params: any[], error: string) => void): this;
-			off(event: 'commandError', listener: (message: KlasaMessage, command: Command, params: any[], error: Error | string) => void): this;
-			off(event: 'commandInhibited', listener: (message: KlasaMessage, command: Command, response: string | Error) => void): this;
-			off(event: 'commandRun', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
-			off(event: 'commandSuccess', listener: (message: KlasaMessage, command: Command, params: any[], response: any) => void): this;
-			off(event: 'commandUnknown', listener: (message: KlasaMessage, command: string, prefix: RegExp, prefixLength: number) => void): this;
+			off(event: 'argumentError', listener: (message: Message, command: Command, params: any[], error: string) => void): this;
+			off(event: 'commandError', listener: (message: Message, command: Command, params: any[], error: Error | string) => void): this;
+			off(event: 'commandInhibited', listener: (message: Message, command: Command, response: string | Error) => void): this;
+			off(event: 'commandRun', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
+			off(event: 'commandSuccess', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
+			off(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
 			off(
 				event: 'finalizerError',
 				listener: (
-					message: KlasaMessage,
+					message: Message,
 					command: Command,
-					response: KlasaMessage,
+					response: Message,
 					runTime: Stopwatch,
 					finalizer: Finalizer,
 					error: Error | string
@@ -1189,7 +1172,7 @@ declare module 'klasa' {
 			): this;
 			off(event: 'klasaReady', listener: () => void): this;
 			off(event: 'log', listener: (data: any) => void): this;
-			off(event: 'monitorError', listener: (message: KlasaMessage, monitor: Monitor, error: Error | string) => void): this;
+			off(event: 'monitorError', listener: (message: Message, monitor: Monitor, error: Error | string) => void): this;
 			off(event: 'pieceDisabled', listener: (piece: Piece) => void): this;
 			off(event: 'pieceEnabled', listener: (piece: Piece) => void): this;
 			off(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
@@ -1204,20 +1187,22 @@ declare module 'klasa' {
 			commandText: string | null;
 			prefix: RegExp | null;
 			prefixLength: number | null;
-			readonly responses: KlasaMessage[];
+			prompter: CommandPrompt | null;
+			readonly responses: Message[];
 			readonly args: string[];
 			readonly params: any[];
 			readonly flagArgs: Record<string, string>;
 			readonly reprompted: boolean;
 			readonly reactable: boolean;
-			send(content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
-			send(content?: StringResolvable, options?: (MessageOptions & { split?: false }) | MessageAdditions): Promise<KlasaMessage>;
-			send(content?: StringResolvable, options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions): Promise<KlasaMessage[]>;
-			send(options?: MessageOptions | MessageAdditions | APIMessage): Promise<KlasaMessage>;
-			send(options?: (MessageOptions & { split?: false }) | MessageAdditions | APIMessage): Promise<KlasaMessage>;
-			send(options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions | APIMessage): Promise<KlasaMessage[]>;
-			edit(content: StringResolvable, options?: MessageEditOptions | MessageEmbed): Promise<KlasaMessage>;
-			edit(options: MessageEditOptions | MessageEmbed | APIMessage): Promise<KlasaMessage>;
+			parseCommand(): Promise<void>;
+			send(content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<Message>;
+			send(content?: StringResolvable, options?: (MessageOptions & { split?: false }) | MessageAdditions): Promise<Message>;
+			send(content?: StringResolvable, options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions): Promise<Message[]>;
+			send(options?: MessageOptions | MessageAdditions | APIMessage): Promise<Message>;
+			send(options?: (MessageOptions & { split?: false }) | MessageAdditions | APIMessage): Promise<Message>;
+			send(options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions | APIMessage): Promise<Message[]>;
+			edit(content: StringResolvable, options?: MessageEditOptions | MessageEmbed): Promise<Message>;
+			edit(options: MessageEditOptions | MessageEmbed | APIMessage): Promise<Message>;
 			usableCommands(): Promise<Collection<string, Command>>;
 			hasAtLeastPermissionLevel(min: number): Promise<boolean>;
 		}

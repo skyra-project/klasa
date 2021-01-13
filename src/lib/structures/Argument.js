@@ -13,7 +13,7 @@ class Argument extends AliasPiece {
 	 * @since 0.5.0
 	 * @param {string} argument The string argument string to resolve
 	 * @param {Possible} possible This current usage possible
-	 * @param {KlasaMessage} message The message that triggered the command
+	 * @param {Message} message The message that triggered the command
 	 * @abstract
 	 */
 	async run() {
@@ -29,7 +29,7 @@ class Argument extends AliasPiece {
 	 * @param {?number} min The minimum value
 	 * @param {?number} max The maximum value
 	 * @param {Possible} possible The id of the current possible usage
-	 * @param {KlasaMessage} message The message that triggered the command
+	 * @param {Message} message The message that triggered the command
 	 * @param {string} suffix An error suffix
 	 * @returns {boolean}
 	 * @private
