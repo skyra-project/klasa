@@ -74,7 +74,7 @@ class Monitor extends Piece {
 	/**
 	 * Run a monitor and catch any uncaught promises
 	 * @since 0.5.0
-	 * @param {KlasaMessage} message The message object from Discord.js
+	 * @param {Message} message The message object from Discord.js
 	 * @private
 	 */
 	async _run(message) {
@@ -88,7 +88,7 @@ class Monitor extends Piece {
 	/**
 	 * The run method to be overwritten in actual monitor pieces
 	 * @since 0.0.1
-	 * @param {KlasaMessage} message The discord message
+	 * @param {Message} message The discord message
 	 * @returns {void}
 	 * @abstract
 	 */
@@ -100,7 +100,7 @@ class Monitor extends Piece {
 	/**
 	 * If the monitor should run based on the filter options
 	 * @since 0.5.0
-	 * @param {KlasaMessage} message The message to check
+	 * @param {Message} message The message to check
 	 * @returns {boolean}
 	 */
 	shouldRun(message) {

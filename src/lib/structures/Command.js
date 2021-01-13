@@ -257,9 +257,9 @@ class Command extends AliasPiece {
 	/**
 	 * The run method to be overwritten in actual commands
 	 * @since 0.0.1
-	 * @param {KlasaMessage} message The command message mapped on top of the message used to trigger this command
+	 * @param {Message} message The command message mapped on top of the message used to trigger this command
 	 * @param {any[]} params The fully resolved parameters based on your usage / usageDelim
-	 * @returns {KlasaMessage|KlasaMessage[]} You should return the response message whenever possible
+	 * @returns {Message|Message[]} You should return the response message whenever possible
 	 * @abstract
 	 */
 	async run() {

@@ -18,7 +18,7 @@ class InhibitorStore extends Store {
 	/**
 	 * Runs our inhibitors on the command.
 	 * @since 0.0.1
-	 * @param {KlasaMessage} message The message object from Discord.js
+	 * @param {Message} message The message object from Discord.js
 	 * @param {Command} command The command being ran.
 	 * @param {boolean} [selective=false] Whether or not we should ignore certain inhibitors to prevent spam.
 	 * @returns {void}

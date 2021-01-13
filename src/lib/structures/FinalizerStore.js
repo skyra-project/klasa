@@ -18,9 +18,9 @@ class FinalizerStore extends Store {
 	/**
 	 * Runs all of our finalizers after a command is ran successfully.
 	 * @since 0.0.1
-	 * @param {KlasaMessage} message The message that called the command
+	 * @param {Message} message The message that called the command
 	 * @param {Command} command The command this finalizer is for (may be different than message.command)
-	 * @param {KlasaMessage|any} response The response of the command
+	 * @param {Message|any} response The response of the command
 	 * @param {StopWatch} timer The timer run from start to queue of the command
 	 * @returns {void}
 	 */

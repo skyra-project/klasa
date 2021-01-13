@@ -63,7 +63,7 @@ module.exports = Structures.extend('Message', (Message) => {
 			/**
 			 * The responses to this message
 			 * @since 0.5.0
-			 * @type {external:KlasaMessage[]}
+			 * @type {external:Message[]}
 			 * @private
 			 */
 			this._responses = [];
@@ -72,7 +72,7 @@ module.exports = Structures.extend('Message', (Message) => {
 		/**
 		 * The previous responses to this message
 		 * @since 0.5.0
-		 * @type {KlasaMessage[]}
+		 * @type {Message[]}
 		 * @readonly
 		 */
 		get responses() {
@@ -168,7 +168,7 @@ module.exports = Structures.extend('Message', (Message) => {
 		 * @since 0.0.1
 		 * @param {external:StringResolvable|external:MessageEmbed|external:MessageAttachment} [content] The content to send
 		 * @param {external:MessageOptions} [options] The D.JS message options
-		 * @returns {KlasaMessage|KlasaMessage[]}
+		 * @returns {Message|Message[]}
 		 */
 		async send(content, options) {
 			const combinedOptions = APIMessage.transformOptions(content, options);
