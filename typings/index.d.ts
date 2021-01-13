@@ -1116,21 +1116,12 @@ declare module 'klasa' {
 			prefix: RegExp | null;
 			prefixLength: number | null;
 			prompter: CommandPrompt | null;
-			readonly responses: Message[];
 			readonly args: string[];
 			readonly params: any[];
 			readonly flagArgs: Record<string, string>;
 			readonly reprompted: boolean;
 			readonly reactable: boolean;
 			parseCommand(): Promise<void>;
-			send(content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<Message>;
-			send(content?: StringResolvable, options?: (MessageOptions & { split?: false }) | MessageAdditions): Promise<Message>;
-			send(content?: StringResolvable, options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions): Promise<Message[]>;
-			send(options?: MessageOptions | MessageAdditions | APIMessage): Promise<Message>;
-			send(options?: (MessageOptions & { split?: false }) | MessageAdditions | APIMessage): Promise<Message>;
-			send(options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions | APIMessage): Promise<Message[]>;
-			edit(content: StringResolvable, options?: MessageEditOptions | MessageEmbed): Promise<Message>;
-			edit(options: MessageEditOptions | MessageEmbed | APIMessage): Promise<Message>;
 			usableCommands(): Promise<Collection<string, Command>>;
 			hasAtLeastPermissionLevel(min: number): Promise<boolean>;
 		}
