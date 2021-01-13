@@ -1,8 +1,8 @@
-const { Finalizer, Colors } = require('klasa');
+const { Colors, Event } = require('klasa');
 
-module.exports = class extends Finalizer {
+module.exports = class extends Event {
 	constructor(...args) {
-		super(...args);
+		super(...args, { event: 'commandSuccess' });
 		this.reprompted = [new Colors({ background: 'blue' }), new Colors({ background: 'red' })];
 		this.user = new Colors({ background: 'yellow', text: 'black' });
 		this.shard = new Colors({ background: 'cyan', text: 'black' });

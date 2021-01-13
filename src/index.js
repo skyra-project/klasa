@@ -19,8 +19,6 @@ module.exports = {
 	CommandStore: require('./lib/structures/CommandStore'),
 	Event: require('./lib/structures/Event'),
 	EventStore: require('./lib/structures/EventStore'),
-	Finalizer: require('./lib/structures/Finalizer'),
-	FinalizerStore: require('./lib/structures/FinalizerStore'),
 	Inhibitor: require('./lib/structures/Inhibitor'),
 	InhibitorStore: require('./lib/structures/InhibitorStore'),
 	Monitor: require('./lib/structures/Monitor'),

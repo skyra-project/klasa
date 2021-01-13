@@ -161,13 +161,6 @@ declare module 'klasa' {
 		private _unlisten(): void;
 	}
 
-	export abstract class Finalizer extends Piece {
-		public constructor(store: FinalizerStore, file: string[], directory: string, options?: FinalizerOptions);
-		public abstract run(message: Message, command: Command, response: Message | Message[] | null, runTime: Stopwatch): void;
-		public toJSON(): PieceFinalizerJSON;
-		protected _run(message: Message, command: Command, response: Message | Message[] | null, runTime: Stopwatch): Promise<void>;
-	}
-
 	export abstract class Inhibitor extends Piece {
 		public constructor(store: InhibitorStore, file: string[], directory: string, options?: InhibitorOptions);
 		public spamProtection: boolean;
@@ -233,10 +226,6 @@ declare module 'klasa' {
 
 	export class EventStore extends Store<string, Event, typeof Event> {
 		private _onceEvents: Set<string>;
-	}
-
-	export class FinalizerStore extends Store<string, Finalizer, typeof Finalizer> {
-		public run(message: Message, command: Command, response: Message | Message[], runTime: Stopwatch): Promise<void>;
 	}
 
 	export class InhibitorStore extends Store<string, Inhibitor, typeof Inhibitor> {
@@ -634,7 +623,6 @@ declare module 'klasa' {
 		arguments?: ArgumentOptions;
 		commands?: CommandOptions;
 		events?: EventOptions;
-		finalizers?: FinalizerOptions;
 		inhibitors?: InhibitorOptions;
 		monitors?: MonitorOptions;
 	}
@@ -774,8 +762,6 @@ declare module 'klasa' {
 		once?: boolean;
 	}
 
-	export interface FinalizerOptions extends PieceOptions {}
-
 	export interface PieceJSON {
 		directory: string;
 		path: string;
@@ -812,7 +798,6 @@ declare module 'klasa' {
 	export interface PieceInhibitorJSON extends PieceJSON, Required<InhibitorOptions> {}
 	export interface PieceMonitorJSON extends PieceJSON, Required<MonitorOptions> {}
 	export interface PieceArgumentJSON extends AliasPieceJSON, Required<ArgumentOptions> {}
-	export interface PieceFinalizerJSON extends PieceJSON, Required<FinalizerOptions> {}
 
 	// Usage
 	export interface TextPromptOptions {
@@ -1064,7 +1049,6 @@ declare module 'klasa' {
 			arguments: ArgumentStore;
 			commands: CommandStore;
 			inhibitors: InhibitorStore;
-			finalizers: FinalizerStore;
 			monitors: MonitorStore;
 			events: EventStore;
 			pieceStores: Collection<string, any>;
@@ -1082,17 +1066,6 @@ declare module 'klasa' {
 			on(event: 'commandRun', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
 			on(event: 'commandSuccess', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
 			on(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
-			on(
-				event: 'finalizerError',
-				listener: (
-					message: Message,
-					command: Command,
-					response: Message,
-					runTime: Stopwatch,
-					finalizer: Finalizer,
-					error: Error | string
-				) => void
-			): this;
 			on(event: 'klasaReady', listener: () => void): this;
 			on(event: 'log', listener: (data: any) => void): this;
 			on(event: 'monitorError', listener: (message: Message, monitor: Monitor, error: Error | string) => void): this;
@@ -1109,17 +1082,6 @@ declare module 'klasa' {
 			once(event: 'commandRun', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
 			once(event: 'commandSuccess', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
 			once(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
-			once(
-				event: 'finalizerError',
-				listener: (
-					message: Message,
-					command: Command,
-					response: Message,
-					runTime: Stopwatch,
-					finalizer: Finalizer,
-					error: Error | string
-				) => void
-			): this;
 			once(event: 'klasaReady', listener: () => void): this;
 			once(event: 'log', listener: (data: any) => void): this;
 			once(event: 'monitorError', listener: (message: Message, monitor: Monitor, error: Error | string) => void): this;
@@ -1136,17 +1098,6 @@ declare module 'klasa' {
 			off(event: 'commandRun', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
 			off(event: 'commandSuccess', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
 			off(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
-			off(
-				event: 'finalizerError',
-				listener: (
-					message: Message,
-					command: Command,
-					response: Message,
-					runTime: Stopwatch,
-					finalizer: Finalizer,
-					error: Error | string
-				) => void
-			): this;
 			off(event: 'klasaReady', listener: () => void): this;
 			off(event: 'log', listener: (data: any) => void): this;
 			off(event: 'monitorError', listener: (message: Message, monitor: Monitor, error: Error | string) => void): this;
