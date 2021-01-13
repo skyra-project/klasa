@@ -5,6 +5,8 @@ const {
 } = Discord;
 const path = require('path');
 
+require('./extensions/KlasaMessage');
+
 // lib/permissions
 const PermissionLevels = require('./permissions/PermissionLevels');
 
