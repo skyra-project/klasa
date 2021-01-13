@@ -1,7 +1,6 @@
 const {
 	Structures,
 	Collection,
-	APIMessage,
 	Permissions: { FLAGS }
 } = require('discord.js');
 const { regExpEsc } = require('../util/util');
@@ -59,24 +58,6 @@ module.exports = Structures.extend('Message', (Message) => {
 			 * @private
 			 */
 			this.prompter = this.prompter || null;
-
-			/**
-			 * The responses to this message
-			 * @since 0.5.0
-			 * @type {external:Message[]}
-			 * @private
-			 */
-			this._responses = [];
-		}
-
-		/**
-		 * The previous responses to this message
-		 * @since 0.5.0
-		 * @type {Message[]}
-		 * @readonly
-		 */
-		get responses() {
-			return this._responses.filter((msg) => !msg.deleted);
 		}
 
 		/**
@@ -161,46 +142,6 @@ module.exports = Structures.extend('Message', (Message) => {
 		async hasAtLeastPermissionLevel(min) {
 			const { permission } = await this.client.permissionLevels.run(this, min);
 			return permission;
-		}
-
-		/**
-		 * Sends a message that will be editable via command editing (if nothing is attached)
-		 * @since 0.0.1
-		 * @param {external:StringResolvable|external:MessageEmbed|external:MessageAttachment} [content] The content to send
-		 * @param {external:MessageOptions} [options] The D.JS message options
-		 * @returns {Message|Message[]}
-		 */
-		async send(content, options) {
-			const combinedOptions = APIMessage.transformOptions(content, options);
-
-			if ('files' in combinedOptions) return this.channel.send(combinedOptions);
-
-			const newMessages = new APIMessage(this.channel, combinedOptions)
-				.resolveData()
-				.split()
-				.map((mes) => {
-					// Command editing should always remove embeds and content if none is provided
-					mes.data.embed = mes.data.embed || null;
-					mes.data.content = mes.data.content || null;
-					return mes;
-				});
-
-			const { responses } = this;
-			const promises = [];
-			const max = Math.max(newMessages.length, responses.length);
-
-			for (let i = 0; i < max; i++) {
-				if (i >= newMessages.length) responses[i].delete();
-				else if (responses.length > i) promises.push(responses[i].edit(newMessages[i]));
-				else promises.push(this.channel.send(newMessages[i]));
-			}
-
-			const newResponses = await Promise.all(promises);
-
-			// Can't store the clones because deleted will never be true
-			this._responses = newMessages.map((val, i) => responses[i] || newResponses[i]);
-
-			return newResponses.length === 1 ? newResponses[0] : newResponses;
 		}
 
 		/**
