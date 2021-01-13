@@ -31,7 +31,7 @@ declare module 'klasa' {
 	// #region Classes
 
 	export class KlasaClient extends Client {
-		public constructor(options?: KlasaClientOptions);
+		public constructor(options?: ClientOptions);
 		public login(token?: string): Promise<string>;
 		private validatePermissionLevels(): PermissionLevels;
 
@@ -624,29 +624,6 @@ declare module 'klasa' {
 
 	// #region Typedefs
 
-	export interface KlasaClientOptions extends ClientOptions {
-		commandEditing?: boolean;
-		commandLogging?: boolean;
-		commandMessageLifetime?: number;
-		console?: ConsoleOptions;
-		consoleEvents?: ConsoleEvents;
-		createPiecesFolders?: boolean;
-		customPromptDefaults?: CustomPromptDefaults;
-		disabledCorePieces?: string[];
-		noPrefixDM?: boolean;
-		owners?: string[];
-		permissionLevels?: PermissionLevels;
-		pieceDefaults?: PieceDefaults;
-		prefix?: string | string[];
-		prefixCaseInsensitive?: boolean;
-		production?: boolean;
-		readyMessage?: ReadyMessage;
-		regexPrefix?: RegExp;
-		slowmode?: number;
-		slowmodeAggressive?: boolean;
-		typing?: boolean;
-	}
-
 	export interface CustomPromptDefaults {
 		limit?: number;
 		time?: number;
@@ -676,7 +653,7 @@ declare module 'klasa' {
 	}
 
 	export interface ConstantsDefaults {
-		CLIENT: Required<KlasaClientOptions>;
+		CLIENT: Required<ClientOptions>;
 		CONSOLE: Required<ConsoleOptions>;
 	}
 
@@ -1081,7 +1058,7 @@ declare module 'klasa' {
 			constructor: typeof KlasaClient;
 			readonly invite: string;
 			readonly owners: Set<User>;
-			options: Required<KlasaClientOptions>;
+			options: Required<ClientOptions>;
 			userBaseDirectory: string;
 			console: KlasaConsole;
 			arguments: ArgumentStore;
@@ -1205,6 +1182,29 @@ declare module 'klasa' {
 			edit(options: MessageEditOptions | MessageEmbed | APIMessage): Promise<Message>;
 			usableCommands(): Promise<Collection<string, Command>>;
 			hasAtLeastPermissionLevel(min: number): Promise<boolean>;
+		}
+
+		export interface ClientOptions {
+			commandEditing?: boolean;
+			commandLogging?: boolean;
+			commandMessageLifetime?: number;
+			console?: ConsoleOptions;
+			consoleEvents?: ConsoleEvents;
+			createPiecesFolders?: boolean;
+			customPromptDefaults?: CustomPromptDefaults;
+			disabledCorePieces?: string[];
+			noPrefixDM?: boolean;
+			owners?: string[];
+			permissionLevels?: PermissionLevels;
+			pieceDefaults?: PieceDefaults;
+			prefix?: string | string[];
+			prefixCaseInsensitive?: boolean;
+			production?: boolean;
+			readyMessage?: ReadyMessage;
+			regexPrefix?: RegExp;
+			slowmode?: number;
+			slowmodeAggressive?: boolean;
+			typing?: boolean;
 		}
 	}
 
