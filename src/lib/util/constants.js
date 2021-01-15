@@ -70,15 +70,6 @@ exports.DEFAULTS = {
 			inhibitors: {
 				enabled: true,
 				spamProtection: false
-			},
-			monitors: {
-				enabled: true,
-				ignoreBots: true,
-				ignoreSelf: true,
-				ignoreOthers: true,
-				ignoreWebhooks: true,
-				ignoreEdits: true,
-				allowedTypes: ['DEFAULT']
 			}
 		},
 		slowmode: 0,

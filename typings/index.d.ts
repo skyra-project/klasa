@@ -169,21 +169,6 @@ declare module 'klasa' {
 		protected _run(message: Message, command: Command): Promise<boolean | string>;
 	}
 
-	export abstract class Monitor extends Piece {
-		public constructor(store: MonitorStore, file: string[], directory: string, options?: MonitorOptions);
-		public allowedTypes: MessageType[];
-		public ignoreBots: boolean;
-		public ignoreEdits: boolean;
-		public ignoreOthers: boolean;
-		public ignoreSelf: boolean;
-		public ignoreWebhooks: boolean;
-
-		public abstract run(message: Message): void;
-		public shouldRun(message: Message): boolean;
-		public toJSON(): PieceMonitorJSON;
-		protected _run(message: Message): Promise<void>;
-	}
-
 	export abstract class MultiArgument extends Argument {
 		public abstract readonly base: Argument;
 		public run<T = any>(argument: string, possible: Possible, message: Message): Promise<Array<T>>;
@@ -230,10 +215,6 @@ declare module 'klasa' {
 
 	export class InhibitorStore extends Store<string, Inhibitor, typeof Inhibitor> {
 		public run(message: Message, command: Command, selective?: boolean): Promise<void>;
-	}
-
-	export class MonitorStore extends Store<string, Monitor, typeof Monitor> {
-		public run(message: Message): Promise<void>;
 	}
 
 	// #endregion Stores
@@ -624,7 +605,6 @@ declare module 'klasa' {
 		commands?: CommandOptions;
 		events?: EventOptions;
 		inhibitors?: InhibitorOptions;
-		monitors?: MonitorOptions;
 	}
 
 	export type ReadyMessage = string | ((client: KlasaClient) => string);
@@ -747,15 +727,6 @@ declare module 'klasa' {
 		spamProtection?: boolean;
 	}
 
-	export interface MonitorOptions extends PieceOptions {
-		allowedTypes?: MessageType[];
-		ignoreBots?: boolean;
-		ignoreEdits?: boolean;
-		ignoreOthers?: boolean;
-		ignoreSelf?: boolean;
-		ignoreWebhooks?: boolean;
-	}
-
 	export interface EventOptions extends PieceOptions {
 		emitter?: NodeJS.EventEmitter | FilterKeyInstances<KlasaClient, NodeJS.EventEmitter>;
 		event?: string;
@@ -796,7 +767,6 @@ declare module 'klasa' {
 	}
 
 	export interface PieceInhibitorJSON extends PieceJSON, Required<InhibitorOptions> {}
-	export interface PieceMonitorJSON extends PieceJSON, Required<MonitorOptions> {}
 	export interface PieceArgumentJSON extends AliasPieceJSON, Required<ArgumentOptions> {}
 
 	// Usage
@@ -1049,7 +1019,6 @@ declare module 'klasa' {
 			arguments: ArgumentStore;
 			commands: CommandStore;
 			inhibitors: InhibitorStore;
-			monitors: MonitorStore;
 			events: EventStore;
 			pieceStores: Collection<string, any>;
 			permissionLevels: PermissionLevels;
@@ -1068,7 +1037,6 @@ declare module 'klasa' {
 			on(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
 			on(event: 'klasaReady', listener: () => void): this;
 			on(event: 'log', listener: (data: any) => void): this;
-			on(event: 'monitorError', listener: (message: Message, monitor: Monitor, error: Error | string) => void): this;
 			on(event: 'pieceDisabled', listener: (piece: Piece) => void): this;
 			on(event: 'pieceEnabled', listener: (piece: Piece) => void): this;
 			on(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
@@ -1084,7 +1052,6 @@ declare module 'klasa' {
 			once(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
 			once(event: 'klasaReady', listener: () => void): this;
 			once(event: 'log', listener: (data: any) => void): this;
-			once(event: 'monitorError', listener: (message: Message, monitor: Monitor, error: Error | string) => void): this;
 			once(event: 'pieceDisabled', listener: (piece: Piece) => void): this;
 			once(event: 'pieceEnabled', listener: (piece: Piece) => void): this;
 			once(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
@@ -1100,7 +1067,6 @@ declare module 'klasa' {
 			off(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
 			off(event: 'klasaReady', listener: () => void): this;
 			off(event: 'log', listener: (data: any) => void): this;
-			off(event: 'monitorError', listener: (message: Message, monitor: Monitor, error: Error | string) => void): this;
 			off(event: 'pieceDisabled', listener: (piece: Piece) => void): this;
 			off(event: 'pieceEnabled', listener: (piece: Piece) => void): this;
 			off(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
