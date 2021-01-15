@@ -15,7 +15,6 @@ const ArgumentStore = require('./structures/ArgumentStore');
 const CommandStore = require('./structures/CommandStore');
 const EventStore = require('./structures/EventStore');
 const InhibitorStore = require('./structures/InhibitorStore');
-const MonitorStore = require('./structures/MonitorStore');
 
 // lib/util
 const KlasaConsole = require('./util/KlasaConsole');
@@ -82,7 +81,6 @@ class KlasaClient extends Discord.Client {
 	 * @property {CommandOptions} [commands={}] The default command options
 	 * @property {EventOptions} [events={}] The default event options
 	 * @property {InhibitorOptions} [inhibitors={}] The default inhibitor options
-	 * @property {MonitorOptions} [monitors={}] The default monitor options
 	 */
 
 	/**
@@ -145,13 +143,6 @@ class KlasaClient extends Discord.Client {
 		this.inhibitors = new InhibitorStore(this);
 
 		/**
-		 * The cache where monitors are stored
-		 * @since 0.0.1
-		 * @type {MonitorStore}
-		 */
-		this.monitors = new MonitorStore(this);
-
-		/**
 		 * The cache where events are stored
 		 * @since 0.0.1
 		 * @type {EventStore}
@@ -179,11 +170,7 @@ class KlasaClient extends Discord.Client {
 		 */
 		this.application = null;
 
-		this.registerStore(this.commands)
-			.registerStore(this.inhibitors)
-			.registerStore(this.monitors)
-			.registerStore(this.events)
-			.registerStore(this.arguments);
+		this.registerStore(this.commands).registerStore(this.inhibitors).registerStore(this.events).registerStore(this.arguments);
 
 		const coreDirectory = path.join(__dirname, '../');
 		for (const store of this.pieceStores.values()) store.registerCoreDirectory(coreDirectory);
@@ -492,15 +479,6 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * @param {Event} event The event that errored
  * @param {any[]} args The event arguments
  * @param {(string|Object)} error The event error
- */
-
-/**
- * Emitted when a monitor has encountered an error.
- * @event KlasaClient#monitorError
- * @since 0.4.0
- * @param {Message} message The message that triggered the monitor
- * @param {Monitor} monitor The monitor run
- * @param {(Error|string)} error The monitor error
  */
 
 /**

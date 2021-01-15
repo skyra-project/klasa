@@ -7,7 +7,6 @@ const { join } = require('path');
  * @see Command
  * @see Event
  * @see Inhibitor
- * @see Monitor
  */
 class Piece {
 	/**
