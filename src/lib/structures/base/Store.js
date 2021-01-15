@@ -9,7 +9,6 @@ const { isClass } = require('../../util/util');
  * @see CommandStore
  * @see EventStore
  * @see InhibitorStore
- * @see MonitorStore
  * @extends Collection
  */
 class Store extends Collection {

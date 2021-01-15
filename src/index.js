@@ -21,8 +21,6 @@ module.exports = {
 	EventStore: require('./lib/structures/EventStore'),
 	Inhibitor: require('./lib/structures/Inhibitor'),
 	InhibitorStore: require('./lib/structures/InhibitorStore'),
-	Monitor: require('./lib/structures/Monitor'),
-	MonitorStore: require('./lib/structures/MonitorStore'),
 	MultiArgument: require('./lib/structures/MultiArgument'),
 
 	// lib/usage

@@ -35,7 +35,6 @@ Following suit from Komada (the Croatian word for "pieces"), Klasa is the Croati
     -   Commands: The most basic piece, they run when somebody types the prefix and the command name or any of its aliases.
     -   Events: Hot-reloadable structures for events, with internal error handling.
     -   Inhibitors: Middleware that can stop a command from running (permissions...).
-    -   Monitors: Watch every single message your bot receives! They're perfect for no-mention-spam, swear word filter, and so on!
 
 [i18next]: https://www.i18next.com
 [skyra]: https://github.com/skyra-project/skyra
