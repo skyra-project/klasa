@@ -11,34 +11,31 @@ module.exports = class extends Event {
 	}
 
 	async run() {
+		const { client } = this.context;
 		try {
-			await this.client.fetchApplication();
+			await this.context.client.fetchApplication();
 		} catch (err) {
 			if (++retries === 3) return process.exit();
-			this.client.emit('warning', `Unable to fetchApplication at this time, waiting 5 seconds and retrying. Retries left: ${retries - 3}`);
+			client.emit('warning', `Unable to fetchApplication at this time, waiting 5 seconds and retrying. Retries left: ${retries - 3}`);
 			await util.sleep(5000);
 			return this.run();
 		}
 
-		if (!this.client.options.owners.length) {
-			if (this.client.application.owner instanceof Team) this.client.options.owners.push(...this.client.application.owner.members.keys());
-			else this.client.options.owners.push(this.client.application.owner.id);
+		if (!client.options.owners.length) {
+			if (client.application.owner instanceof Team) client.options.owners.push(...client.application.owner.members.keys());
+			else client.options.owners.push(client.application.owner.id);
 		}
 
-		this.client.mentionPrefix = new RegExp(`^<@!?${this.client.user.id}>`);
+		client.mentionPrefix = new RegExp(`^<@!?${client.user.id}>`);
 
 		// Init all the pieces
-		await Promise.all(this.client.pieceStores.map((store) => store.init()));
-		util.initClean(this.client);
-		this.client.ready = true;
+		util.initClean(client);
+		client.ready = true;
 
-		if (this.client.options.readyMessage !== null) {
-			this.client.emit(
-				'log',
-				util.isFunction(this.client.options.readyMessage) ? this.client.options.readyMessage(this.client) : this.client.options.readyMessage
-			);
+		if (client.options.readyMessage !== null) {
+			client.emit('log', util.isFunction(client.options.readyMessage) ? client.options.readyMessage(client) : client.options.readyMessage);
 		}
 
-		return this.client.emit('klasaReady');
+		return client.emit('klasaReady');
 	}
 };

@@ -1,7 +1,7 @@
 /// <reference types="node" />
 
 declare module 'klasa' {
-	import { ExecOptions } from 'child_process';
+	import { AliasPiece, AliasPieceOptions, AliasStore, Piece, PieceContext } from '@sapphire/pieces';
 	import {
 		APIMessage,
 		Client,
@@ -9,14 +9,11 @@ declare module 'klasa' {
 		Collection,
 		DMChannel,
 		EmojiResolvable,
-		Guild,
-		GuildResolvable,
 		Message,
 		MessageAdditions,
 		MessageEmbed,
 		MessageOptions,
 		MessageReaction,
-		MessageType,
 		PermissionResolvable,
 		Permissions,
 		ReactionCollector,
@@ -70,50 +67,16 @@ declare module 'klasa' {
 
 	// #region Pieces
 
-	export abstract class Piece {
-		public constructor(store: Store<string, Piece, typeof Piece>, file: string[], directory: string, options?: PieceOptions);
-		public readonly client: KlasaClient;
-		public readonly type: string;
-		public readonly path: string;
-		public file: string[];
-		public name: string;
-		public enabled: boolean;
-		public store: Store<string, this>;
-		public directory: string;
-
-		public reload(): Promise<this>;
-		public unload(): void;
-		public enable(): this;
-		public disable(): this;
-		public init(): Promise<any>;
-		public toJSON(): PieceJSON;
-		public toString(): string;
-	}
-
-	export abstract class AliasPiece extends Piece {
-		public constructor(store: Store<string, Piece, typeof Piece>, file: string[], directory: string, options?: AliasPieceOptions);
-		public aliases: Array<string>;
-		public toJSON(): AliasPieceJSON;
-	}
-
 	export abstract class Argument extends AliasPiece {
-		public constructor(store: ArgumentStore, file: string[], directory: string, options?: ArgumentOptions);
+		public constructor(context: PieceContext, options?: ArgumentOptions);
 		public aliases: string[];
 		public abstract run(arg: string | undefined, possible: Possible, message: Message): any;
 		public static regex: MentionRegex;
-		private static minOrMax(
-			client: KlasaClient,
-			value: number,
-			min: number,
-			max: number,
-			possible: Possible,
-			message: Message,
-			suffix: string
-		): Promise<boolean>;
+		protected static minOrMax(value: number, min: number, max: number, possible: Possible, message: Message, suffix: string): Promise<boolean>;
 	}
 
 	export abstract class Command extends AliasPiece {
-		public constructor(store: CommandStore, file: string[], directory: string, options?: CommandOptions);
+		public constructor(context: PieceContext, options?: CommandOptions);
 		public readonly bucket: number;
 		public readonly category: string;
 		public readonly cooldown: number;
@@ -146,7 +109,7 @@ declare module 'klasa' {
 	}
 
 	export abstract class Event extends Piece {
-		public constructor(store: EventStore, file: string[], directory: string, options?: EventOptions);
+		public constructor(context: PieceContext, options?: EventOptions);
 		public emitter: NodeJS.EventEmitter;
 		public event: string;
 		public once: boolean;
@@ -162,7 +125,7 @@ declare module 'klasa' {
 	}
 
 	export abstract class Inhibitor extends Piece {
-		public constructor(store: InhibitorStore, file: string[], directory: string, options?: InhibitorOptions);
+		public constructor(context: PieceContext, options?: InhibitorOptions);
 		public spamProtection: boolean;
 		public abstract run(message: Message, command: Command): void | boolean | string | Promise<void | boolean | string>;
 		public toJSON(): PieceInhibitorJSON;
@@ -178,42 +141,15 @@ declare module 'klasa' {
 
 	// #region Stores
 
-	export abstract class Store<K, V extends Piece, VConstructor = Constructor<V>> extends Collection<K, V> {
-		public constructor(client: KlasaClient, name: string, holds: VConstructor);
-		public readonly client: KlasaClient;
-		public readonly holds: VConstructor;
-		public readonly name: string;
-		public readonly userDirectory: string;
-		public readonly coreDirectories: Set<string>;
+	export class ArgumentStore extends AliasStore<Argument> {}
 
-		protected registerCoreDirectory(directory: string): this;
-		public delete(name: K | V): boolean;
-		public get(key: K): V | undefined;
-		public get<T extends V>(key: K): T | undefined;
-		public init(): Promise<any[]>;
-		public load(directory: string, file: string[]): V;
-		public loadAll(): Promise<number>;
-		public resolve(name: V | string): V;
-		public set<T extends V>(key: K, value: T): this;
-		public set(piece: V): V;
-		public toString(): string;
+	export class CommandStore extends AliasStore<Command> {}
 
-		private static walk<K, V extends Piece, T extends Store<K, V>>(store: T, coreDirectory?: string): Promise<Array<Piece>>;
-	}
-
-	export abstract class AliasStore<K, V extends Piece, VConstructor = Constructor<V>> extends Store<K, V, VConstructor> {
-		public aliases: Collection<K, V>;
-	}
-
-	export class ArgumentStore extends AliasStore<string, Argument, typeof Argument> {}
-
-	export class CommandStore extends AliasStore<string, Command, typeof Command> {}
-
-	export class EventStore extends Store<string, Event, typeof Event> {
+	export class EventStore extends Store<Event> {
 		private _onceEvents: Set<string>;
 	}
 
-	export class InhibitorStore extends Store<string, Inhibitor, typeof Inhibitor> {
+	export class InhibitorStore extends Store<Inhibitor> {
 		public run(message: Message, command: Command, selective?: boolean): Promise<void>;
 	}
 
@@ -501,93 +437,6 @@ declare module 'klasa' {
 		private _paginate(): void;
 	}
 
-	export class Stopwatch {
-		public constructor(digits?: number);
-		public digits: number;
-		private _start: number;
-		private _end: number | null;
-
-		public readonly duration: number;
-		public readonly running: boolean;
-		public restart(): this;
-		public reset(): this;
-		public start(): this;
-		public stop(): this;
-		public toString(): string;
-	}
-
-	export class Timestamp {
-		public constructor(pattern: string);
-		public pattern: string;
-		private _template: TimestampObject[];
-
-		public display(time?: Date | number | string): string;
-		public displayUTC(time?: Date | number | string): string;
-		public edit(pattern: string): this;
-
-		public static timezoneOffset: number;
-		public static utc(time?: Date | number | string): Date;
-		public static displayArbitrary(pattern: string, time?: Date | number | string): string;
-		private static _resolveDate(time: Date | number | string): Date;
-		private static _display(template: string, time: Date | number | string): string;
-		private static _patch(pattern: string): TimestampObject[];
-	}
-
-	export class Type {
-		public constructor(value: any, parent?: Type);
-
-		public value: any;
-		public is: string;
-
-		private parent: Type | null;
-		private childKeys: Map<string, Type>;
-		private childValues: Map<string, Type>;
-
-		private readonly childTypes: string;
-
-		public toString(): string;
-
-		private addValue(value: any): void;
-		private addEntry(entry: [string, any]): void;
-		private parents(): Iterator<Type>;
-		private check(): void;
-		private isCircular(): boolean;
-
-		public static resolve(value: any): string;
-
-		private static list(values: Map<string, Type>): string;
-	}
-
-	class Util {
-		public static arrayFromObject<T = any>(obj: Record<string, any>, prefix?: string): Array<T>;
-		public static arraysStrictEquals(arr1: any[], arr2: any[]): boolean;
-		public static chunk<T>(entries: T[], chunkSize: number): Array<T[]>;
-		public static clean(text: string): string;
-		public static codeBlock(lang: string, expression: string | number | Stringifible): string;
-		public static deepClone<T = any>(source: T): T;
-		public static exec(exec: string, options?: ExecOptions): Promise<{ stdout: string; stderr: string }>;
-		public static getTypeName(input: any): string;
-		public static isClass(input: any): input is Constructor<any>;
-		public static isFunction(input: any): input is Function;
-		public static isNumber(input: any): input is number;
-		public static isObject(input: any): boolean;
-		public static isPrimitive(input: any): input is string | number | boolean;
-		public static isThenable(input: any): boolean;
-		public static makeObject<T = Record<string, any>, S = Record<string, any>>(path: string, value: any, obj?: Record<string, any>): T & S;
-		public static mergeDefault<T = Record<string, any>, S = Record<string, any>>(objDefaults: T, objSource: S): T & S;
-		public static mergeObjects<T = Record<string, any>, S = Record<string, any>>(objTarget: T, objSource: S): T & S;
-		public static objectToTuples(obj: Record<string, any>): Array<[string, any]>;
-		public static regExpEsc(str: string): string;
-		public static sleep<T = any>(delay: number, args?: T): Promise<T>;
-		public static toTitleCase(str: string): string;
-		public static tryParse<T = Record<string, any>>(value: string): T | string;
-		public static resolveGuild(client: KlasaClient, guild: GuildResolvable): Guild;
-		private static initClean(client: KlasaClient): void;
-
-		public static titleCaseVariants: TitleCaseVariants;
-		public static PRIMITIVE_TYPES: string[];
-	}
-
 	// #endregion Util
 
 	// #endregion Classes
@@ -691,15 +540,6 @@ declare module 'klasa' {
 	export type TimeResolvable = Cron | Date | number | string;
 
 	// Structures
-	export interface PieceOptions {
-		enabled?: boolean;
-		name?: string;
-	}
-
-	export interface AliasPieceOptions extends PieceOptions {
-		aliases?: string[];
-	}
-
 	export interface ArgumentOptions extends AliasPieceOptions {}
 
 	export interface CommandOptions extends AliasPieceOptions {
@@ -734,12 +574,8 @@ declare module 'klasa' {
 	}
 
 	export interface PieceJSON {
-		directory: string;
-		path: string;
 		enabled: boolean;
-		file: string[];
 		name: string;
-		type: string;
 	}
 
 	export interface AliasPieceJSON extends PieceJSON {
@@ -1113,6 +949,12 @@ declare module 'klasa' {
 			slowmode?: number;
 			slowmodeAggressive?: boolean;
 			typing?: boolean;
+		}
+	}
+
+	module '@sapphire/pieces' {
+		interface PieceContextExtras {
+			client: SapphireClient;
 		}
 	}
 

@@ -2,7 +2,7 @@ const { Argument } = require('klasa');
 
 module.exports = class extends Argument {
 	async run(arg, possible, message) {
-		for (const store of this.client.pieceStores.values()) {
+		for (const store of this.context.client.pieceStores.values()) {
 			const piece = store.get(arg);
 			if (piece) return piece;
 		}

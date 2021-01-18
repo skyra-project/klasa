@@ -2,10 +2,10 @@ const { Event } = require('klasa');
 
 module.exports = class extends Event {
 	run(err) {
-		this.client.console.error(err);
+		this.context.client.console.error(err);
 	}
 
-	init() {
-		if (!this.client.options.consoleEvents.error) this.disable();
+	onLoad() {
+		if (!this.context.client.options.consoleEvents.error) this.disable();
 	}
 };

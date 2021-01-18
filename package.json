@@ -15,6 +15,7 @@
 		"cz": "git-cz"
 	},
 	"dependencies": {
+		"@sapphire/pieces": "^1.1.0",
 		"fs-nextra": "^0.5.1"
 	},
 	"devDependencies": {

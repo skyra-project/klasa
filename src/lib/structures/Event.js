@@ -1,4 +1,4 @@
-const Piece = require('./base/Piece');
+const { Piece } = require('@sapphire/pieces');
 
 /**
  * Base class for all Klasa Events. See {@tutorial CreatingEvents} for more information how to use this class
@@ -10,19 +10,17 @@ class Event extends Piece {
 	/**
 	 * @typedef {PieceOptions} EventOptions
 	 * @property {boolean} [once=false] If this event should only be run once and then unloaded
-	 * @property {EventEmitter|string} [emitter=this.client] The emitter this event should be for (string indicates a client property)
+	 * @property {EventEmitter|string} [emitter=this.context.client] The emitter this event should be for (string indicates a client property)
 	 * @property {string} [event=this.name] The event that should be listened to
 	 */
 
 	/**
 	 * @since 0.0.1
-	 * @param {EventStore} store The Event Store
-	 * @param {string} file The path from the pieces folder to the event file
-	 * @param {string} directory The base directory to the pieces folder
+	 * @param {PieceContext} context The context
 	 * @param {EventOptions} [options={}] Optional Event settings
 	 */
-	constructor(store, file, directory, options = {}) {
-		super(store, file, directory, options);
+	constructor(context, options = {}) {
+		super(context, options);
 
 		/**
 		 * If this event should only be run once and then unloaded
@@ -36,7 +34,7 @@ class Event extends Piece {
 		 * @since 0.5.0
 		 * @type {EventEmitter}
 		 */
-		this.emitter = (typeof options.emitter === 'string' ? this.client[options.emitter] : options.emitter) || this.client;
+		this.emitter = (typeof options.emitter === 'string' ? this.context.client[options.emitter] : options.emitter) || this.context.client;
 
 		/**
 		 * The event to listen for
@@ -63,7 +61,7 @@ class Event extends Piece {
 	 */
 	run() {
 		// Defined in extension Classes
-		throw new Error(`The run method has not been implemented by ${this.type}:${this.name}.`);
+		throw new Error(`The run method has not been implemented by ${this.store.name}:${this.name}.`);
 	}
 
 	/**
@@ -72,9 +70,9 @@ class Event extends Piece {
 	 * @returns {this}
 	 * @chainable
 	 */
-	disable() {
+	unload() {
 		this._unlisten();
-		return super.disable();
+		return super.unload();
 	}
 
 	/**
@@ -99,7 +97,7 @@ class Event extends Piece {
 		try {
 			await this.run(...args);
 		} catch (err) {
-			this.client.emit('eventError', this, args, err);
+			this.context.client.emit('eventError', this, args, err);
 		}
 	}
 

@@ -1,5 +1,5 @@
 const { Permissions } = require('discord.js');
-const AliasPiece = require('./base/AliasPiece');
+const { AliasPiece } = require('@sapphire/pieces');
 const Usage = require('../usage/Usage');
 const CommandUsage = require('../usage/CommandUsage');
 
@@ -34,13 +34,11 @@ class Command extends AliasPiece {
 
 	/**
 	 * @since 0.0.1
-	 * @param {CommandStore} store The Command store
-	 * @param {Array} file The path from the pieces folder to the command file
-	 * @param {string} directory The base directory to the pieces folder
+	 * @param {PieceContext} context The context
 	 * @param {CommandOptions} [options={}] Optional Command settings
 	 */
-	constructor(store, file, directory, options = {}) {
-		super(store, file, directory, options);
+	constructor(context, options = {}) {
+		super(context, options);
 
 		this.name = this.name.toLowerCase();
 
@@ -145,7 +143,7 @@ class Command extends AliasPiece {
 		 * @since 0.0.1
 		 * @type {CommandUsage}
 		 */
-		this.usage = new CommandUsage(this.client, options.usage, options.usageDelim, this);
+		this.usage = new CommandUsage(this.context.client, options.usage, options.usageDelim, this);
 
 		/**
 		 * The level at which cooldowns should apply
@@ -218,7 +216,7 @@ class Command extends AliasPiece {
 	 * @returns {Usage}
 	 */
 	definePrompt(usageString, usageDelim) {
-		return new Usage(this.client, usageString, usageDelim);
+		return new Usage(this.context.client, usageString, usageDelim);
 	}
 
 	/**

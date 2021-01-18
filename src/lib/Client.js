@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const { Store } = require('@sapphire/pieces');
 const {
 	Permissions,
 	Permissions: { FLAGS }
@@ -100,6 +101,8 @@ class KlasaClient extends Discord.Client {
 		options = util.mergeDefault(DEFAULTS.CLIENT, options);
 		super(options);
 
+		Store.injectedContext.client = this;
+
 		/**
 		 * The options the client was instantiated with.
 		 * @since 0.5.0
@@ -126,28 +129,28 @@ class KlasaClient extends Discord.Client {
 		 * @since 0.5.0
 		 * @type {ArgumentStore}
 		 */
-		this.arguments = new ArgumentStore(this);
+		this.arguments = new ArgumentStore();
 
 		/**
 		 * The cache where commands are stored
 		 * @since 0.0.1
 		 * @type {CommandStore}
 		 */
-		this.commands = new CommandStore(this);
+		this.commands = new CommandStore();
 
 		/**
 		 * The cache where inhibitors are stored
 		 * @since 0.0.1
 		 * @type {InhibitorStore}
 		 */
-		this.inhibitors = new InhibitorStore(this);
+		this.inhibitors = new InhibitorStore();
 
 		/**
 		 * The cache where events are stored
 		 * @since 0.0.1
 		 * @type {EventStore}
 		 */
-		this.events = new EventStore(this);
+		this.events = new EventStore();
 
 		/**
 		 * A Store registry

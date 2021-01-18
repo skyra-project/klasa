@@ -9,6 +9,6 @@ module.exports = class extends Argument {
 		const { min, max } = possible;
 		const number = parseFloat(arg);
 		if (isNaN(number)) throw await message.resolveKey('resolvers:invalidFloat', { name: possible.name });
-		return (await this.constructor.minOrMax(this.client, number, min, max, possible, message)) ? number : null;
+		return (await this.constructor.minOrMax(number, min, max, possible, message)) ? number : null;
 	}
 };

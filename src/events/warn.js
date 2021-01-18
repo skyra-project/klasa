@@ -2,10 +2,10 @@ const { Event } = require('klasa');
 
 module.exports = class extends Event {
 	run(warning) {
-		this.client.console.warn(warning);
+		this.context.client.console.warn(warning);
 	}
 
-	init() {
-		if (!this.client.options.consoleEvents.warn) this.disable();
+	onLoad() {
+		this.enabled = this.context.client.options.consoleEvents.warn;
 	}
 };

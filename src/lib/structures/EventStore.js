@@ -1,5 +1,5 @@
 const Event = require('./Event');
-const Store = require('./base/Store');
+const { Store } = require('@sapphire/pieces');
 
 /**
  * Stores all the events that a part of Klasa
@@ -9,10 +9,9 @@ class EventStore extends Store {
 	/**
 	 * Constructs our EventStore for use in Klasa
 	 * @since 0.0.1
-	 * @param {KlasaClient} client The klasa client initializing this store.
 	 */
-	constructor(client) {
-		super(client, 'events', Event);
+	constructor() {
+		super(Event, { name: 'events' });
 
 		/**
 		 * Once events that have already run (so once means once)
