@@ -856,13 +856,13 @@ declare module 'klasa' {
 			commands: CommandStore;
 			inhibitors: InhibitorStore;
 			events: EventStore;
-			pieceStores: Collection<string, any>;
+			stores: Set<Store<Piece>>;
 			permissionLevels: PermissionLevels;
 			application: ClientApplication;
 			ready: boolean;
 			mentionPrefix: RegExp | null;
 			registerStore<K, V extends Piece, VConstructor = Constructor<V>>(store: Store<K, V, VConstructor>): KlasaClient;
-			unregisterStore<K, V extends Piece, VConstructor = Constructor<V>>(store: Store<K, V, VConstructor>): KlasaClient;
+			deregisterStore<K, V extends Piece, VConstructor = Constructor<V>>(store: Store<K, V, VConstructor>): KlasaClient;
 			sweepMessages(lifetime?: number, commandLifeTime?: number): number;
 			fetchPrefix(message: Message): Promise<string | readonly string[] | null> | string | readonly string[] | null;
 			on(event: 'argumentError', listener: (message: Message, command: Command, params: any[], error: string) => void): this;

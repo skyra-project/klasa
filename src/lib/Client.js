@@ -155,9 +155,9 @@ class KlasaClient extends Discord.Client {
 		/**
 		 * A Store registry
 		 * @since 0.3.0
-		 * @type {external:Collection}
+		 * @type {Set<Store<any>>}
 		 */
-		this.pieceStores = new Discord.Collection();
+		this.stores = new Set();
 
 		/**
 		 * The permissions structure for this bot
@@ -176,7 +176,7 @@ class KlasaClient extends Discord.Client {
 		this.registerStore(this.commands).registerStore(this.inhibitors).registerStore(this.events).registerStore(this.arguments);
 
 		const coreDirectory = path.join(__dirname, '../');
-		for (const store of this.pieceStores.values()) store.registerCoreDirectory(coreDirectory);
+		for (const store of this.stores.values()) store.registerPath(coreDirectory);
 
 		/**
 		 * Whether the client is truly ready or not
@@ -255,7 +255,7 @@ class KlasaClient extends Discord.Client {
 	 * @chainable
 	 */
 	registerStore(store) {
-		this.pieceStores.set(store.name, store);
+		this.stores.add(store);
 		return this;
 	}
 
@@ -266,8 +266,8 @@ class KlasaClient extends Discord.Client {
 	 * @returns {this}
 	 * @chainable
 	 */
-	unregisterStore(storeName) {
-		this.pieceStores.delete(storeName);
+	deregisterStore(storeName) {
+		this.stores.delete(storeName);
 		return this;
 	}
 
@@ -279,11 +279,7 @@ class KlasaClient extends Discord.Client {
 	 */
 	async login(token) {
 		const timer = new Stopwatch();
-		const loaded = await Promise.all(this.pieceStores.map(async (store) => `Loaded ${await store.loadAll()} ${store.name}.`)).catch((err) => {
-			console.error(err);
-			process.exit();
-		});
-
+		await Promise.all([...this.stores].map((store) => store.loadAll()));
 		this.emit('log', loaded.join('\n'));
 		this.emit('log', `Loaded in ${timer.stop()}.`);
 		return super.login(token);
