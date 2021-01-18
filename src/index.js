@@ -1,16 +1,4 @@
-const {
-	AliasPiece,
-	AliasPieceOptions,
-	AliasStore,
-	Awaited,
-	LoaderError,
-	MissingExportsError,
-	Piece,
-	PieceContext,
-	PieceOptions,
-	Store,
-	StoreOptions
-} = require('@sapphire/pieces');
+const { AliasPiece, AliasStore, LoaderError, MissingExportsError, Piece, Store } = require('@sapphire/pieces');
 
 module.exports = {
 	// KlasaClient

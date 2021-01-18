@@ -2,6 +2,7 @@ const { Permissions } = require('discord.js');
 const { AliasPiece } = require('@sapphire/pieces');
 const Usage = require('../usage/Usage');
 const CommandUsage = require('../usage/CommandUsage');
+const { sep } = require('path');
 
 /**
  * Base class for all Klasa Commands. See {@tutorial CreatingCommands} for more information how to use this class
@@ -34,7 +35,7 @@ class Command extends AliasPiece {
 
 	/**
 	 * @since 0.0.1
-	 * @param {PieceContext} context The context
+	 * @param {import('@sapphire/pieces').PieceContext} context The context
 	 * @param {CommandOptions} [options={}] Optional Command settings
 	 */
 	constructor(context, options = {}) {
@@ -61,12 +62,16 @@ class Command extends AliasPiece {
 		 */
 		this.deletable = options.deletable;
 
+		// Hack that works for Skyra as the commands are always in **/commands/**/*
+		const paths = context.path.split(sep);
+		const index = paths.indexOf('commands');
+
 		/**
 		 * The full category for the command
 		 * @since 0.0.1
 		 * @type {string[]}
 		 */
-		this.fullCategory = file.slice(0, -1);
+		this.fullCategory = paths.slice(index === -1 ? 0 : index, -1);
 
 		/**
 		 * Whether this command should not be able to be disabled in a guild or not
