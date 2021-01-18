@@ -280,8 +280,6 @@ class KlasaClient extends Discord.Client {
 	async login(token) {
 		const timer = new Stopwatch();
 		await Promise.all([...this.stores].map((store) => store.loadAll()));
-		this.emit('log', loaded.join('\n'));
-		this.emit('log', `Loaded in ${timer.stop()}.`);
 		return super.login(token);
 	}
 
