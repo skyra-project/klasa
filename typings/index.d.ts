@@ -1,7 +1,7 @@
 /// <reference types="node" />
 
 declare module 'klasa' {
-	import { AliasPiece, AliasPieceOptions, AliasStore, Piece, PieceContext } from '@sapphire/pieces';
+	import { AliasPiece, AliasPieceOptions, AliasStore, Piece, PieceContext, PieceOptions, Store } from '@sapphire/pieces';
 	import {
 		APIMessage,
 		Client,
@@ -38,6 +38,7 @@ declare module 'klasa' {
 		Store,
 		StoreOptions
 	} from '@sapphire/pieces';
+	export { KlasaClient as Client };
 
 	// #region Classes
 
@@ -52,9 +53,6 @@ declare module 'klasa' {
 		public static plugin: symbol;
 		public static use(mod: any): typeof KlasaClient;
 	}
-
-	export { KlasaClient as Client };
-	export { Util as util };
 
 	// #region Extensions
 
@@ -119,7 +117,7 @@ declare module 'klasa' {
 
 		public definePrompt(usageString: string, usageDelim?: string): Usage;
 		public run(message: Message, params: any[]): Promise<Message | Message[] | null>;
-		public toJSON(): PieceCommandJSON;
+		public toJSON(): object;
 	}
 
 	export abstract class Event extends Piece {
@@ -130,7 +128,7 @@ declare module 'klasa' {
 		private _listener: Function;
 
 		public abstract run(...params: any[]): void;
-		public toJSON(): PieceEventJSON;
+		public toJSON(): object;
 
 		private _run(param: any): void;
 		private _runOnce(...args: any[]): Promise<void>;
@@ -142,7 +140,7 @@ declare module 'klasa' {
 		public constructor(context: PieceContext, options?: InhibitorOptions);
 		public spamProtection: boolean;
 		public abstract run(message: Message, command: Command): void | boolean | string | Promise<void | boolean | string>;
-		public toJSON(): PieceInhibitorJSON;
+		public toJSON(): object;
 		protected _run(message: Message, command: Command): Promise<boolean | string>;
 	}
 
@@ -324,6 +322,23 @@ declare module 'klasa' {
 		private static aan: RegExp;
 
 		private static _parse(pattern: string): number;
+	}
+
+	export class Timestamp {
+		public constructor(pattern: string);
+		public pattern: string;
+		private _template: TimestampObject[];
+
+		public display(time?: Date | number | string): string;
+		public displayUTC(time?: Date | number | string): string;
+		public edit(pattern: string): this;
+
+		public static timezoneOffset: number;
+		public static utc(time?: Date | number | string): Date;
+		public static displayArbitrary(pattern: string, time?: Date | number | string): string;
+		private static _resolveDate(time: Date | number | string): Date;
+		private static _display(template: string, time: Date | number | string): string;
+		private static _patch(pattern: string): TimestampObject[];
 	}
 
 	export class KlasaConsole {
@@ -601,24 +616,6 @@ declare module 'klasa' {
 		instancePropertyDescriptors: PropertyDescriptorMap;
 	}
 
-	export interface PieceCommandJSON extends AliasPieceJSON, Filter<Required<CommandOptions>, 'requiredPermissions' | 'usage'> {
-		category: string;
-		subCategory: string;
-		requiredPermissions: string[];
-		usage: {
-			usageString: string;
-			usageDelim: string | null;
-			nearlyFullUsage: string;
-		};
-	}
-
-	export interface PieceEventJSON extends PieceJSON, Filter<Required<EventOptions>, 'emitter'> {
-		emitter: string;
-	}
-
-	export interface PieceInhibitorJSON extends PieceJSON, Required<InhibitorOptions> {}
-	export interface PieceArgumentJSON extends AliasPieceJSON, Required<ArgumentOptions> {}
-
 	// Usage
 	export interface TextPromptOptions {
 		channel?: TextChannel | DMChannel;
@@ -875,8 +872,8 @@ declare module 'klasa' {
 			application: ClientApplication;
 			ready: boolean;
 			mentionPrefix: RegExp | null;
-			registerStore<K, V extends Piece, VConstructor = Constructor<V>>(store: Store<K, V, VConstructor>): KlasaClient;
-			deregisterStore<K, V extends Piece, VConstructor = Constructor<V>>(store: Store<K, V, VConstructor>): KlasaClient;
+			registerStore<V extends Piece>(store: Store<V>): KlasaClient;
+			deregisterStore<V extends Piece>(store: Store<V>): KlasaClient;
 			sweepMessages(lifetime?: number, commandLifeTime?: number): number;
 			fetchPrefix(message: Message): Promise<string | readonly string[] | null> | string | readonly string[] | null;
 			on(event: 'argumentError', listener: (message: Message, command: Command, params: any[], error: string) => void): this;
@@ -968,7 +965,7 @@ declare module 'klasa' {
 
 	module '@sapphire/pieces' {
 		interface PieceContextExtras {
-			client: SapphireClient;
+			client: Client;
 		}
 	}
 
