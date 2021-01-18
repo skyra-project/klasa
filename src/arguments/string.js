@@ -1,8 +1,8 @@
 const { Argument } = require('klasa');
 
 module.exports = class extends Argument {
-	constructor(...args) {
-		super(...args, { aliases: ['str'] });
+	constructor(context) {
+		super(context, { aliases: ['str'] });
 	}
 
 	async run(arg, possible, message) {

@@ -3,8 +3,8 @@ const { Team } = require('discord.js');
 let retries = 0;
 
 module.exports = class extends Event {
-	constructor(...args) {
-		super(...args, {
+	constructor(context) {
+		super(context, {
 			once: true,
 			event: 'ready'
 		});

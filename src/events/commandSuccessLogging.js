@@ -1,8 +1,8 @@
 const { Colors, Event } = require('klasa');
 
 module.exports = class extends Event {
-	constructor(...args) {
-		super(...args, { event: 'commandSuccess' });
+	constructor(context) {
+		super(context, { event: 'commandSuccess' });
 		this.enabled = this.context.client.options.commandLogging;
 		this.reprompted = [new Colors({ background: 'blue' }), new Colors({ background: 'red' })];
 		this.user = new Colors({ background: 'yellow', text: 'black' });

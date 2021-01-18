@@ -1,8 +1,8 @@
 const { Argument } = require('klasa');
 
 module.exports = class extends Argument {
-	constructor(...args) {
-		super(...args, { name: '...string', aliases: ['...str'] });
+	constructor(context) {
+		super(context, { name: '...string', aliases: ['...str'] });
 	}
 
 	get stringArg() {

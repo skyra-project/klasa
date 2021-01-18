@@ -1,8 +1,8 @@
 const { RateLimitManager, Event } = require('klasa');
 
 module.exports = class extends Event {
-	constructor(...args) {
-		super(...args, { event: 'commandSuccess' });
+	constructor(context) {
+		super(context, { event: 'commandSuccess' });
 		this.cooldowns = new WeakMap();
 	}
 
