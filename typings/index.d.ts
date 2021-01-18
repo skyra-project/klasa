@@ -25,6 +25,20 @@ declare module 'klasa' {
 
 	export const version: string;
 
+	export {
+		AliasPiece,
+		AliasPieceOptions,
+		AliasStore,
+		Awaited,
+		LoaderError,
+		MissingExportsError,
+		Piece,
+		PieceContext,
+		PieceOptions,
+		Store,
+		StoreOptions
+	} from '@sapphire/pieces';
+
 	// #region Classes
 
 	export class KlasaClient extends Client {

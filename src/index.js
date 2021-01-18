@@ -1,3 +1,17 @@
+const {
+	AliasPiece,
+	AliasPieceOptions,
+	AliasStore,
+	Awaited,
+	LoaderError,
+	MissingExportsError,
+	Piece,
+	PieceContext,
+	PieceOptions,
+	Store,
+	StoreOptions
+} = require('@sapphire/pieces');
+
 module.exports = {
 	// KlasaClient
 	KlasaClient: require('./lib/Client'),
@@ -5,12 +19,6 @@ module.exports = {
 
 	// lib/permissions
 	PermissionLevels: require('./lib/permissions/PermissionLevels'),
-
-	// lib/structures/base
-	AliasPiece: require('./lib/structures/base/AliasPiece'),
-	AliasStore: require('./lib/structures/base/AliasStore'),
-	Piece: require('./lib/structures/base/Piece'),
-	Store: require('./lib/structures/base/Store'),
 
 	// lib/structures
 	Argument: require('./lib/structures/Argument'),
@@ -48,7 +56,14 @@ module.exports = {
 	util: require('./lib/util/util'),
 
 	// version
-	version: require('../package').version
+	version: require('../package').version,
+
+	AliasPiece,
+	AliasStore,
+	LoaderError,
+	MissingExportsError,
+	Piece,
+	Store
 };
 
 /**
