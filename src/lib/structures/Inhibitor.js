@@ -25,7 +25,7 @@ class Inhibitor extends Piece {
 		 * @since 0.0.1
 		 * @type {boolean}
 		 */
-		this.spamProtection = options.spamProtection;
+		this.spamProtection = options.spamProtection ?? false;
 	}
 
 	/**

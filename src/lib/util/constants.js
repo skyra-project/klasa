@@ -60,8 +60,7 @@ exports.DEFAULTS = {
 				runIn: ['text', 'dm'],
 				subcommands: false,
 				usage: '',
-				quotedStringSupport: false,
-				deletable: false
+				quotedStringSupport: false
 			},
 			events: {
 				enabled: true,

@@ -18,7 +18,6 @@ class Command extends AliasPiece {
 	 * @property {number} [bucket=1] The number of times this command can be run before ratelimited by the cooldown
 	 * @property {number} [cooldown=0] The amount of time before the user can run the command again in seconds
 	 * @property {string} [cooldownLevel='author'] The level the cooldown applies to (valid options are 'author', 'channel', 'guild')
-	 * @property {boolean} [deletable=false] If the responses should be deleted if the triggering message is deleted
 	 * @property {boolean} [flagSupport=true] Whether flags should be parsed or not
 	 * @property {boolean} [guarded=false] If the command can be disabled on a guild level (does not effect global disable)
 	 * @property {boolean} [hidden=false] If the command should be hidden
@@ -53,125 +52,115 @@ class Command extends AliasPiece {
 		 * @since 0.0.1
 		 * @type {external:Permissions}
 		 */
-		this.requiredPermissions = new Permissions(options.requiredPermissions).freeze();
-
-		/**
-		 * Whether this command should have it's responses deleted if the triggering message is deleted
-		 * @since 0.5.0
-		 * @type {boolean}
-		 */
-		this.deletable = options.deletable;
+		this.requiredPermissions = new Permissions(options.requiredPermissions ?? 0).freeze();
 
 		// Hack that works for Skyra as the commands are always in **/commands/**/*
 		const paths = context.path.split(sep);
-		const index = paths.indexOf('commands');
 
 		/**
 		 * The full category for the command
 		 * @since 0.0.1
 		 * @type {string[]}
 		 */
-		this.fullCategory = paths.slice(index === -1 ? 0 : index, -1);
+		this.fullCategory = paths.slice(paths.indexOf('commands') + 1, -1);
 
 		/**
 		 * Whether this command should not be able to be disabled in a guild or not
 		 * @since 0.5.0
 		 * @type {boolean}
 		 */
-		this.guarded = options.guarded;
+		this.guarded = options.guarded ?? false;
 
 		/**
 		 * Whether this command is hidden or not
 		 * @since 0.5.0
 		 * @type {boolean}
 		 */
-		this.hidden = options.hidden;
+		this.hidden = options.hidden ?? false;
 
 		/**
 		 * Whether this command should only run in NSFW channels or not
 		 * @since 0.5.0
 		 * @type {boolean}
 		 */
-		this.nsfw = options.nsfw;
+		this.nsfw = options.nsfw ?? false;
 
 		/**
 		 * The required permissionLevel to run this command
 		 * @since 0.0.1
 		 * @type {number}
 		 */
-		this.permissionLevel = options.permissionLevel;
+		this.permissionLevel = options.permissionLevel ?? 0;
 
 		/**
 		 * The number or attempts allowed for re-prompting an argument
 		 * @since 0.5.0
 		 * @type {number}
 		 */
-		this.promptLimit = options.promptLimit;
+		this.promptLimit = options.promptLimit ?? 0;
 
 		/**
 		 * The time allowed for re-prompting of this command
 		 * @since 0.5.0
 		 * @type {number}
 		 */
-		this.promptTime = options.promptTime;
+		this.promptTime = options.promptTime ?? 30000;
 
 		/**
 		 * Whether to use flag support for this command or not
 		 * @since 0.2.1
 		 * @type {boolean}
 		 */
-		this.flagSupport = options.flagSupport;
+		this.flagSupport = options.flagSupport ?? true;
 
 		/**
 		 * Whether to use quoted string support for this command or not
 		 * @since 0.2.1
 		 * @type {boolean}
 		 */
-		this.quotedStringSupport = options.quotedStringSupport;
+		this.quotedStringSupport = options.quotedStringSupport ?? true;
 
 		/**
 		 * What channels the command should run in
 		 * @since 0.0.1
 		 * @type {string[]}
 		 */
-		this.runIn = options.runIn;
+		this.runIn = options.runIn ?? ['text', 'dm'];
 
 		/**
 		 * Whether to enable subcommands or not
 		 * @since 0.5.0
 		 * @type {boolean}
 		 */
-		this.subcommands = options.subcommands;
+		this.subcommands = options.subcommands ?? false;
 
 		/**
 		 * The parsed usage for the command
 		 * @since 0.0.1
 		 * @type {CommandUsage}
 		 */
-		this.usage = new CommandUsage(this.context.client, options.usage, options.usageDelim, this);
+		this.usage = new CommandUsage(this.context.client, options.usage ?? '', options.usageDelim, this);
 
 		/**
 		 * The level at which cooldowns should apply
 		 * @since 0.5.0
 		 * @type {string}
 		 */
-		this.cooldownLevel = options.cooldownLevel;
-
-		if (!['author', 'channel', 'guild'].includes(this.cooldownLevel)) throw new Error('Invalid cooldownLevel');
+		this.cooldownLevel = options.cooldownLevel ?? 'author';
 
 		/**
 		 * The number of times this command can be run before ratelimited by the cooldown
 		 * @since 0.5.0
 		 * @type {number}
 		 */
-		this.bucket = options.bucket;
+		this.bucket = options.bucket ?? 1;
 
 		/**
 		 * The amount of time before the users can run the command again in seconds based on cooldownLevel
 		 * @since 0.5.0
 		 * @type {number}
 		 */
-		this.cooldown = options.cooldown;
+		this.cooldown = options.cooldown ?? 0;
 	}
 
 	/**
@@ -181,7 +170,7 @@ class Command extends AliasPiece {
 	 * @readonly
 	 */
 	get category() {
-		return this.fullCategory[0] || 'General';
+		return this.fullCategory[0] ?? 'General';
 	}
 
 	/**
@@ -191,7 +180,7 @@ class Command extends AliasPiece {
 	 * @readonly
 	 */
 	get subCategory() {
-		return this.fullCategory[1] || 'General';
+		return this.fullCategory[1] ?? 'General';
 	}
 
 	/**
@@ -281,7 +270,6 @@ class Command extends AliasPiece {
 			bucket: this.bucket,
 			category: this.category,
 			cooldown: this.cooldown,
-			deletable: this.deletable,
 			fullCategory: this.fullCategory,
 			guarded: this.guarded,
 			hidden: this.hidden,

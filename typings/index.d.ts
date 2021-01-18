@@ -98,7 +98,6 @@ declare module 'klasa' {
 		public aliases: string[];
 		public requiredPermissions: Permissions;
 		public cooldownLevel: 'author' | 'channel' | 'guild';
-		public deletable: boolean;
 		public flagSupport: boolean;
 		public fullCategory: string[];
 		public guarded: boolean;
@@ -577,7 +576,6 @@ declare module 'klasa' {
 		bucket?: number;
 		cooldown?: number;
 		cooldownLevel?: 'author' | 'channel' | 'guild';
-		deletable?: boolean;
 		flagSupport?: boolean;
 		guarded?: boolean;
 		hidden?: boolean;
