@@ -20,8 +20,8 @@ module.exports = Structures.extend('Message', (Message) => {
 		/**
 		 * @param {...*} args Normal D.JS Message args
 		 */
-		constructor(context) {
-			super(context);
+		constructor(...args) {
+			super(...args);
 
 			/**
 			 * The command being run
