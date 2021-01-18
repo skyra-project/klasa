@@ -4,7 +4,7 @@ const {
 	Permissions,
 	Permissions: { FLAGS }
 } = Discord;
-const path = require('path');
+const { join } = require('path');
 
 require('./extensions/KlasaMessage');
 
@@ -175,8 +175,8 @@ class KlasaClient extends Discord.Client {
 
 		this.registerStore(this.commands).registerStore(this.inhibitors).registerStore(this.events).registerStore(this.arguments);
 
-		const coreDirectory = path.join(__dirname, '../');
-		for (const store of this.stores.values()) store.registerPath(coreDirectory);
+		const coreDirectory = join(__dirname, '../');
+		for (const store of this.stores.values()) store.registerPath(join(coreDirectory, store.name));
 
 		/**
 		 * Whether the client is truly ready or not
