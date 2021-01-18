@@ -1,11 +1,12 @@
 const { Event } = require('klasa');
 
 module.exports = class extends Event {
-	run(log) {
-		this.context.client.console.verbose(log);
+	constructor(context) {
+		super(context);
+		this.enabled = this.context.client.options.consoleEvents.verbose;
 	}
 
-	onLoad() {
-		this.enabled = this.context.client.options.consoleEvents.verbose;
+	run(log) {
+		this.context.client.console.verbose(log);
 	}
 };
