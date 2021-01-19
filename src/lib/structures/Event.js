@@ -1,4 +1,4 @@
-const Piece = require('./base/Piece');
+const { Piece } = require('@sapphire/pieces');
 
 /**
  * Base class for all Klasa Events. See {@tutorial CreatingEvents} for more information how to use this class
@@ -7,43 +7,46 @@ const Piece = require('./base/Piece');
  * @extends Piece
  */
 class Event extends Piece {
+	#listener;
+
 	/**
 	 * @typedef {PieceOptions} EventOptions
 	 * @property {boolean} [once=false] If this event should only be run once and then unloaded
-	 * @property {EventEmitter|string} [emitter=this.client] The emitter this event should be for (string indicates a client property)
+	 * @property {EventEmitter|string} [emitter=this.context.client] The emitter this event should be for (string indicates a client property)
 	 * @property {string} [event=this.name] The event that should be listened to
 	 */
 
 	/**
 	 * @since 0.0.1
-	 * @param {EventStore} store The Event Store
-	 * @param {string} file The path from the pieces folder to the event file
-	 * @param {string} directory The base directory to the pieces folder
+	 * @param {PieceContext} context The context
 	 * @param {EventOptions} [options={}] Optional Event settings
 	 */
-	constructor(store, file, directory, options = {}) {
-		super(store, file, directory, options);
-
-		/**
-		 * If this event should only be run once and then unloaded
-		 * @since 0.5.0
-		 * @type {boolean}
-		 */
-		this.once = options.once;
+	constructor(context, options = {}) {
+		super(context, options);
 
 		/**
 		 * The emitter this event is for
 		 * @since 0.5.0
 		 * @type {EventEmitter}
 		 */
-		this.emitter = (typeof options.emitter === 'string' ? this.client[options.emitter] : options.emitter) || this.client;
+		this.emitter =
+			typeof options.emitter === 'undefined'
+				? this.context.client
+				: (typeof options.emitter === 'string' ? Reflect.get(this.context.client, options.emitter) : options.emitter) ?? null;
 
 		/**
 		 * The event to listen for
 		 * @since 0.5.0
 		 * @type {string}
 		 */
-		this.event = options.event || this.name;
+		this.event = options.event ?? this.name;
+
+		/**
+		 * If this event should only be run once and then unloaded
+		 * @since 0.5.0
+		 * @type {boolean}
+		 */
+		this.once = options.once ?? false;
 
 		/**
 		 * Stored bound on method, so it can be properly unlistened to later
@@ -51,7 +54,7 @@ class Event extends Piece {
 		 * @type {Function}
 		 * @private
 		 */
-		this._listener = this.once ? this._runOnce.bind(this) : this._run.bind(this);
+		this.#listener = this.emitter && this.event ? (this.once ? this._runOnce.bind(this) : this._run.bind(this)) : null;
 	}
 
 	/**
@@ -63,29 +66,15 @@ class Event extends Piece {
 	 */
 	run() {
 		// Defined in extension Classes
-		throw new Error(`The run method has not been implemented by ${this.type}:${this.name}.`);
+		throw new Error(`The run method has not been implemented by ${this.store.name}:${this.name}.`);
 	}
 
-	/**
-	 * Disables this Event
-	 * @since 0.0.1
-	 * @returns {this}
-	 * @chainable
-	 */
-	disable() {
-		this._unlisten();
-		return super.disable();
+	onLoad() {
+		if (this.#listener) this.emitter[this.once ? 'once' : 'on'](this.event, this.#listener);
 	}
 
-	/**
-	 * Enables this Event
-	 * @since 0.0.1
-	 * @returns {this}
-	 * @chainable
-	 */
-	enable() {
-		this._listen();
-		return super.enable();
+	onUnload() {
+		if (!this.once && this.#listener) this.emitter.off(this.event, this.#listener);
 	}
 
 	/**
@@ -99,7 +88,7 @@ class Event extends Piece {
 		try {
 			await this.run(...args);
 		} catch (err) {
-			this.client.emit('eventError', this, args, err);
+			this.context.client.emit('eventError', this, args, err);
 		}
 	}
 
@@ -112,28 +101,7 @@ class Event extends Piece {
 	 */
 	async _runOnce(...args) {
 		await this._run(...args);
-		this.store._onceEvents.add(this.file[this.file.length - 1]);
-		this.unload();
-	}
-
-	/**
-	 * Attaches the proper listener to the emitter
-	 * @since 0.5.0
-	 * @returns {void}
-	 * @private
-	 */
-	_listen() {
-		this.emitter[this.once ? 'once' : 'on'](this.event, this._listener);
-	}
-
-	/**
-	 * Removes the listener from the emitter
-	 * @since 0.5.0
-	 * @returns {void}
-	 * @private
-	 */
-	_unlisten() {
-		this.emitter.removeListener(this.event, this._listener);
+		await this.store.unload(this);
 	}
 
 	/**

@@ -1,4 +1,4 @@
-const AliasPiece = require('./base/AliasPiece');
+const { AliasPiece } = require('@sapphire/pieces');
 const { MENTION_REGEX } = require('../util/constants');
 
 /**
@@ -24,7 +24,6 @@ class Argument extends AliasPiece {
 	/**
 	 * Checks min and max values
 	 * @since 0.5.0
-	 * @param {KlasaClient} client The client of this bot
 	 * @param {number} value The value to check against
 	 * @param {?number} min The minimum value
 	 * @param {?number} max The maximum value
@@ -34,7 +33,7 @@ class Argument extends AliasPiece {
 	 * @returns {boolean}
 	 * @private
 	 */
-	static async minOrMax(client, value, min = null, max = null, possible, message, suffix) {
+	static async minOrMax(value, min = null, max = null, possible, message, suffix) {
 		suffix = suffix ? await message.resolveKey(suffix) : '';
 		if (min !== null && max !== null) {
 			if (value >= min && value <= max) return true;
