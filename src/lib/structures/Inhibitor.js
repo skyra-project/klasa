@@ -1,4 +1,4 @@
-const Piece = require('./base/Piece');
+const { Piece } = require('@sapphire/pieces');
 
 /**
  * Base class for all Klasa Inhibitors. See {@tutorial CreatingInhibitors} for more information how to use this class
@@ -14,20 +14,18 @@ class Inhibitor extends Piece {
 
 	/**
 	 * @since 0.0.1
-	 * @param {InhibitorStore} store The Inhibitor Store
-	 * @param {string} file The path from the pieces folder to the inhibitor file
-	 * @param {string} directory The base directory to the pieces folder
+	 * @param {PieceContext} context The context
 	 * @param {InhibitorOptions} [options={}] Optional Inhibitor settings
 	 */
-	constructor(store, file, directory, options = {}) {
-		super(store, file, directory, options);
+	constructor(context, options = {}) {
+		super(context, options);
 
 		/**
 		 * If this inhibitor is meant for spamProtection (disables the inhibitor while generating help)
 		 * @since 0.0.1
 		 * @type {boolean}
 		 */
-		this.spamProtection = options.spamProtection;
+		this.spamProtection = options.spamProtection ?? false;
 	}
 
 	/**

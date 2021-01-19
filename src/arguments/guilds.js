@@ -1,8 +1,8 @@
 const { MultiArgument } = require('klasa');
 
 module.exports = class extends MultiArgument {
-	constructor(...args) {
-		super(...args, { aliases: ['...guild'] });
+	constructor(context) {
+		super(context, { aliases: ['...guild'] });
 	}
 
 	get base() {

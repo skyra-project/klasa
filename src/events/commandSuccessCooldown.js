@@ -1,18 +1,18 @@
 const { RateLimitManager, Event } = require('klasa');
 
 module.exports = class extends Event {
-	constructor(...args) {
-		super(...args, { event: 'commandSuccess' });
+	constructor(context) {
+		super(context, { event: 'commandSuccess' });
 		this.cooldowns = new WeakMap();
 	}
 
 	run(message, command) {
-		if (command.cooldown <= 0 || this.client.owners.has(message.author)) return;
+		if (command.cooldown <= 0 || this.context.client.owners.has(message.author)) return;
 
 		try {
 			this.getCooldown(message, command).drip();
 		} catch (err) {
-			this.client.emit('error', `${message.author.username}[${message.author.id}] has exceeded the RateLimit for ${message.command}`);
+			this.context.client.emit('error', `${message.author.username}[${message.author.id}] has exceeded the RateLimit for ${message.command}`);
 		}
 	}
 

@@ -1,5 +1,5 @@
 const Inhibitor = require('./Inhibitor');
-const Store = require('./base/Store');
+const { Store } = require('@sapphire/pieces');
 
 /**
  * Stores all the inhibitors in Klasa
@@ -9,10 +9,9 @@ class InhibitorStore extends Store {
 	/**
 	 * Constructs our InhibitorStore for use in Klasa
 	 * @since 0.0.1
-	 * @param {KlasaClient} client The Klasa Client
 	 */
-	constructor(client) {
-		super(client, 'inhibitors', Inhibitor);
+	constructor() {
+		super(Inhibitor, { name: 'inhibitors' });
 	}
 
 	/**

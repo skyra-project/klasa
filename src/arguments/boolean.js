@@ -3,8 +3,8 @@ const truths = ['1', 'true', '+', 't', 'yes', 'y'];
 const falses = ['0', 'false', '-', 'f', 'no', 'n'];
 
 module.exports = class extends Argument {
-	constructor(...args) {
-		super(...args, { aliases: ['bool'] });
+	constructor(context) {
+		super(context, { aliases: ['bool'] });
 	}
 
 	async run(arg, possible, message) {

@@ -1,8 +1,9 @@
 const { Colors, Event } = require('klasa');
 
 module.exports = class extends Event {
-	constructor(...args) {
-		super(...args, { event: 'commandSuccess' });
+	constructor(context) {
+		super(context, { event: 'commandSuccess' });
+		this.enabled = this.context.client.options.commandLogging;
 		this.reprompted = [new Colors({ background: 'blue' }), new Colors({ background: 'red' })];
 		this.user = new Colors({ background: 'yellow', text: 'black' });
 		this.shard = new Colors({ background: 'cyan', text: 'black' });
@@ -15,7 +16,7 @@ module.exports = class extends Event {
 	run(message, command, response, timer) {
 		const { type } = message.channel;
 		const shard = message.guild ? message.guild.shardID : 0;
-		this.client.emit(
+		this.context.client.emit(
 			'log',
 			[
 				this.shard.format(`[${shard}]`),
@@ -25,10 +26,6 @@ module.exports = class extends Event {
 				this.channel[type].format(this[type](message))
 			].join(' ')
 		);
-	}
-
-	init() {
-		this.enabled = this.client.options.commandLogging;
 	}
 
 	text(message) {

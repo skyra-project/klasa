@@ -1,5 +1,5 @@
 const Command = require('./Command');
-const AliasStore = require('./base/AliasStore');
+const { AliasStore } = require('@sapphire/pieces');
 
 /**
  * Stores all the commands usable in Klasa
@@ -9,10 +9,9 @@ class CommandStore extends AliasStore {
 	/**
 	 * Constructs our CommandStore for use in Klasa
 	 * @since 0.0.1
-	 * @param {KlasaClient} client The Klasa Client
 	 */
-	constructor(client) {
-		super(client, 'commands', Command);
+	constructor() {
+		super(Command, { name: 'commands' });
 	}
 }
 

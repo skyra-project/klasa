@@ -1,5 +1,5 @@
 const Argument = require('./Argument');
-const AliasStore = require('./base/AliasStore');
+const { AliasStore } = require('@sapphire/pieces');
 
 /**
  * Stores all the arguments usable in Klasa
@@ -9,10 +9,9 @@ class ArgumentStore extends AliasStore {
 	/**
 	 * Constructs our ArgumentStore for use in Klasa
 	 * @since 0.5.0
-	 * @param {KlasaClient} client The Klasa Client
 	 */
-	constructor(client) {
-		super(client, 'arguments', Argument);
+	constructor() {
+		super(Argument, { name: 'arguments' });
 	}
 }
 

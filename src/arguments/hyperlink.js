@@ -2,8 +2,8 @@ const { parse } = require('url');
 const { Argument } = require('klasa');
 
 module.exports = class extends Argument {
-	constructor(...args) {
-		super(...args, { aliases: ['url'] });
+	constructor(context) {
+		super(context, { aliases: ['url'] });
 	}
 
 	async run(arg, possible, message) {
