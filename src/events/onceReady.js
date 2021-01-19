@@ -13,10 +13,10 @@ module.exports = class extends Event {
 	async run() {
 		const { client } = this.context;
 		try {
-			await this.context.client.fetchApplication();
+			await client.fetchApplication();
 		} catch (err) {
 			if (++retries === 3) return process.exit();
-			client.emit('warning', `Unable to fetchApplication at this time, waiting 5 seconds and retrying. Retries left: ${retries - 3}`);
+			client.emit('warning', `Unable to fetchApplication at this time, waiting 5 seconds and retrying. Retries left: ${3 - retries}`);
 			await util.sleep(5000);
 			return this.run();
 		}
