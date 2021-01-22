@@ -18,14 +18,9 @@ const EventStore = require('./structures/EventStore');
 const InhibitorStore = require('./structures/InhibitorStore');
 
 // lib/util
-const KlasaConsole = require('./util/KlasaConsole');
 const { DEFAULTS } = require('./util/constants');
-const Stopwatch = require('./util/Stopwatch');
-const util = require('./util/util');
 const getRootDirectory = require('./util/RootDir');
-
-// external plugins
-const plugins = new Set();
+const { Logger } = require('./util/Logger');
 
 /**
  * The client for handling everything. See {@tutorial GettingStarted} for more information how to get started using this class.
@@ -48,15 +43,12 @@ class KlasaClient extends Discord.Client {
 	 * @property {boolean} [commandEditing=false] Whether the bot should update responses if the command is edited
 	 * @property {boolean} [commandLogging=false] Whether the bot should log command usage
 	 * @property {number} [commandMessageLifetime=1800] The threshold for how old command messages can be before sweeping since the last edit in seconds
-	 * @property {ConsoleOptions} [console={}] Config options to pass to the client console
-	 * @property {ConsoleEvents} [consoleEvents={}] Config options to pass to the client console
 	 * @property {boolean} [createPiecesFolders=true] Whether Klasa should create pieces' folder at start up or not
 	 * @property {CustomPromptDefaults} [customPromptDefaults={}] The defaults for custom prompts
 	 * @property {string[]} [disabledCorePieces=[]] An array of disabled core piece types, e.g., ['commands', 'arguments']
 	 * @property {boolean} [noPrefixDM=false] Whether the bot should allow prefixless messages in DMs
 	 * @property {string[]} [owners] The discord user id for the users the bot should respect as the owner (gotten from Discord api if not provided)
 	 * @property {PermissionLevelsOverload} [permissionLevels] The permission levels to use with this bot
-	 * @property {PieceDefaults} [pieceDefaults={}] Overrides the defaults for all pieces
 	 * @property {string|string[]} [prefix] The default prefix the bot should respond to
 	 * @property {boolean} [production=false] Whether the bot should handle unhandled promise rejections automatically (handles when false) (also can be configured with process.env.NODE_ENV)
 	 * @property {ReadyMessage} [readyMessage] readyMessage to be passed throughout Klasa's ready event
@@ -65,23 +57,6 @@ class KlasaClient extends Discord.Client {
 	 * @property {boolean} [slowmodeAggressive=false] If the slowmode time should reset if a user spams commands faster than the slowmode allows for
 	 * @property {boolean} [typing=false] Whether the bot should type while processing commands
 	 * @property {boolean} [prefixCaseInsensitive=false] Wether the bot should respond to case insensitive prefix or not
-	 */
-
-	/**
-	 * @typedef {Object} ConsoleEvents
-	 * @property {boolean} [debug=false] If the debug event should be enabled by default
-	 * @property {boolean} [error=true] If the error event should be enabled by default
-	 * @property {boolean} [log=true] If the log event should be enabled by default
-	 * @property {boolean} [verbose=false] If the verbose event should be enabled by default
-	 * @property {boolean} [warn=true] If the warn event should be enabled by default
-	 * @property {boolean} [wtf=true] If the wtf event should be enabled by default
-	 */
-
-	/**
-	 * @typedef {Object} PieceDefaults
-	 * @property {CommandOptions} [commands={}] The default command options
-	 * @property {EventOptions} [events={}] The default event options
-	 * @property {InhibitorOptions} [inhibitors={}] The default inhibitor options
 	 */
 
 	/**
@@ -97,9 +72,11 @@ class KlasaClient extends Discord.Client {
 	 * @param {KlasaClientOptions} [options={}] The config to pass to the new client
 	 */
 	constructor(options = {}) {
-		if (!util.isObject(options)) throw new TypeError('The Client Options for Klasa must be an object.');
-		options = util.mergeDefault(DEFAULTS.CLIENT, options);
-		super(options);
+		super({
+			...DEFAULTS.CLIENT,
+			options,
+			customPromptDefaults: { ...DEFAULTS.CLIENT.customPromptDefaults, ...(options.customPromptDefaults ?? {}) }
+		});
 
 		Store.injectedContext.client = this;
 
@@ -117,12 +94,7 @@ class KlasaClient extends Discord.Client {
 		 */
 		this.userBaseDirectory = getRootDirectory();
 
-		/**
-		 * The console for this instance of klasa. You can disable timestamps, colors, and add writable streams as configuration options to configure this.
-		 * @since 0.4.0
-		 * @type {KlasaConsole}
-		 */
-		this.console = new KlasaConsole(this.options.console);
+		this.logger = options.logger?.instance ?? new Logger(options.logger?.level ?? 30 /* Info */);
 
 		/**
 		 * The cache where argument resolvers are stored
@@ -191,9 +163,6 @@ class KlasaClient extends Discord.Client {
 		 * @type {RegExp}
 		 */
 		this.mentionPrefix = null;
-
-		// Run all plugin functions in this context
-		for (const plugin of plugins) plugin.call(this);
 	}
 
 	/**
@@ -278,7 +247,6 @@ class KlasaClient extends Discord.Client {
 	 * @returns {string}
 	 */
 	async login(token) {
-		const timer = new Stopwatch();
 		await Promise.all([...this.stores].map((store) => store.loadAll()));
 		return super.login(token);
 	}
@@ -338,30 +306,9 @@ class KlasaClient extends Discord.Client {
 		);
 		return messages;
 	}
-
-	/**
-	 * Caches a plugin module to be used when creating a KlasaClient instance
-	 * @since 0.5.0
-	 * @param {Object} mod The module of the plugin to use
-	 * @returns {this}
-	 * @chainable
-	 */
-	static use(mod) {
-		const plugin = mod[this.plugin];
-		if (!util.isFunction(plugin)) throw new TypeError('The provided module does not include a plugin function');
-		plugins.add(plugin);
-		return this;
-	}
 }
 
 module.exports = KlasaClient;
-
-/**
- * The plugin symbol to be used in external packages
- * @since 0.5.0
- * @type {Symbol}
- */
-KlasaClient.plugin = Symbol('KlasaPlugin');
 
 /**
  * The base Permissions that the {@link Client#invite} asks for. Defaults to [VIEW_CHANNEL, SEND_MESSAGES]
@@ -388,27 +335,6 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * Emitted when Klasa is fully ready and initialized.
  * @event KlasaClient#klasaReady
  * @since 0.3.0
- */
-
-/**
- * A central logging event for Klasa.
- * @event KlasaClient#log
- * @since 0.3.0
- * @param {(string|Object)} data The data to log
- */
-
-/**
- * An event for handling verbose logs
- * @event KlasaClient#verbose
- * @since 0.4.0
- * @param {(string|Object)} data The data to log
- */
-
-/**
- * An event for handling wtf logs (what a terrible failure)
- * @event KlasaClient#wtf
- * @since 0.4.0
- * @param {(string|Object)} data The data to log
  */
 
 /**
@@ -476,39 +402,4 @@ KlasaClient.defaultPermissionLevels = new PermissionLevels()
  * @param {Event} event The event that errored
  * @param {any[]} args The event arguments
  * @param {(string|Object)} error The event error
- */
-
-/**
- * Emitted when a piece is loaded. (This can be spammy on bot startup or anytime you reload all of a piece type.)
- * @event KlasaClient#pieceLoaded
- * @since 0.4.0
- * @param {Piece} piece The piece that was loaded
- */
-
-/**
- * Emitted when a piece is unloaded.
- * @event KlasaClient#pieceUnloaded
- * @since 0.4.0
- * @param {Piece} piece The piece that was unloaded
- */
-
-/**
- * Emitted when a piece is reloaded.
- * @event KlasaClient#pieceReloaded
- * @since 0.4.0
- * @param {Piece} piece The piece that was reloaded
- */
-
-/**
- * Emitted when a piece is enabled.
- * @event KlasaClient#pieceEnabled
- * @since 0.4.0
- * @param {Piece} piece The piece that was enabled
- */
-
-/**
- * Emitted when a piece is disabled.
- * @event KlasaClient#pieceDisabled
- * @since 0.4.0
- * @param {Piece} piece The piece that was disabled
  */

@@ -16,7 +16,7 @@ module.exports = class extends Event {
 			await client.fetchApplication();
 		} catch (err) {
 			if (++retries === 3) return process.exit();
-			client.emit('warning', `Unable to fetchApplication at this time, waiting 5 seconds and retrying. Retries left: ${3 - retries}`);
+			client.logger.warn(`Unable to fetchApplication at this time, waiting 5 seconds and retrying. Retries left: ${3 - retries}`);
 			await util.sleep(5000);
 			return this.run();
 		}
@@ -29,11 +29,10 @@ module.exports = class extends Event {
 		client.mentionPrefix = new RegExp(`^<@!?${client.user.id}>`);
 
 		// Init all the pieces
-		util.initClean(client);
 		client.ready = true;
 
 		if (client.options.readyMessage !== null) {
-			client.emit('log', util.isFunction(client.options.readyMessage) ? client.options.readyMessage(client) : client.options.readyMessage);
+			client.logger.info(typeof client.options.readyMessage === 'function' ? client.options.readyMessage(client) : client.options.readyMessage);
 		}
 
 		return client.emit('klasaReady');
