@@ -1,4 +1,3 @@
-const { mergeDefault } = require('../util/util');
 const { Collection } = require('discord.js');
 const quotes = ['"', "'", '“”', '‘’'];
 
@@ -23,7 +22,7 @@ class TextPrompt {
 	 * @param {TextPromptOptions} [options={}] The options of this prompt
 	 */
 	constructor(message, usage, options = {}) {
-		options = mergeDefault(message.client.options.customPromptDefaults, options);
+		options = { ...message.client.options.customPromptDefaults, ...options };
 
 		/**
 		 * The client this TextPrompt was created with
@@ -289,7 +288,7 @@ class TextPrompt {
 
 		if (possible.name in this.flags) this.args.splice(this.params.length, 0, this.flags[possible.name]);
 		if (!resolver) {
-			this.client.emit('warn', `Unknown Argument Type encountered: ${possible.type}`);
+			this.client.logger.warn(`Unknown Argument Type encountered: ${possible.type}`);
 			if (this._currentUsage.possibles.length === 1) return this.pushParam(undefined);
 			return this.multiPossibles(++index);
 		}

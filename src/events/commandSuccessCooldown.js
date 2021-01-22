@@ -12,7 +12,7 @@ module.exports = class extends Event {
 		try {
 			this.getCooldown(message, command).drip();
 		} catch (err) {
-			this.context.client.emit('error', `${message.author.username}[${message.author.id}] has exceeded the RateLimit for ${message.command}`);
+			this.context.client.logger.error(`${message.author.username}[${message.author.id}] has exceeded the RateLimit for ${message.command}`);
 		}
 	}
 

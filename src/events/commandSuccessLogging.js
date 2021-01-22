@@ -1,29 +1,28 @@
-const { Colors, Event } = require('klasa');
+const { bgBlue, bgRed, bgGreen, bgMagenta, bgYellow, black, bgCyan } = require('colorette');
+const { Event } = require('klasa');
 
 module.exports = class extends Event {
 	constructor(context) {
 		super(context, { event: 'commandSuccess' });
 		this.enabled = this.context.client.options.commandLogging;
-		this.reprompted = [new Colors({ background: 'blue' }), new Colors({ background: 'red' })];
-		this.user = new Colors({ background: 'yellow', text: 'black' });
-		this.shard = new Colors({ background: 'cyan', text: 'black' });
+		this.reprompted = [bgBlue, bgRed];
 		this.channel = {
-			text: new Colors({ background: 'green', text: 'black' }),
-			dm: new Colors({ background: 'magenta' })
+			text: bgGreen,
+			dm: bgMagenta
 		};
 	}
 
 	run(message, command, response, timer) {
 		const { type } = message.channel;
 		const shard = message.guild ? message.guild.shardID : 0;
-		this.context.client.emit(
+		this.context.client.logger.debug(
 			'log',
 			[
-				this.shard.format(`[${shard}]`),
+				black(bgCyan(`[${shard}]`)),
 				`${command.name}(${message.args ? message.args.join(', ') : ''})`,
-				this.reprompted[Number(message.reprompted)].format(`[${timer.stop()}]`),
-				this.user.format(`${message.author.username}[${message.author.id}]`),
-				this.channel[type].format(this[type](message))
+				this.reprompted[Number(message.reprompted)](`[${timer.stop()}]`),
+				black(bgYellow(`${message.author.username}[${message.author.id}]`)),
+				this.channel[type](this[type](message))
 			].join(' ')
 		);
 	}
