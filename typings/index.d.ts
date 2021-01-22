@@ -8,15 +8,11 @@ declare module 'klasa' {
 		ClientOptions,
 		Collection,
 		DMChannel,
-		EmojiResolvable,
 		Message,
 		MessageAdditions,
-		MessageEmbed,
 		MessageOptions,
-		MessageReaction,
 		PermissionResolvable,
 		Permissions,
-		ReactionCollector,
 		Snowflake,
 		StringResolvable,
 		TextChannel,
@@ -50,8 +46,11 @@ declare module 'klasa' {
 		public sweepMessages(lifetime?: number, commandLifeTime?: number): number;
 		public static basePermissions: Permissions;
 		public static defaultPermissionLevels: PermissionLevels;
-		public static plugin: symbol;
-		public static use(mod: any): typeof KlasaClient;
+	}
+
+	export interface ClientLoggerOptions {
+		level?: LogLevel;
+		instance?: ILogger;
 	}
 
 	// #region Extensions
@@ -178,7 +177,7 @@ declare module 'klasa' {
 	}
 
 	export class CommandUsage extends Usage {
-		public constructor(client: KlasaClient, usageString: string, usageDelim: string | null, command: Command);
+		public constructor(client: Client, usageString: string, usageDelim: string | null, command: Command);
 		public names: string[];
 		public commands: string;
 		public nearlyFullUsage: string;
@@ -213,7 +212,7 @@ declare module 'klasa' {
 
 	export class TextPrompt {
 		public constructor(message: Message, usage: Usage, options?: TextPromptOptions);
-		public readonly client: KlasaClient;
+		public readonly client: Client;
 		public message: Message;
 		public target: User;
 		public channel: TextChannel | DMChannel;
@@ -250,8 +249,8 @@ declare module 'klasa' {
 	}
 
 	export class Usage {
-		public constructor(client: KlasaClient, usageString: string, usageDelim: string | null);
-		public readonly client: KlasaClient;
+		public constructor(client: Client, usageString: string, usageDelim: string | null);
+		public readonly client: Client;
 		public deliminatedUsage: string;
 		public usageString: string;
 		public usageDelim: string | null;
@@ -274,93 +273,7 @@ declare module 'klasa' {
 
 	// #region Util
 
-	export class Colors {
-		public constructor(options?: ColorsFormatOptions);
-		public opening: string;
-		public closing: string;
-
-		public format(input: string): string;
-		public static useColors: boolean | null;
-		public static CLOSE: typeof ColorsClose;
-		public static STYLES: typeof ColorsStyleTypes;
-		public static TEXTS: typeof ColorsTexts;
-		public static BACKGROUNDS: typeof ColorsBackgrounds;
-		public static hexToRGB(hex: string): number[];
-		public static hueToRGB(p: number, q: number, t: number): number;
-		public static hslToRGB([h, s, l]: [number | string, number | string, number | string]): number[];
-		public static formatArray([pos1, pos2, pos3]: [number | string, number | string, number | string]): string;
-
-		private static style(styles: string | string[], data?: ColorsFormatData): ColorsFormatData;
-		private static background(style: ColorsFormatType, data?: ColorsFormatData): ColorsFormatData;
-		private static text(style: ColorsFormatType, data?: ColorsFormatData): ColorsFormatData;
-	}
-
 	export const constants: Constants;
-
-	export class Cron {
-		public constructor(cron: string);
-		public next(zDay?: Date, origin?: boolean): Date;
-
-		private static _normalize(cron: string): string;
-		private static _parseString(cron: string): number[][];
-		private static _parsePart(cronPart: string, id: number): number[];
-		private static _range(min: number, max: number, step: number): number[];
-	}
-
-	export class Duration {
-		public constructor(pattern: string);
-		public offset: number;
-		public readonly fromNow: Date;
-
-		public dateFrom(date: Date): Date;
-
-		public static toNow(earlier: Date | number | string, showIn?: boolean): string;
-
-		private static regex: RegExp;
-		private static commas: RegExp;
-		private static aan: RegExp;
-
-		private static _parse(pattern: string): number;
-	}
-
-	export class Timestamp {
-		public constructor(pattern: string);
-		public pattern: string;
-		private _template: TimestampObject[];
-
-		public display(time?: Date | number | string): string;
-		public displayUTC(time?: Date | number | string): string;
-		public edit(pattern: string): this;
-
-		public static timezoneOffset: number;
-		public static utc(time?: Date | number | string): Date;
-		public static displayArbitrary(pattern: string, time?: Date | number | string): string;
-		private static _resolveDate(time: Date | number | string): Date;
-		private static _display(template: string, time: Date | number | string): string;
-		private static _patch(pattern: string): TimestampObject[];
-	}
-
-	export class KlasaConsole {
-		private constructor(options?: ConsoleOptions);
-		public readonly stdout: NodeJS.WritableStream;
-		public readonly stderr: NodeJS.WritableStream;
-		public template: Timestamp | null;
-		public colors: ConsoleColorStyles;
-		public utc: boolean;
-
-		private readonly timestamp: string;
-
-		private write(data: any[], type?: string): void;
-
-		public log(...data: any[]): void;
-		public warn(...data: any[]): void;
-		public error(...data: any[]): void;
-		public debug(...data: any[]): void;
-		public verbose(...data: any[]): void;
-		public wtf(...data: any[]): void;
-
-		private static _flatten(data: any): string;
-	}
 
 	export class RateLimit {
 		public constructor(bucket: number, cooldown: number);
@@ -400,14 +313,7 @@ declare module 'klasa' {
 		quotedStringSupport?: boolean;
 	}
 
-	export interface PieceDefaults {
-		arguments?: ArgumentOptions;
-		commands?: CommandOptions;
-		events?: EventOptions;
-		inhibitors?: InhibitorOptions;
-	}
-
-	export type ReadyMessage = string | ((client: KlasaClient) => string);
+	export type ReadyMessage = string | ((client: Client) => string);
 
 	// Parsers
 	export interface ArgResolverCustomMethod {
@@ -416,59 +322,11 @@ declare module 'klasa' {
 
 	export interface Constants {
 		DEFAULTS: ConstantsDefaults;
-		TIME: ConstantsTime;
 		MENTION_REGEX: MentionRegex;
 	}
 
 	export interface ConstantsDefaults {
 		CLIENT: Required<ClientOptions>;
-		CONSOLE: Required<ConsoleOptions>;
-	}
-
-	export interface ConstantsTime {
-		SECOND: number;
-		MINUTE: number;
-		HOUR: number;
-		DAY: number;
-		DAYS: string[];
-		MONTHS: string[];
-		TIMESTAMP: {
-			TOKENS: Map<string, number>;
-		};
-		CRON: {
-			partRegex: RegExp;
-			allowedNum: number[][];
-			predefined: {
-				'@annually': string;
-				'@yearly': string;
-				'@monthly': string;
-				'@weekly': string;
-				'@daily': string;
-				'@hourly': string;
-			};
-			tokens: {
-				jan: number;
-				feb: number;
-				mar: number;
-				apr: number;
-				may: number;
-				jun: number;
-				jul: number;
-				aug: number;
-				sep: number;
-				oct: number;
-				nov: number;
-				dec: number;
-				sun: number;
-				mon: number;
-				tue: number;
-				wed: number;
-				thu: number;
-				fri: number;
-				sat: number;
-			};
-			tokensRegex: RegExp;
-		};
 	}
 
 	// Permissions
@@ -487,8 +345,6 @@ declare module 'klasa' {
 		broke: boolean;
 		permission: boolean;
 	}
-
-	export type TimeResolvable = Cron | Date | number | string;
 
 	// Structures
 	export interface ArgumentOptions extends AliasPieceOptions {}
@@ -518,7 +374,7 @@ declare module 'klasa' {
 	}
 
 	export interface EventOptions extends PieceOptions {
-		emitter?: NodeJS.EventEmitter | FilterKeyInstances<KlasaClient, NodeJS.EventEmitter>;
+		emitter?: NodeJS.EventEmitter | FilterKeyInstances<Client, NodeJS.EventEmitter>;
 		event?: string;
 		once?: boolean;
 	}
@@ -548,135 +404,6 @@ declare module 'klasa' {
 	}
 
 	// Util
-	export enum ColorsClose {
-		normal = 0,
-		bold = 22,
-		dim = 22,
-		italic = 23,
-		underline = 24,
-		inverse = 27,
-		hidden = 28,
-		strikethrough = 29,
-		text = 39,
-		background = 49
-	}
-
-	export enum ColorsStyleTypes {
-		normal = 0,
-		bold = 1,
-		dim = 2,
-		italic = 3,
-		underline = 4,
-		inverse = 7,
-		hidden = 8,
-		strikethrough = 9
-	}
-
-	export enum ColorsTexts {
-		black = 30,
-		red = 31,
-		green = 32,
-		yellow = 33,
-		blue = 34,
-		magenta = 35,
-		cyan = 36,
-		lightgray = 37,
-		lightgrey = 37,
-		gray = 90,
-		grey = 90,
-		lightred = 91,
-		lightgreen = 92,
-		lightyellow = 93,
-		lightblue = 94,
-		lightmagenta = 95,
-		lightcyan = 96,
-		white = 97
-	}
-
-	export enum ColorsBackgrounds {
-		black = 40,
-		red = 41,
-		green = 42,
-		yellow = 43,
-		blue = 44,
-		magenta = 45,
-		cyan = 46,
-		gray = 47,
-		grey = 47,
-		lightgray = 100,
-		lightgrey = 100,
-		lightred = 101,
-		lightgreen = 102,
-		lightyellow = 103,
-		lightblue = 104,
-		lightmagenta = 105,
-		lightcyan = 106,
-		white = 107
-	}
-
-	export interface ColorsFormatOptions {
-		background?: string;
-		style?: string | string[];
-		text?: string;
-	}
-
-	export type ColorsFormatType = string | number | [string, string, string] | [number, number, number];
-
-	export interface ColorsFormatData {
-		opening: string[];
-		closing: string[];
-	}
-
-	export interface ConsoleOptions {
-		utc?: boolean;
-		colors?: ConsoleColorStyles;
-		stderr?: NodeJS.WritableStream;
-		stdout?: NodeJS.WritableStream;
-		timestamps?: boolean | string;
-		useColor?: boolean;
-	}
-
-	export interface ConsoleEvents {
-		debug?: boolean;
-		error?: boolean;
-		log?: boolean;
-		verbose?: boolean;
-		warn?: boolean;
-		wtf?: boolean;
-	}
-
-	export interface ConsoleColorStyles {
-		debug?: ConsoleColorObjects;
-		error?: ConsoleColorObjects;
-		info?: ConsoleColorObjects;
-		log?: ConsoleColorObjects;
-		verbose?: ConsoleColorObjects;
-		warn?: ConsoleColorObjects;
-		wtf?: ConsoleColorObjects;
-	}
-
-	export interface ConsoleColorObjects {
-		message?: ConsoleMessageObject;
-		time?: ConsoleTimeObject;
-	}
-
-	export interface ConsoleMessageObject {
-		background?: keyof typeof ColorsBackgrounds | null;
-		style?: keyof typeof ColorsStyleTypes | null;
-		text?: keyof typeof ColorsBackgrounds | null;
-	}
-
-	export interface ConsoleTimeObject {
-		background?: keyof typeof ColorsBackgrounds | null;
-		style?: keyof typeof ColorsStyleTypes | null;
-		text?: keyof typeof ColorsBackgrounds | null;
-	}
-
-	export interface TimestampObject {
-		content: string | null;
-		type: string;
-	}
-
 	export interface MentionRegex {
 		userOrMember: RegExp;
 		channel: RegExp;
@@ -685,11 +412,100 @@ declare module 'klasa' {
 		snowflake: RegExp;
 	}
 
-	// Based on the built-in `Pick<>` generic
-	type Filter<T, K extends keyof T> = {
-		[P in keyof T]: P extends K ? unknown : T[P];
-	};
+	/**
+	 * The logger levels for the [[ILogger]].
+	 */
+	export const enum LogLevel {
+		/**
+		 * The lowest log level, used when calling [[ILogger.trace]].
+		 */
+		Trace = 10,
 
+		/**
+		 * The debug level, used when calling [[ILogger.debug]].
+		 */
+		Debug = 20,
+
+		/**
+		 * The info level, used when calling [[ILogger.info]].
+		 */
+		Info = 30,
+
+		/**
+		 * The warning level, used when calling [[ILogger.warn]].
+		 */
+		Warn = 40,
+
+		/**
+		 * The error level, used when calling [[ILogger.error]].
+		 */
+		Error = 50,
+
+		/**
+		 * The critical level, used when calling [[ILogger.fatal]].
+		 */
+		Fatal = 60,
+
+		/**
+		 * An unknown or uncategorized level.
+		 */
+		None = 100
+	}
+
+	export interface ILogger {
+		/**
+		 * Alias of [[ILogger.write]] with [[LogLevel.Trace]] as level.
+		 * @param values The values to log.
+		 */
+		trace(...values: readonly unknown[]): void;
+
+		/**
+		 * Alias of [[ILogger.write]] with [[LogLevel.Debug]] as level.
+		 * @param values The values to log.
+		 */
+		debug(...values: readonly unknown[]): void;
+
+		/**
+		 * Alias of [[ILogger.write]] with [[LogLevel.Info]] as level.
+		 * @param values The values to log.
+		 */
+		info(...values: readonly unknown[]): void;
+
+		/**
+		 * Alias of [[ILogger.write]] with [[LogLevel.Warn]] as level.
+		 * @param values The values to log.
+		 */
+		warn(...values: readonly unknown[]): void;
+
+		/**
+		 * Alias of [[ILogger.write]] with [[LogLevel.Error]] as level.
+		 * @param values The values to log.
+		 */
+		error(...values: readonly unknown[]): void;
+
+		/**
+		 * Alias of [[ILogger.write]] with [[LogLevel.Fatal]] as level.
+		 * @param values The values to log.
+		 */
+		fatal(...values: readonly unknown[]): void;
+
+		/**
+		 * Writes the log message given a level and the value(s).
+		 * @param level The log level.
+		 * @param values The values to log.
+		 */
+		write(level: LogLevel, ...values: readonly unknown[]): void;
+	}
+
+	export class Logger implements ILogger {
+		public level: LogLevel;
+		public constructor(level: LogLevel);
+		protected static readonly levels: Map<LogLevel, LogMethods>;
+	}
+
+	export type LogMethods = 'trace' | 'debug' | 'info' | 'warn' | 'error';
+
+	// Based on the built-in `Pick<>` generic
 	type ValueOf<T> = T[keyof T];
 	type FilterKeyInstances<O, T> = ValueOf<
 		{
@@ -697,21 +513,14 @@ declare module 'klasa' {
 		}
 	>;
 
-	export interface TitleCaseVariants extends Record<string, string> {
-		textchannel: 'TextChannel';
-		voicechannel: 'VoiceChannel';
-		categorychannel: 'CategoryChannel';
-		guildmember: 'GuildMember';
-	}
-
 	module 'discord.js' {
 		export interface Client {
-			constructor: typeof KlasaClient;
+			constructor: typeof Client;
 			readonly invite: string;
 			readonly owners: Set<User>;
 			options: Required<ClientOptions>;
+			logger: ILogger;
 			userBaseDirectory: string;
-			console: KlasaConsole;
 			arguments: ArgumentStore;
 			commands: CommandStore;
 			inhibitors: InhibitorStore;
@@ -721,8 +530,8 @@ declare module 'klasa' {
 			application: ClientApplication;
 			ready: boolean;
 			mentionPrefix: RegExp | null;
-			registerStore<V extends Piece>(store: Store<V>): KlasaClient;
-			deregisterStore<V extends Piece>(store: Store<V>): KlasaClient;
+			registerStore<V extends Piece>(store: Store<V>): this;
+			deregisterStore<V extends Piece>(store: Store<V>): this;
 			sweepMessages(lifetime?: number, commandLifeTime?: number): number;
 			fetchPrefix(message: Message): Promise<string | readonly string[] | null> | string | readonly string[] | null;
 			on(event: 'argumentError', listener: (message: Message, command: Command, params: any[], error: string) => void): this;
@@ -732,14 +541,6 @@ declare module 'klasa' {
 			on(event: 'commandSuccess', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
 			on(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
 			on(event: 'klasaReady', listener: () => void): this;
-			on(event: 'log', listener: (data: any) => void): this;
-			on(event: 'pieceDisabled', listener: (piece: Piece) => void): this;
-			on(event: 'pieceEnabled', listener: (piece: Piece) => void): this;
-			on(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
-			on(event: 'pieceReloaded', listener: (piece: Piece) => void): this;
-			on(event: 'pieceUnloaded', listener: (piece: Piece) => void): this;
-			on(event: 'verbose', listener: (data: any) => void): this;
-			on(event: 'wtf', listener: (failure: Error) => void): this;
 			once(event: 'argumentError', listener: (message: Message, command: Command, params: any[], error: string) => void): this;
 			once(event: 'commandError', listener: (message: Message, command: Command, params: any[], error: Error | string) => void): this;
 			once(event: 'commandInhibited', listener: (message: Message, command: Command, response: string | Error) => void): this;
@@ -747,14 +548,6 @@ declare module 'klasa' {
 			once(event: 'commandSuccess', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
 			once(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
 			once(event: 'klasaReady', listener: () => void): this;
-			once(event: 'log', listener: (data: any) => void): this;
-			once(event: 'pieceDisabled', listener: (piece: Piece) => void): this;
-			once(event: 'pieceEnabled', listener: (piece: Piece) => void): this;
-			once(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
-			once(event: 'pieceReloaded', listener: (piece: Piece) => void): this;
-			once(event: 'pieceUnloaded', listener: (piece: Piece) => void): this;
-			once(event: 'verbose', listener: (data: any) => void): this;
-			once(event: 'wtf', listener: (failure: Error) => void): this;
 			off(event: 'argumentError', listener: (message: Message, command: Command, params: any[], error: string) => void): this;
 			off(event: 'commandError', listener: (message: Message, command: Command, params: any[], error: Error | string) => void): this;
 			off(event: 'commandInhibited', listener: (message: Message, command: Command, response: string | Error) => void): this;
@@ -762,14 +555,6 @@ declare module 'klasa' {
 			off(event: 'commandSuccess', listener: (message: Message, command: Command, params: any[], response: any) => void): this;
 			off(event: 'commandUnknown', listener: (message: Message, command: string, prefix: RegExp, prefixLength: number) => void): this;
 			off(event: 'klasaReady', listener: () => void): this;
-			off(event: 'log', listener: (data: any) => void): this;
-			off(event: 'pieceDisabled', listener: (piece: Piece) => void): this;
-			off(event: 'pieceEnabled', listener: (piece: Piece) => void): this;
-			off(event: 'pieceLoaded', listener: (piece: Piece) => void): this;
-			off(event: 'pieceReloaded', listener: (piece: Piece) => void): this;
-			off(event: 'pieceUnloaded', listener: (piece: Piece) => void): this;
-			off(event: 'verbose', listener: (data: any) => void): this;
-			off(event: 'wtf', listener: (failure: Error) => void): this;
 		}
 
 		export interface Message {
@@ -791,16 +576,12 @@ declare module 'klasa' {
 		export interface ClientOptions {
 			commandEditing?: boolean;
 			commandLogging?: boolean;
+			logger?: ClientLoggerOptions;
 			commandMessageLifetime?: number;
-			console?: ConsoleOptions;
-			consoleEvents?: ConsoleEvents;
-			createPiecesFolders?: boolean;
 			customPromptDefaults?: CustomPromptDefaults;
-			disabledCorePieces?: string[];
 			noPrefixDM?: boolean;
 			owners?: string[];
 			permissionLevels?: PermissionLevels;
-			pieceDefaults?: PieceDefaults;
 			prefix?: string | string[];
 			prefixCaseInsensitive?: boolean;
 			production?: boolean;

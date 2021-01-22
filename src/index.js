@@ -28,16 +28,10 @@ module.exports = {
 	TextPrompt: require('./lib/usage/TextPrompt'),
 
 	// lib/util
-	Colors: require('./lib/util/Colors'),
-	KlasaConsole: require('./lib/util/KlasaConsole'),
 	constants: require('./lib/util/constants'),
-	Cron: require('./lib/util/Cron'),
-	Duration: require('./lib/util/Duration'),
+	Logger: require('./lib/util/Logger'),
 	RateLimit: require('./lib/util/RateLimit'),
 	RateLimitManager: require('./lib/util/RateLimitManager'),
-	Stopwatch: require('./lib/util/Stopwatch'),
-	Timestamp: require('./lib/util/Timestamp'),
-	Type: require('./lib/util/Type'),
 	util: require('./lib/util/util'),
 
 	// version

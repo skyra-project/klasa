@@ -16,6 +16,7 @@
 	},
 	"dependencies": {
 		"@sapphire/pieces": "^1.1.0",
+		"colorette": "^1.2.1",
 		"fs-nextra": "^0.5.1"
 	},
 	"devDependencies": {

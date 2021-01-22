@@ -8,6 +8,6 @@ module.exports = class extends Event {
 
 	run(err) {
 		if (!err) return;
-		this.context.client.emit('error', `Uncaught Promise Error: \n${err.stack || err}`);
+		this.context.client.logger.error(`Uncaught Promise Error: \n${err.stack || err}`);
 	}
 };
