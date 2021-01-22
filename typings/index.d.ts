@@ -497,9 +497,16 @@ declare module 'klasa' {
 		write(level: LogLevel, ...values: readonly unknown[]): void;
 	}
 
-	export class Logger implements ILogger {
+	export abstract class Logger implements ILogger {
 		public level: LogLevel;
 		public constructor(level: LogLevel);
+		public abstract trace(...values: readonly unknown[]): void;
+		public abstract debug(...values: readonly unknown[]): void;
+		public abstract info(...values: readonly unknown[]): void;
+		public abstract warn(...values: readonly unknown[]): void;
+		public abstract error(...values: readonly unknown[]): void;
+		public abstract fatal(...values: readonly unknown[]): void;
+		public abstract write(level: LogLevel, ...values: readonly unknown[]): void;
 		protected static readonly levels: Map<LogLevel, LogMethods>;
 	}
 
