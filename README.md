@@ -13,7 +13,6 @@ Following suit from Komada (the Croatian word for "pieces"), Klasa is the Croati
 ## What is different in this fork
 
 -   ExtendedHelp has been redesigned to be forward compatible with the change to [i18next] that will be needed when [Skyra] migrated to [Sapphire Framework](https://github.com/sapphire-project/framework)
--   `RichDisplay#addPage` typings have been changed to take `(template: MessageEmbed) => MessageEmbed` to save a lot of unnecessary typing effort when building RichDisplay's
 -   `Command#extendedHelp` and `CommandOptions#extendedHelp` now take `unknown` as type to facilitate better [i18next] transition
 -   Other QoL changes specific for [Skyra]
 
