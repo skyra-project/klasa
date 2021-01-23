@@ -15,8 +15,7 @@ module.exports = class extends Event {
 	run(message, command, response, timer) {
 		const { type } = message.channel;
 		const shard = message.guild ? message.guild.shardID : 0;
-		this.context.client.logger.debug(
-			'log',
+		this.context.client.logger.info(
 			[
 				black(bgCyan(`[${shard}]`)),
 				`${command.name}(${message.args ? message.args.join(', ') : ''})`,
