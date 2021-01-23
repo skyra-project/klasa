@@ -74,7 +74,7 @@ class KlasaClient extends Discord.Client {
 	constructor(options = {}) {
 		super({
 			...DEFAULTS.CLIENT,
-			options,
+			...options,
 			customPromptDefaults: { ...DEFAULTS.CLIENT.customPromptDefaults, ...(options.customPromptDefaults ?? {}) }
 		});
 
