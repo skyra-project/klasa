@@ -273,7 +273,7 @@ class KlasaClient extends Discord.Client {
 	sweepMessages(lifetime = this.options.messageCacheLifetime, commandLifetime = this.options.commandMessageLifetime) {
 		if (typeof lifetime !== 'number' || isNaN(lifetime)) throw new TypeError('The lifetime must be a number.');
 		if (lifetime <= 0) {
-			this.emit('debug', "Didn't sweep messages - lifetime is unlimited");
+			this.logger.debug("Didn't sweep messages - lifetime is unlimited");
 			return -1;
 		}
 
@@ -300,8 +300,7 @@ class KlasaClient extends Discord.Client {
 			});
 		}
 
-		this.emit(
-			'debug',
+		this.logger.debug(
 			`Swept ${messages} messages older than ${lifetime} seconds and ${commandMessages} command messages older than ${commandLifetime} seconds in ${channels} text-based channels`
 		);
 		return messages;
