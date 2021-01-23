@@ -453,6 +453,7 @@ declare module 'klasa' {
 	}
 
 	export interface ILogger {
+		level: LogLevel;
 		/**
 		 * Alias of [[ILogger.write]] with [[LogLevel.Trace]] as level.
 		 * @param values The values to log.
