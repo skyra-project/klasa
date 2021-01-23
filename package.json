@@ -6,18 +6,16 @@
 	"types": "typings/index.d.ts",
 	"author": "@skyra",
 	"license": "MIT",
-	"private": false,
+	"private": true,
 	"scripts": {
 		"lint": "eslint src typings --ext js,ts --fix",
 		"format": "prettier --write src/**/*.js typings/**/*.ts",
-		"sversion": "standard-version",
 		"commit": "git-cz",
 		"cz": "git-cz"
 	},
 	"dependencies": {
 		"@sapphire/pieces": "^1.1.0",
-		"colorette": "^1.2.1",
-		"fs-nextra": "^0.5.1"
+		"colorette": "^1.2.1"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^11.0.0",
@@ -39,7 +37,6 @@
 		"prettier": "^2.2.1",
 		"pretty-quick": "^3.1.0",
 		"rimraf": "^3.0.2",
-		"standard-version": "^9.1.0",
 		"typescript": "^4.1.3"
 	},
 	"peerDependencies": {
@@ -53,21 +50,6 @@
 		"src",
 		"typings"
 	],
-	"keywords": [
-		"klasa",
-		"discordjs",
-		"discord.js",
-		"bot",
-		"typescript",
-		"ts",
-		"yarn",
-		"discord",
-		"skyra"
-	],
-	"bugs": {
-		"url": "https://github.com/skyra-project/klasa/issues"
-	},
-	"homepage": "https://github.com/skyra-project/klasa/",
 	"husky": {
 		"hooks": {
 			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
@@ -87,9 +69,6 @@
 			"path": "./node_modules/cz-conventional-changelog"
 		}
 	},
-	"publishConfig": {
-		"access": "public"
-	},
 	"resolutions": {
 		"acorn": "^8.0.4",
 		"minimist": "^1.2.5",
@@ -97,7 +76,7 @@
 		"dot-prop": "^6.0.1"
 	},
 	"engines": {
-		"node": ">=12"
+		"node": ">=15"
 	},
 	"prettier": "@sapphire/prettier-config"
 }

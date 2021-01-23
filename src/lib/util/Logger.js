@@ -1,4 +1,4 @@
-export class Logger {
+class Logger {
 	level;
 
 	constructor(level) {
@@ -44,3 +44,5 @@ export class Logger {
 		[60, 'error']
 	]);
 }
+
+module.exports = Logger;
