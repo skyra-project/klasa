@@ -20,7 +20,7 @@ const InhibitorStore = require('./structures/InhibitorStore');
 // lib/util
 const { DEFAULTS } = require('./util/constants');
 const getRootDirectory = require('./util/RootDir');
-const { Logger } = require('./util/Logger');
+const Logger = require('./util/Logger');
 
 /**
  * The client for handling everything. See {@tutorial GettingStarted} for more information how to get started using this class.
